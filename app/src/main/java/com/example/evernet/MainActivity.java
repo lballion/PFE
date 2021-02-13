@@ -25,16 +25,17 @@ import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
-
-    //private static final int PERMISSION_SEND_SMS = 123;
-    //private String SimState = "";
-    private String address = "0638861404";
-    private String message = "Salut, c'est un test de mon app Android. Bisous."; // SMS content
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+    
+    public String dst;
+    private String message = "Test API android"; // SMS content
+    private Spinner spinner;
 
     //https://stackoverflow.com/questions/3875354/android-sms-message-delivery-report-intent
     private void sendSms() {
@@ -68,10 +69,40 @@ public class MainActivity extends AppCompatActivity {
             }, new IntentFilter(SENT));
 
             SmsManager smsMgr = SmsManager.getDefault();
-            smsMgr.sendTextMessage(address, null, message, sentPI, null);
+            smsMgr.sendTextMessage(dst, null, message, sentPI, null);
         } catch (Exception e) {
-            Toast.makeText(getBaseContext(), "Failed to send SMS", Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), e.toString(), Toast.LENGTH_LONG).show();
+            //Toast.makeText(getBaseContext(), dst, Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String selectedItem = new String(spinner.getSelectedItem().toString());
+        String[] idItems = getResources().getStringArray(R.array.idArray);
+
+        if(selectedItem.equals(idItems[0]))
+            dst = "0638861404";
+        if(selectedItem.equals(idItems[1]))
+            dst = "0638861404";
+        if(selectedItem.equals(idItems[2]))
+            dst = "0638861404";
+        if(selectedItem.equals(idItems[3]))
+            dst = "0638861404";
+
+        Toast.makeText(getBaseContext(), selectedItem, Toast.LENGTH_SHORT).show();
+        FloatingActionButton fab = findViewById(R.id.fab);
+        findViewById(R.id.button_first).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendSms();
+            }
+        });
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        //Toast.makeText(getBaseContext(), "rien", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -81,58 +112,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        /*
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
-
-        findViewById(R.id.button_first).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sendSms();
-            }
-                /*
-                try{
-
-                    SmsManager smsManager = SmsManager.getDefault();
-
-                    PendingIntent sentPI = PendingIntent.getBroadcast(getApplicationContext(), 0,
-                            new Intent("SMS_SENT_ACTION"), 0);
-                    PendingIntent deliveryIntent = PendingIntent.getBroadcast(getApplicationContext(), 200, new
-                            Intent("SMS_DELIVERED_ACTION"), 0);
-                    //"0674139706"
-                    smsManager.sendTextMessage("0674139706","0638861404", "645132", sentPI, deliveryIntent);
-                    Toast.makeText(getApplicationContext(),"Sent data to someone",Toast.LENGTH_SHORT).show();
-                }
-                //getApplicationContext() -> si extend AppComptability
-                //getActivity() -> si extend autre chose
-                catch (Exception e){
-                    Toast.makeText(getApplicationContext(),e.toString(),Toast.LENGTH_SHORT).show();
-                }
-               */
-
-
-
-            /*
-
-                String smsNumber = new String("0674139706");
-                String sms = new String("T1");
-                Intent smsIntent = new Intent(Intent.ACTION_SENDTO);
-                smsIntent.setType("vnd.android-dir/mms-sms");
-                smsIntent.setData(Uri.parse("smsto: " + smsNumber));
-                smsIntent.putExtra("sms_body", sms);
-                if (smsIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(smsIntent);
-                } else {
-                    Toast.makeText(MainActivity.this, "Failed to send sms", Toast.LENGTH_SHORT).show();
-                }
-            }*/
-        });
+        spinner = (Spinner) findViewById(R.id.spinner);
+        spinner.setOnItemSelectedListener(this);
     }
 
     @Override
@@ -153,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }
