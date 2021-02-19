@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -19,6 +21,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.provider.MediaStore;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
@@ -26,7 +29,9 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,8 +39,9 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     
     public String dst;
-    private String message = "Test API android"; // SMS content
+    private String messageToSend; // SMS content
     private Spinner spinner;
+    private static int RESULT_LOAD_IMAGE = 1;
 
     //https://stackoverflow.com/questions/3875354/android-sms-message-delivery-report-intent
     private void sendSms() {
@@ -69,7 +75,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             }, new IntentFilter(SENT));
 
             SmsManager smsMgr = SmsManager.getDefault();
-            smsMgr.sendTextMessage(dst, null, message, sentPI, null);
+            if(messageToSend != null)
+                smsMgr.sendTextMessage(dst, null, messageToSend, sentPI, null);
         } catch (Exception e) {
             Toast.makeText(getBaseContext(), e.toString(), Toast.LENGTH_LONG).show();
             //Toast.makeText(getBaseContext(), dst, Toast.LENGTH_LONG).show();
@@ -95,6 +102,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         findViewById(R.id.button_first).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                EditText editText = findViewById(R.id.plain_text_input);
+                messageToSend = editText.getText().toString();
                 sendSms();
             }
         });
@@ -109,11 +118,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_first);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
+        //Toolbar toolbar = findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
         spinner = (Spinner) findViewById(R.id.spinner);
         spinner.setOnItemSelectedListener(this);
+        Button loadImage = (Button) findViewById(R.id.button);
+        findViewById(R.id.button_first).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(
+                        Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(i, RESULT_LOAD_IMAGE);
+            }
+        });
     }
 
     @Override
@@ -135,5 +153,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+            ImageView imageView = (ImageView) findViewById(R.id.imageView);
+            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+        }
     }
 }
