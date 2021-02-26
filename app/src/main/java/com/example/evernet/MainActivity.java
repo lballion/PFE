@@ -22,6 +22,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -39,6 +40,8 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     
@@ -48,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private static int RESULT_LOAD_IMAGE = 1;
     private static final int SELECT_PICTURE = 1;
     public ImageView img;
+
 
     //https://stackoverflow.com/questions/3875354/android-sms-message-delivery-report-intent
     private void sendSms() {
@@ -153,8 +157,26 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             try {
                 ImageView imageView = (ImageView) findViewById(R.id.imageView);
                 selectedImageUri = data == null ? null : selectedImage;
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
-                imageView.setImageBitmap(bitmap); //trying bitmap
+
+                /* Debug Section */
+                Bitmap bitmapTest = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
+                int srcHeight = bitmapTest.getHeight();
+                int srcWidth = bitmapTest.getWidth();
+                //Toast.makeText(getBaseContext(),"Src image size : " + srcHeight + "x" + srcWidth, Toast.LENGTH_LONG).show();
+
+                //Toast.makeText(getBaseContext(), Environment.getDataDirectory().getAbsolutePath(), Toast.LENGTH_LONG).show();
+
+                FileManager f = new FileManager(getBaseContext(), selectedImage);
+                //Toast.makeText(getBaseContext(), selectedImageUri.getPath(),Toast.LENGTH_LONG).show();
+
+                Bitmap btmp = f.resizeFile();
+                Toast.makeText(getBaseContext(), "" + f.getExists(),Toast.LENGTH_LONG).show();
+                Bitmap copyFileBtmp = BitmapFactory.decodeFile(f.getDstFile().getAbsolutePath());
+
+                //int dstHeight = f.getDebugHeight();
+                //int dstWidth = f.getDebugWidth();
+                //Toast.makeText(getBaseContext(),"Src image size : " + dstHeight + "x" + dstWidth,Toast.LENGTH_LONG).show();
+                imageView.setImageBitmap(copyFileBtmp); //displaying bitmap
             } catch (IOException e) {
                 e.printStackTrace();
             }
