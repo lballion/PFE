@@ -1,20 +1,43 @@
-package com.domain.evernet;
+package com.domain.evernet.controller;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.domain.evernet.R;
+import com.domain.evernet.model.User;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView phone;
     private TextView pseudo;
     private Button loginButton;
+
+    public static final String PREF_PSEUDO = "PREF_PSEUDO";
+
+    public static void setDefaults(String key, String value, Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(key, value);
+        editor.commit();
+    }
+
+    public static String getDefaults(String key, Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return preferences.getString(key, null);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,12 +51,13 @@ public class MainActivity extends AppCompatActivity {
         phone.addTextChangedListener(loginTextWatcher);
         pseudo.addTextChangedListener(loginTextWatcher);
 
-
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent dashboardActivityIntent = new Intent(MainActivity.this, DashboardActivity.class);
                 startActivity(dashboardActivityIntent);
+
+                setDefaults(PREF_PSEUDO, pseudo.getText().toString(), getApplicationContext());
             }
         });
 
