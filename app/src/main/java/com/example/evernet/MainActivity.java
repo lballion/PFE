@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -162,21 +163,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 Bitmap bitmapTest = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
                 int srcHeight = bitmapTest.getHeight();
                 int srcWidth = bitmapTest.getWidth();
-                //Toast.makeText(getBaseContext(),"Src image size : " + srcHeight + "x" + srcWidth, Toast.LENGTH_LONG).show();
-
-                //Toast.makeText(getBaseContext(), Environment.getDataDirectory().getAbsolutePath(), Toast.LENGTH_LONG).show();
 
                 FileManager f = new FileManager(getBaseContext(), selectedImage);
-                //Toast.makeText(getBaseContext(), selectedImageUri.getPath(),Toast.LENGTH_LONG).show();
 
-                Bitmap btmp = f.resizeFile();
-                Toast.makeText(getBaseContext(), "" + f.getExists(),Toast.LENGTH_LONG).show();
-                Bitmap copyFileBtmp = BitmapFactory.decodeFile(f.getDstFile().getAbsolutePath());
+                Bitmap btmp = f.resizeFile(this.getContentResolver(), selectedImageUri);
 
-                //int dstHeight = f.getDebugHeight();
-                //int dstWidth = f.getDebugWidth();
-                //Toast.makeText(getBaseContext(),"Src image size : " + dstHeight + "x" + dstWidth,Toast.LENGTH_LONG).show();
-                imageView.setImageBitmap(copyFileBtmp); //displaying bitmap
+                //Uri u = FileProvider.getUriForFile(getApplicationContext(), "com.example.evernet", f.getSrcFile());
+                //Bitmap bDst = BitmapFactory.decodeFile();
+                //Bitmap bSrc = BitmapFactory.decodeFile(f.getSrcFile().getAbsolutePath());
+                //Bitmap b = MediaStore.Images.Media.getBitmap(this.getContentResolver(),u);
+
+                Toast.makeText(getBaseContext(), "Size before =" + f.getSizeBefore() + " Size after = " + f.getSizeAfter()
+                        ,Toast.LENGTH_LONG).show();
+                imageView.setImageBitmap(btmp);
             } catch (IOException e) {
                 e.printStackTrace();
             }
