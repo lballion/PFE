@@ -129,12 +129,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_first);
-        //Toolbar toolbar = findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
         spinner = (Spinner) findViewById(R.id.spinner);
         spinner.setOnItemSelectedListener(this);
         Button loadImage = (Button) findViewById(R.id.button);
-        //Toast.makeText(getBaseContext(),"on create",Toast.LENGTH_LONG).show();
+
+        /* Test */
+        Packet p = new Packet(1,1,0, 1, 123456, 10);
+        TextView textView = (TextView) findViewById(R.id.textView2);
+        textView.setText(p.Packet());
+
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
 
             @Override
