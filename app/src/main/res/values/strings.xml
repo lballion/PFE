@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Evernet</string>
+    <string name="saveContactName">Name :</string>
+    <string name="saveContactID">ID :</string>
+    <string name="saveContactButton">Save</string>
+    <string name="AddContact">Add contact</string>
+    <string name="ContactList">Contact List</string>
+
+    <string name="Default_name">Non saisie</string>
+    <string name="resetContactBtn">Reset</string>
 </resources>

@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Evernet">
+        <activity android:name=".controller.ContactActivity"></activity>
         <activity android:name=".controller.DashboardActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

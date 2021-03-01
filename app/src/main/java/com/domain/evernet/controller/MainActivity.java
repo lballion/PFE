@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent dashboardActivityIntent = new Intent(MainActivity.this, DashboardActivity.class);
+                Intent dashboardActivityIntent = new Intent(MainActivity.this, ContactActivity.class);
                 startActivity(dashboardActivityIntent);
 
                 setDefaults(PREF_PSEUDO, pseudo.getText().toString(), getApplicationContext());
