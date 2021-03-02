@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Evernet</string>
+
+
+    <string name="loadImage">Load Image</string>
+    <string name="send">Send</string>
+
+    <string name="contact">Ajouter contact</string>
+    <string name="image">Envoyer img</string>
 </resources>
