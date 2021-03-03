@@ -32,6 +32,17 @@ public class Packet {
         return packet;
     }
 
+    public void decreaseTTL(){
+        ttl--;
+    }
+
+    public boolean isSamePacket(Packet p){
+        if(p instanceof Packet){
+            return (idSource == p.getIdSource() && idDestination == p.getIdDestination());
+        }
+        return false;
+    }
+
     public int getIdSource() {
         return new Integer(idSource);
     }
