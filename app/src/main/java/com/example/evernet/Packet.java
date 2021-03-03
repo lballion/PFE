@@ -6,11 +6,11 @@ public class Packet {
     private int idDestination;
     private int position;
     private int nbPackets;
-    private int imageFragment;
+    private String imageFragment;
     private int ttl;
 
-    public Packet(int idSrc, int idDst, int pos, int nbPackets, int imgFrag, int ttl){
-        if( idSrc < 0 || idDst < 0 || pos < 0 || nbPackets < 0 || imgFrag < 0 || ttl < 0){
+    public Packet(int idSrc, int idDst, int pos, int nbPackets, String imgFrag, int ttl){
+        if( idSrc < 0 || idDst < 0 || pos < 0 || nbPackets < 0 || !imgFrag.equals("") || ttl < 0){
             throw new IllegalArgumentException("Args must be positive integers.");
         }
         idSource = idSrc;
@@ -59,8 +59,8 @@ public class Packet {
         return new Integer(nbPackets);
     }
 
-    public int getImageFragment() {
-        return new Integer(imageFragment);
+    public String getImageFragment() {
+        return new String(imageFragment);
     }
 
     public int getTtl() {

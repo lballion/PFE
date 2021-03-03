@@ -25,6 +25,7 @@ import androidx.core.content.FileProvider;
 
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Telephony;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private static int RESULT_LOAD_IMAGE = 1;
     private static final int SELECT_PICTURE = 1;
     public ImageView img;
+    public SmsReceiver smsReceiver;
 
 
     //https://stackoverflow.com/questions/3875354/android-sms-message-delivery-report-intent
@@ -67,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     int resultCode = getResultCode();
                     switch (resultCode) {
                         case Activity.RESULT_OK:
-                            Toast.makeText(getBaseContext(), "SMS sent", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getBaseContext(), "SMS sent", Toast.LENGTH_LONG).show();
                             break;
                         case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
                             Toast.makeText(getBaseContext(), "Generic failure", Toast.LENGTH_LONG).show();
@@ -128,15 +130,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.fragment_first);
         spinner = (Spinner) findViewById(R.id.spinner);
         spinner.setOnItemSelectedListener(this);
         Button loadImage = (Button) findViewById(R.id.button);
 
         /* Test */
-        Packet p = new Packet(1,1,0, 1, 123456, 10);
-        TextView textView = (TextView) findViewById(R.id.textView2);
-        textView.setText(p.Packet());
+        //Packet p = new Packet(1,1,0, 1, "coucou", 10);
+        //TextView textView = (TextView) findViewById(R.id.textView2);
+        //textView.setText(p.Packet());
 
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
 
@@ -155,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         Uri selectedImageUri;
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
