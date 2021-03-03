@@ -36,7 +36,7 @@ public class Packet {
         ttl--;
     }
 
-    public boolean isSamePacket(Packet p){
+    public boolean isSameSrcAndDst(Packet p){
         if(p instanceof Packet){
             return (idSource == p.getIdSource() && idDestination == p.getIdDestination());
         }
