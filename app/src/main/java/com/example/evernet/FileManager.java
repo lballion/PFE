@@ -2,33 +2,17 @@
 package com.example.evernet;
 
 import android.content.ContentResolver;
-import android.content.Context;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.*;
 import android.provider.MediaStore;
 import android.widget.ImageView;
-
-import com.iceteck.silicompressorr.SiliCompressor;
-
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.channels.FileChannel;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.ArrayList;
-import java.util.Date;
 import android.util.Base64;
+import java.util.Calendar;
+import java.util.Date;
+
 public class FileManager {
 
     ImageView im;
@@ -48,6 +32,7 @@ public class FileManager {
     private String imageString;
     private int maxCharsToSendBySms=80;
     private int nbPackets=0;
+    private String imageName=null;
     public FileManager(ImageView img){
         this.im=img;
 
@@ -72,9 +57,17 @@ public class FileManager {
         newWidth = resizedBitmap.getWidth();
         newHeight = resizedBitmap.getHeight();
         imageString = Base64.encodeToString(this.imageBytes, Base64.DEFAULT);
+        Date currentTime = Calendar.getInstance().getTime();
+       int heure= currentTime.getHours();
+       int min=currentTime.getMinutes();
+       int sec=currentTime.getSeconds();
+        this.imageName=intToString(heure)+intToString(min)+intToString(sec);
         return resizedBitmap;
     }
-
+    public String intToString(int value){
+        String val=value>9?""+value:"0"+value;
+        return val;
+    }
     public int getWidth(){return this.width;}
 
     public int getHeight(){return this.height;}
@@ -114,7 +107,10 @@ public class FileManager {
         return this.nbPackets;
     }
     public boolean allFragmentsHaveBeenRecovered(){
-        return this.currentChar>=getSizeOfImageString()-1;
+       // return this.currentChar>=getSizeOfImageString()-1;
+        return this.currentChar>=200;
     }
+    public String getNameOfPicture(){ return this.imageName;}
+
 
 }
