@@ -9,7 +9,7 @@ public class Packet {
     private String imageFragment;
     private int ttl;
 
-    public Packet(int idSrc, int idDst, int pos, int nbPackets, String imgFrag, int ttl){
+    public Packet(int idSrc, int idDst, int pos, int nbPackets, String imgFrag, int ttl) {
         if( idSrc < 0 || idDst < 0 || pos < 0 || nbPackets < 0 || !imgFrag.equals("") || ttl < 0){
             throw new IllegalArgumentException("Args must be positive integers.");
         }
@@ -21,7 +21,7 @@ public class Packet {
         this.ttl = ttl;
     }
 
-    public String Packet(){
+    public String Packet() {
         String packet = ""
                 + idSource
                 + idDestination
@@ -32,11 +32,11 @@ public class Packet {
         return packet;
     }
 
-    public void decreaseTTL(){
+    public void decreaseTTL() {
         ttl--;
     }
 
-    public boolean isSameSrcAndDst(Packet p){
+    public boolean isSameSrcAndDst(Packet p) {
         if(p instanceof Packet){
             return (idSource == p.getIdSource() && idDestination == p.getIdDestination());
         }

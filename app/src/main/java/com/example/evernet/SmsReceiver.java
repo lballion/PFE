@@ -13,14 +13,9 @@ public class SmsReceiver extends BroadcastReceiver {
     private static final String SMS_RECEIVED = "Telephony.Sms.Intents.SMS_RECEIVED_ACTION";
     private String sms;
 
-    public SmsReceiver() {
-
-    }
-
     @Override
     public void onReceive(Context context, Intent intent) {
         Bundle bundle = intent.getExtras();
-        //context.startService(intent);
 
         if (bundle != null) {
             Object[] pduArray = (Object[]) bundle.get("pdus");
@@ -36,8 +31,6 @@ public class SmsReceiver extends BroadcastReceiver {
             }
             String sender = messages[0].getOriginatingAddress();
             sms = sb.toString();
-            /* debug */
-            //Toast.makeText(context,sms,Toast.LENGTH_LONG).show();
         }
     }
 
