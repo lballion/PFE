@@ -21,14 +21,22 @@ public class Packet {
         this.ttl = ttl;
     }
 
-    public String Packet(){
+    public String Packet(String nameOfIm){
+        String positon_String=""+position;
+        int size=positon_String.length();
+        for(int i=0;i<4-size;i++){
+            positon_String="0"+positon_String;
+        }
+
         String packet = ""
                 + idSource
                 + idDestination
-                + position
+                + positon_String
                 + nbPackets
+                + ttl
+                +nameOfIm
                 + imageFragment
-                + ttl;
+                ;
         return packet;
     }
 
@@ -55,4 +63,5 @@ public class Packet {
     public int getTtl() {
         return new Integer(ttl);
     }
+
 }
