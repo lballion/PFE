@@ -50,6 +50,7 @@ public class DashboardActivity extends AppCompatActivity  implements AdapterView
     private ImageButton loadImage;
     private ImageButton sendButton;
     private ImageView displayLoadImage;
+    private String dest;
 
 
 
@@ -112,6 +113,7 @@ public class DashboardActivity extends AppCompatActivity  implements AdapterView
                 selectedImageUri = data == null ? null : selectedImage;
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
                 displayLoadImage.setImageBitmap(bitmap);
+                Toast.makeText(getBaseContext(), "Image load from the phone !", Toast.LENGTH_LONG).show();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -201,7 +203,19 @@ public class DashboardActivity extends AppCompatActivity  implements AdapterView
 
 
         if (selectedItem.equals(idItems[0])){
+            dest = "contact 1";
         }
+        if (selectedItem.equals(idItems[1])){
+            dest = "contact 1";
+        }
+        if (selectedItem.equals(idItems[2])){
+            dest = "contact 1";
+        }
+        if (selectedItem.equals(idItems[3])){
+            dest = "contact 1";
+        }
+
+        Toast.makeText(getBaseContext(), "Contact selected :," + dest,Toast.LENGTH_LONG).show();
 
     }
 
