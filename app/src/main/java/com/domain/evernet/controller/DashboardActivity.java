@@ -101,10 +101,7 @@ public class DashboardActivity extends AppCompatActivity  implements AdapterView
 
         resetDisplay();
 
-
     }
-
-
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -122,7 +119,7 @@ public class DashboardActivity extends AppCompatActivity  implements AdapterView
     }
 
 
-
+    //Send an SMS to a phone number, after will be used to send an image to the contect choose in the spinner
     public void sendMessage(View view){
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.SEND_SMS)) {
@@ -179,7 +176,7 @@ public class DashboardActivity extends AppCompatActivity  implements AdapterView
 
     }
 
-
+    //Load image page invisible
     public void setSendImageInvisible(View view){
         loadImage.setVisibility(View.INVISIBLE);
         sendButton.setVisibility(View.INVISIBLE);
@@ -188,7 +185,7 @@ public class DashboardActivity extends AppCompatActivity  implements AdapterView
 
     }
 
-
+    //Load image page visible
     public void setSendImageVisible(View view){
         loadImage.setVisibility(View.VISIBLE);
         sendButton.setVisibility(View.VISIBLE);
@@ -196,8 +193,6 @@ public class DashboardActivity extends AppCompatActivity  implements AdapterView
         contactSpinner.setVisibility(View.VISIBLE);
 
     }
-
-
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -215,6 +210,11 @@ public class DashboardActivity extends AppCompatActivity  implements AdapterView
         contactSpinner.setSelection(0);
     }
 
+    //Launch the exit windows when the user want to leave the app
+    public void launchExitDialog(View view){
+        ExitDialog exitDialog = new ExitDialog();
+        exitDialog.show(getSupportFragmentManager(),"Exit");
+    }
 
 
 }
