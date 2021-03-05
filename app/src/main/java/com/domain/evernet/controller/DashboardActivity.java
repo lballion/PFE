@@ -49,6 +49,9 @@ public class DashboardActivity extends AppCompatActivity  implements AdapterView
     private TextView displayPseudo; //TextView to display the user's pseudo
     private ImageButton loadImage;
     private ImageButton sendButton;
+
+    private Button contactButton;
+
     private ImageView displayLoadImage;
     private String dest;
 
@@ -80,6 +83,8 @@ public class DashboardActivity extends AppCompatActivity  implements AdapterView
         displayPseudo = findViewById(R.id.viewPseudo);
         displayPseudo.setText(pseudo);
 
+
+
         sendButton = findViewById(R.id.sendButton);
         displayLoadImage = (ImageView) findViewById(R.id.displayLoadPicture);
 
@@ -95,6 +100,15 @@ public class DashboardActivity extends AppCompatActivity  implements AdapterView
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 setResult(1, intent);
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
+            }
+        });
+
+        contactButton = findViewById(R.id.contactButton);
+        contactButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent contactActivityIntent = new Intent(DashboardActivity.this, AddContactActivity.class);
+                startActivity(contactActivityIntent);
             }
         });
 
