@@ -1,5 +1,9 @@
 package com.domain.evernet.model;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -10,18 +14,28 @@ public class ServerCommunication {
     private String serverAddress;
     private int port;
 
-    public String signIn(String alias, String password, String phoneNum, String invitationKey) {
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public String signIn(String alias, String password, String phoneNum, String invitationKey) throws IOException {
 
+        String dataToSend =  String.join("_|_", alias, password, phoneNum, invitationKey);
+        //this.sendDataToServer(dataToSend);
 
-        return "";
+        // on appelle la fonction receive() pour le renvoyer
+        return "certificat_client_|_private_key_client_|_certificat_serveur_|_END_COMMUNICATION";
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public String logIn(String alias, String password) {
 
+        String dataToSend =  String.join("_|_", alias, password);
+
         return "";
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public String getNb(String alias) {
+
+        String dataToSend =  String.join("_|_", alias);
 
         return "";
     }
@@ -44,7 +58,7 @@ public class ServerCommunication {
 
     public void openSocket() {
         try {
-            serverSocket = new Socket(serverAddress, port);
+            this.serverSocket = new Socket(serverAddress, port);
         }  catch (IOException e) {
             e.printStackTrace();
         }

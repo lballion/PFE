@@ -1,11 +1,13 @@
 package com.domain.evernet.controller;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.Editable;
@@ -15,12 +17,16 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.domain.evernet.R;
+import com.domain.evernet.model.ServerCommunication;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 public class MainActivity extends AppCompatActivity {
 
     private TextView phone;
     private TextView pseudo;
     private Button loginButton;
+    private ServerCommunication sc;
 
     public static final String PREF_PSEUDO = "PREF_PSEUDO";
 
@@ -50,11 +56,37 @@ public class MainActivity extends AppCompatActivity {
         pseudo.addTextChangedListener(loginTextWatcher);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 Intent dashboardActivityIntent = new Intent(MainActivity.this, DashboardActivity.class);
-                startActivity(dashboardActivityIntent);
 
+                sc = new ServerCommunication("127.0.0.1", 50000);
+                sc.openSocket();
+
+                try {
+                    String responseServer = sc.signIn("kara", "1234", "0602533556", "gag464gaegag4a4");
+                    String[] responses = responseServer.split("_\\|_");
+
+                    ReadWriteFile readWriteFile = new ReadWriteFile();
+                    readWriteFile.writeToFile(responses[0], getApplicationContext(), "certificat_client.pem");
+                    readWriteFile.writeToFile(responses[1], getApplicationContext(), "private_key_client.pem");
+                    readWriteFile.writeToFile(responses[2], getApplicationContext(), "certificat_serveur.pem");
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                /*
+                try {
+                    sc.closeSocket();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                 */
+
+
+                startActivity(dashboardActivityIntent);
                 setDefaults(PREF_PSEUDO, pseudo.getText().toString(), getApplicationContext());
                 finish();
 
