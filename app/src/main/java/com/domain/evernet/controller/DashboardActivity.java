@@ -71,6 +71,7 @@ public class DashboardActivity extends AppCompatActivity  implements AdapterView
         if (pseudo == null) {
             Intent dashboardActivityIntent = new Intent(DashboardActivity.this, MainActivity.class);
             startActivity(dashboardActivityIntent);
+            finish();
         } else {
             // sinon on dans la DashboardActivity
         }

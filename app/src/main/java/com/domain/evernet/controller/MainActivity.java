@@ -3,6 +3,7 @@ package com.domain.evernet.controller;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -58,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(dashboardActivityIntent);
 
                 setDefaults(PREF_PSEUDO, pseudo.getText().toString(), getApplicationContext());
+                finish();
+
             }
         });
 
