@@ -1,4 +1,4 @@
-package com.example.evernet;
+package com.domain.evernet.controller;
 
 import com.domain.evernet.controller.Packet;
 
