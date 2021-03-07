@@ -1,9 +1,5 @@
 package com.domain.evernet.controller;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -20,12 +16,15 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.telephony.SmsManager;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.domain.evernet.R;
 
@@ -67,7 +66,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
         setContentView(R.layout.activity_dashboard);
 
         //Display user pseudo on the main window
-        pseudo = '@' + getDefaults(PREF_PSEUDO, getApplicationContext());
+        pseudo = getDefaults(PREF_PSEUDO, getApplicationContext());
 
 
         if (pseudo == null) {
@@ -77,6 +76,8 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
         } else {
             // sinon on dans la DashboardActivity
         }
+
+        pseudo = '@' + pseudo;
 
 
         displayPseudo = findViewById(R.id.viewPseudo);
