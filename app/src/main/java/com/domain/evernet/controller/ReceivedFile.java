@@ -1,5 +1,9 @@
 package com.domain.evernet.controller;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
+
 import com.domain.evernet.controller.Packet;
 
 import java.util.ArrayList;
@@ -57,7 +61,15 @@ public class ReceivedFile {
 
         return packetLists.get(0).getNbPackets()==packetLists.size();
     }
-    public String toFragement(){
+    public byte [] stringToArrayBites(){
+        String imageString=toImageString();
+        byte [] imageBytes = Base64.decode(imageString, Base64.DEFAULT);
+        return imageBytes;
+    }
+    public Bitmap decodedImage(byte [] imageBytes){
+        return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+    }
+    public String toImageString(){
         String fragment="";
         for (Packet p:packetLists
         ) {
