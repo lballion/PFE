@@ -107,8 +107,7 @@ public class FileManager {
         return this.nbPackets;
     }
     public boolean allFragmentsHaveBeenRecovered(){
-       // return this.currentChar>=getSizeOfImageString()-1;
-        return this.currentChar>=200;
+       return this.currentChar>=getSizeOfImageString()-1;
     }
     public String getNameOfPicture(){ return this.imageName;}
 

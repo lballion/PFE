@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 EditText editText = findViewById(R.id.plain_text_input);
                 messageToSend = editText.getText().toString();
                 //sendSms();
-                sendAllfragments();
+                sendAllFragments();
             }
         });
     }
@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return super.onOptionsItemSelected(item);
     }
 
-    public void sendAllfragments(){
+    public void sendAllFragments(){
         fileManager.setMaxOfCharsToSendBySms(100);
         int ttl=3;
         while (!fileManager.allFragmentsHaveBeenRecovered()){
@@ -203,9 +203,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             int position=fileManager.getposOfThisFragment();
             int nb_packets=fileManager.getNbPackets();
             Packet p=new Packet(758107468,758107468,position,nb_packets,fragment,ttl);
-            messageToSend=p.Packet();
+            messageToSend=p.Packet(fileManager.getNameOfImage());
             TextView textView = (TextView) findViewById(R.id.textView2);
-            textView.setText(p.Packet());
+            textView.setText(fileManager.getNameOfImage());
             sendSms();
         }
     }

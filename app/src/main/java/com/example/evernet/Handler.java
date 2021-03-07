@@ -7,10 +7,7 @@ public class Handler {
 
     public Handler() { }
 
-    public boolean nameInTheHandler(String name){
-        return handler.containsKey(name);
-    }
-
+    public boolean nameInTheHandler(String name){ return handler.containsKey(name);}
     public String extractSrc(String stringPack){return stringPack.substring(0,9);}
 
     public String extractDst(String stringPack){return stringPack.substring(9,18);}

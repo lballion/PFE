@@ -1,4 +1,4 @@
-package com.domain.evernet;
+package com.example.evernet;
 
 import org.junit.Test;
 
