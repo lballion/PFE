@@ -3,7 +3,6 @@ package com.domain.evernet.controller;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.app.Activity;
@@ -35,7 +34,7 @@ import java.io.IOException;
 import static com.domain.evernet.controller.MainActivity.PREF_PSEUDO;
 import static com.domain.evernet.controller.MainActivity.getDefaults;
 
-public class DashboardActivity extends AppCompatActivity  implements AdapterView.OnItemSelectedListener, ImagePickFragment.ImagePickFragmentListener {
+public class DashboardActivity extends AppCompatActivity  implements ImagePickFragment.ImagePickFragmentListener {
 
     ImagePickFragment imageFragment;
 
@@ -164,35 +163,6 @@ public class DashboardActivity extends AppCompatActivity  implements AdapterView
         // Toast.makeText(getBaseContext(), "Image send to : " + dest, Toast.LENGTH_LONG).show();
     }
 
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String selectedItem = new String(contactSpinner.getSelectedItem().toString());
-        String[] idItems = getResources().getStringArray(R.array.phoneArray);
-
-
-        if (selectedItem.equals(idItems[0])) {
-            dest = "contact 1";
-        }
-        if (selectedItem.equals(idItems[1])) {
-            dest = "contact 2";
-        }
-        if (selectedItem.equals(idItems[2])) {
-            dest = "contact 3";
-        }
-        if (selectedItem.equals(idItems[3])) {
-            dest = "contact 4";
-        }
-
-        Toast.makeText(getBaseContext(), "Contact selected :," + dest, Toast.LENGTH_LONG).show();
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        contactSpinner.setSelection(0);
-    }
-
     //Launch the exit windows when the user want to leave the app
     public void launchExitDialog(View view) {
         ExitDialog exitDialog = new ExitDialog();
@@ -212,8 +182,15 @@ public class DashboardActivity extends AppCompatActivity  implements AdapterView
     //Listener on the sendButton of the ImagePickFragment
     @Override
     public void onClickSent() {
-        sendMessage(findViewById(R.id.dashBoardRoot));
+        sendMessage(findViewById(R.id.dashboard_root));
     }
+
+    @Override
+    public void onSpinnerSelect(String destination) {
+        dest = destination;
+        Toast.makeText(getBaseContext(), "Contact selected :," + dest, Toast.LENGTH_LONG).show();
+    }
+
 }
 
 

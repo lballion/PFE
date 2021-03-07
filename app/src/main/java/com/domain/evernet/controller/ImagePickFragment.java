@@ -20,7 +20,7 @@ import android.widget.Spinner;
 
 import com.domain.evernet.R;
 
-public class ImagePickFragment extends Fragment {
+public class ImagePickFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private ImagePickFragmentListener listener;
 
@@ -35,8 +35,9 @@ public class ImagePickFragment extends Fragment {
     private static final int SELECT_PICTURE = 1;
 
     public interface ImagePickFragmentListener {
-        void onClickLoad();
-        void onClickSent();
+        public void onClickLoad();
+        public void onClickSent();
+        public void onSpinnerSelect(String destination);
     }
 
     public ImagePickFragment() {
@@ -63,6 +64,9 @@ public class ImagePickFragment extends Fragment {
         contactSpinner = view.findViewById(R.id.contactSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.phoneArray, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        contactSpinner.setAdapter(adapter);
+
+        contactSpinner.setOnItemSelectedListener(this);
 
 
         loadButton.setOnClickListener(new View.OnClickListener() {
@@ -100,5 +104,33 @@ public class ImagePickFragment extends Fragment {
 
     public void setImage(Bitmap bitmap){
         loadImageDisplay.setImageBitmap(bitmap);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String dest = null;
+        String selectedItem = new String(contactSpinner.getSelectedItem().toString());
+        String[] idItems = getResources().getStringArray(R.array.phoneArray);
+
+
+        if (selectedItem.equals(idItems[0])) {
+            dest = "contact 1";
+        }
+        if (selectedItem.equals(idItems[1])) {
+            dest = "contact 2";
+        }
+        if (selectedItem.equals(idItems[2])) {
+            dest = "contact 3";
+        }
+        if (selectedItem.equals(idItems[3])) {
+            dest = "contact 4";
+        }
+
+        listener.onSpinnerSelect(dest);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        contactSpinner.setSelection(0);
     }
 }
