@@ -20,6 +20,7 @@ import com.domain.evernet.R;
 import com.domain.evernet.model.ServerCommunication;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -61,30 +62,28 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent dashboardActivityIntent = new Intent(MainActivity.this, DashboardActivity.class);
 
-                sc = new ServerCommunication("127.0.0.1", 50000);
-                sc.openSocket();
+                sc = new ServerCommunication("109.215.55.162", 50000);
+                // sc.openSocket();
 
                 try {
-                    String responseServer = sc.signIn("kara", "1234", "0602533556", "gag464gaegag4a4");
-                    String[] responses = responseServer.split("_\\|_");
+                    HashMap<String, String> responseServer = sc.signIn("kara", "1234", "0602533556", "gag464gaegag4a4");
 
                     ReadWriteFile readWriteFile = new ReadWriteFile();
-                    readWriteFile.writeToFile(responses[0], getApplicationContext(), "certificat_client.pem");
-                    readWriteFile.writeToFile(responses[1], getApplicationContext(), "private_key_client.pem");
-                    readWriteFile.writeToFile(responses[2], getApplicationContext(), "certificat_serveur.pem");
+                    readWriteFile.writeToFile(responseServer.get("certificat_client"), getApplicationContext(), "certificat_client.pem");
+                    readWriteFile.writeToFile(responseServer.get("private_key_client"), getApplicationContext(), "private_key_client.pem");
+                    readWriteFile.writeToFile(responseServer.get("certificat_serveur"), getApplicationContext(), "certificat_serveur.pem");
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
                 /*
                 try {
                     sc.closeSocket();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
                  */
-
 
                 startActivity(dashboardActivityIntent);
                 setDefaults(PREF_PSEUDO, pseudo.getText().toString(), getApplicationContext());
