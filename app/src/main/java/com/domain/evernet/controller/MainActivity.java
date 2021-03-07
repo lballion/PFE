@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView phone;
     private TextView pseudo;
+    private TextView password;
     private Button loginButton;
     private ServerCommunication sc;
 
@@ -51,10 +52,12 @@ public class MainActivity extends AppCompatActivity {
 
         phone = (TextView) findViewById(R.id.phone);
         pseudo = (TextView) findViewById(R.id.pseudo);
+        password = (TextView) findViewById(R.id.password);
         loginButton = (Button) findViewById(R.id.login);
 
         phone.addTextChangedListener(loginTextWatcher);
         pseudo.addTextChangedListener(loginTextWatcher);
+        password.addTextChangedListener(loginTextWatcher);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -103,10 +106,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-            String usernameInput = phone.getText().toString().trim();
-            String passwordInput = pseudo.getText().toString().trim();
+            String phoneInput = phone.getText().toString().trim();
+            String pseudoInput = pseudo.getText().toString().trim();
+            String passwordInput = password.getText().toString().trim();
 
-            loginButton.setEnabled(!usernameInput.isEmpty() && !passwordInput.isEmpty());
+            loginButton.setEnabled(!phoneInput.isEmpty() && !pseudoInput.isEmpty() && !passwordInput.isEmpty());
         }
 
         @Override
