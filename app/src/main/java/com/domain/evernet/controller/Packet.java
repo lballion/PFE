@@ -24,10 +24,15 @@ public class Packet {
     }
 
     public String Packet() {
+        String positon_String=""+position;
+        int size=positon_String.length();//put the position on four digits
+        for(int i=0;i<4-size;i++){
+            positon_String="0"+positon_String;
+        }
         String packet = ""
                 + idSource
                 + idDestination
-                + position
+                + positon_String
                 + nbPackets
                 + timeStamp
                 + imageFragment
