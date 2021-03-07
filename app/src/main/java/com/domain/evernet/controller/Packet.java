@@ -24,19 +24,19 @@ public class Packet {
     }
 
     public String Packet() {
-        String positon_String=""+position;
-        int size=positon_String.length();//put the position on four digits
+        String positonString=""+position;
+        int size=positonString.length();//put the position on four digits
         for(int i=0;i<4-size;i++){
-            positon_String="0"+positon_String;
+            positonString="0"+positonString;
         }
         String packet = ""
                 + idSource
                 + idDestination
-                + positon_String
+                + positonString
                 + nbPackets
                 + timeStamp
-                + imageFragment
                 + ttl
+                + imageFragment
                 ;
         return packet;
     }

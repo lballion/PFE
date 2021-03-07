@@ -1,7 +1,4 @@
 package com.domain.evernet.controller;
-
-import com.example.evernet.ReceivedFile;
-
 import java.util.HashMap;
 
 public class Handler {

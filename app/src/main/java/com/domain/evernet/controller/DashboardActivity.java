@@ -1,7 +1,12 @@
 package com.domain.evernet.controller;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import android.Manifest;
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -16,16 +21,11 @@ import android.provider.MediaStore;
 import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.domain.evernet.R;
 
@@ -34,7 +34,11 @@ import java.io.IOException;
 import static com.domain.evernet.controller.MainActivity.PREF_PSEUDO;
 import static com.domain.evernet.controller.MainActivity.getDefaults;
 
-public class DashboardActivity extends AppCompatActivity  implements AdapterView.OnItemSelectedListener {
+public class DashboardActivity extends AppCompatActivity  implements ImagePickFragment.ImagePickFragmentListener {
+
+    ImagePickFragment imageFragment;
+
+    FragmentManager fragmentManager;
 
     private String pseudo; //Current user pseudo
     private SharedPreferences preferences;
@@ -47,8 +51,7 @@ public class DashboardActivity extends AppCompatActivity  implements AdapterView
     private ImageButton loadImage;
     private ImageButton sendButton;
 
-    private Button contactButton;
-    private Button imageButton;
+    private ContactManagerFragment addContactFragment;
 
     private ImageView displayLoadImage;
     private String dest;
@@ -61,11 +64,10 @@ public class DashboardActivity extends AppCompatActivity  implements AdapterView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         setContentView(R.layout.activity_dashboard);
 
         //Display user pseudo on the main window
-        pseudo = getDefaults(PREF_PSEUDO, getApplicationContext());
+        pseudo = '@' + getDefaults(PREF_PSEUDO, getApplicationContext());
 
 
         if (pseudo == null) {
@@ -76,13 +78,9 @@ public class DashboardActivity extends AppCompatActivity  implements AdapterView
             // sinon on dans la DashboardActivity
         }
 
-        pseudo = '@' + pseudo;
-
 
         displayPseudo = findViewById(R.id.viewPseudo);
         displayPseudo.setText(pseudo);
-
-        imageButton = findViewById(R.id.imageButton);
 
 
 
@@ -91,30 +89,13 @@ public class DashboardActivity extends AppCompatActivity  implements AdapterView
 
         contactSpinner = findViewById(R.id.contactSpinner);
 
-        loadImage = findViewById(R.id.loadButton);
-        findViewById(R.id.loadButton).setOnClickListener(new View.OnClickListener() {
+        imageFragment = new ImagePickFragment();
 
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                setResult(1, intent);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
-            }
-        });
+        fragmentManager = getFragmentManager();
 
-        contactButton = findViewById(R.id.contactButton);
-      /*  contactButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent contactActivityIntent = new Intent(DashboardActivity.this, AddContactActivity.class);
-                startActivity(contactActivityIntent);
-            }
-        });*/
-
-        resetDisplay();
-
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragmentDisplay, imageFragment)
+                .commit();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -125,7 +106,7 @@ public class DashboardActivity extends AppCompatActivity  implements AdapterView
             try {
                 selectedImageUri = data == null ? null : selectedImage;
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
-                displayLoadImage.setImageBitmap(bitmap);
+                imageFragment.setImage(bitmap);
                 Toast.makeText(getBaseContext(), "Image load from the phone !", Toast.LENGTH_LONG).show();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -182,70 +163,32 @@ public class DashboardActivity extends AppCompatActivity  implements AdapterView
         // Toast.makeText(getBaseContext(), "Image send to : " + dest, Toast.LENGTH_LONG).show();
     }
 
-    //make everything invisible at the start off the main window
-    public void resetDisplay() {
-        loadImage.setVisibility(View.INVISIBLE);
-        sendButton.setVisibility(View.INVISIBLE);
-        displayLoadImage.setVisibility(View.INVISIBLE);
-        contactSpinner.setVisibility(View.INVISIBLE);
-
-    }
-
-    //Load image page invisible
-    public void setSendImageInvisible(View view) {
-        loadImage.setVisibility(View.INVISIBLE);
-        sendButton.setVisibility(View.INVISIBLE);
-        displayLoadImage.setVisibility(View.INVISIBLE);
-        contactSpinner.setVisibility(View.INVISIBLE);
-
-        imageButton.setBackgroundColor(getResources().getColor(R.color.purple_500));
-        contactButton.setBackgroundColor(getResources().getColor(R.color.blue));
-
-    }
-
-    //Load image page visible
-    public void setSendImageVisible(View view) {
-        loadImage.setVisibility(View.VISIBLE);
-        sendButton.setVisibility(View.VISIBLE);
-        displayLoadImage.setVisibility(View.VISIBLE);
-        contactSpinner.setVisibility(View.VISIBLE);
-
-        imageButton.setBackgroundColor(getResources().getColor(R.color.blue));
-        contactButton.setBackgroundColor(getResources().getColor(R.color.purple_500));
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String selectedItem = new String(contactSpinner.getSelectedItem().toString());
-        String[] idItems = getResources().getStringArray(R.array.phoneArray);
-
-
-        if (selectedItem.equals(idItems[0])) {
-            dest = "contact 1";
-        }
-        if (selectedItem.equals(idItems[1])) {
-            dest = "contact 2";
-        }
-        if (selectedItem.equals(idItems[2])) {
-            dest = "contact 3";
-        }
-        if (selectedItem.equals(idItems[3])) {
-            dest = "contact 4";
-        }
-
-        Toast.makeText(getBaseContext(), "Contact selected :," + dest, Toast.LENGTH_LONG).show();
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        contactSpinner.setSelection(0);
-    }
-
     //Launch the exit windows when the user want to leave the app
     public void launchExitDialog(View view) {
         ExitDialog exitDialog = new ExitDialog();
         exitDialog.show(getSupportFragmentManager(), "Exit");
+    }
+
+    //Listener on the loadButton of the ImagePickFragment
+    @Override
+    public void onClickLoad() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        setResult(1, intent);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_PICTURE);
+    }
+
+    //Listener on the sendButton of the ImagePickFragment
+    @Override
+    public void onClickSent() {
+        sendMessage(findViewById(R.id.dashboard_root));
+    }
+
+    @Override
+    public void onSpinnerSelect(String destination) {
+        dest = destination;
+        Toast.makeText(getBaseContext(), "Contact selected :," + dest, Toast.LENGTH_LONG).show();
     }
 
 }
