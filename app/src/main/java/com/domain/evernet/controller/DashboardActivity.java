@@ -1,16 +1,10 @@
 package com.domain.evernet.controller;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -18,7 +12,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.telephony.SmsManager;
 import android.view.View;
@@ -29,6 +22,10 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.domain.evernet.R;
 
@@ -51,10 +48,10 @@ public class DashboardActivity extends AppCompatActivity  implements AdapterView
     private ImageButton sendButton;
 
     private Button contactButton;
+    private Button imageButton;
 
     private ImageView displayLoadImage;
     private String dest;
-
 
     private static int RESULT_LOAD_IMAGE = 1;
     private static final int SELECT_PICTURE = 1;
@@ -68,7 +65,7 @@ public class DashboardActivity extends AppCompatActivity  implements AdapterView
         setContentView(R.layout.activity_dashboard);
 
         //Display user pseudo on the main window
-        pseudo = '@' + getDefaults(PREF_PSEUDO, getApplicationContext());
+        pseudo = getDefaults(PREF_PSEUDO, getApplicationContext());
 
 
         if (pseudo == null) {
@@ -79,9 +76,13 @@ public class DashboardActivity extends AppCompatActivity  implements AdapterView
             // sinon on dans la DashboardActivity
         }
 
+        pseudo = '@' + pseudo;
+
 
         displayPseudo = findViewById(R.id.viewPseudo);
         displayPseudo.setText(pseudo);
+
+        imageButton = findViewById(R.id.imageButton);
 
 
 
@@ -104,13 +105,13 @@ public class DashboardActivity extends AppCompatActivity  implements AdapterView
         });
 
         contactButton = findViewById(R.id.contactButton);
-        contactButton.setOnClickListener(new View.OnClickListener() {
+      /*  contactButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent contactActivityIntent = new Intent(DashboardActivity.this, AddContactActivity.class);
                 startActivity(contactActivityIntent);
             }
-        });
+        });*/
 
         resetDisplay();
 
@@ -197,6 +198,9 @@ public class DashboardActivity extends AppCompatActivity  implements AdapterView
         displayLoadImage.setVisibility(View.INVISIBLE);
         contactSpinner.setVisibility(View.INVISIBLE);
 
+        imageButton.setBackgroundColor(getResources().getColor(R.color.purple_500));
+        contactButton.setBackgroundColor(getResources().getColor(R.color.blue));
+
     }
 
     //Load image page visible
@@ -206,6 +210,8 @@ public class DashboardActivity extends AppCompatActivity  implements AdapterView
         displayLoadImage.setVisibility(View.VISIBLE);
         contactSpinner.setVisibility(View.VISIBLE);
 
+        imageButton.setBackgroundColor(getResources().getColor(R.color.blue));
+        contactButton.setBackgroundColor(getResources().getColor(R.color.purple_500));
     }
 
     @Override
