@@ -41,18 +41,11 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
 
     private String pseudo; //Current user pseudo
     private SharedPreferences preferences;
-    private Spinner contactSpinner; //Spinner to choose the contact
-    //private TextView pseudoView;
 
     private String messageToSend = "Hello World !";
 
     private TextView displayPseudo; //TextView to display the user's pseudo
-    private ImageButton loadImage;
-    private ImageButton sendButton;
 
-    private ContactManagerFragment addContactFragment;
-
-    private ImageView displayLoadImage;
     private String dest;
 
     private static int RESULT_LOAD_IMAGE = 1;
@@ -82,13 +75,6 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
 
         displayPseudo = findViewById(R.id.viewPseudo);
         displayPseudo.setText(pseudo);
-
-
-
-        sendButton = findViewById(R.id.sendButton);
-        displayLoadImage = (ImageView) findViewById(R.id.displayLoadPicture);
-
-        contactSpinner = findViewById(R.id.contactSpinner);
 
         imageFragment = new ImagePickFragment();
 
