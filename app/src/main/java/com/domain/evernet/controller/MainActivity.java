@@ -72,9 +72,9 @@ public class MainActivity extends AppCompatActivity {
                     HashMap<String, String> responseServer = sc.signIn("kara", "1234", "0602533556", "gag464gaegag4a4");
 
                     ReadWriteFile readWriteFile = new ReadWriteFile();
-                    readWriteFile.writeToFile(responseServer.get("certificat_client"), getApplicationContext(), "certificat_client.pem");
-                    readWriteFile.writeToFile(responseServer.get("private_key_client"), getApplicationContext(), "private_key_client.pem");
-                    readWriteFile.writeToFile(responseServer.get("certificat_serveur"), getApplicationContext(), "certificat_serveur.pem");
+                    readWriteFile.writeToFile(responseServer.get("certificat_client"), getApplicationContext(), "certificat_client.pem", MODE_PRIVATE);
+                    readWriteFile.writeToFile(responseServer.get("private_key_client"), getApplicationContext(), "private_key_client.pem", MODE_PRIVATE);
+                    readWriteFile.writeToFile(responseServer.get("certificat_serveur"), getApplicationContext(), "certificat_serveur.pem", MODE_PRIVATE);
 
                 } catch (IOException e) {
                     e.printStackTrace();

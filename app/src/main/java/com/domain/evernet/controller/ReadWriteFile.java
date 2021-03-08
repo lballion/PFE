@@ -17,6 +17,7 @@ public class ReadWriteFile {
         String ret = "";
 
         try {
+
             InputStream inputStream = context.openFileInput(fileName);
 
             if ( inputStream != null ) {
@@ -26,6 +27,7 @@ public class ReadWriteFile {
                 StringBuilder stringBuilder = new StringBuilder();
 
                 while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    //if(!receiveString.equals())
                     stringBuilder.append("\n").append(receiveString);
                 }
 
@@ -42,9 +44,9 @@ public class ReadWriteFile {
         return ret;
     }
 
-    public void writeToFile(String data,Context context, String fileName) {
+    public void writeToFile(String data,Context context, String fileName, int mode) {
         try {
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(fileName, Context.MODE_PRIVATE));
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(fileName,mode));
             outputStreamWriter.write(data);
             outputStreamWriter.close();
         }

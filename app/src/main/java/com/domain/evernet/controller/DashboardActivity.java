@@ -16,9 +16,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.telephony.SmsManager;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.Spinner;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,17 +26,25 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.domain.evernet.R;
+import com.domain.evernet.model.Contact;
+import com.domain.evernet.model.PhoneBook;
 
+import java.io.File;
 import java.io.IOException;
 
 import static com.domain.evernet.controller.MainActivity.PREF_PSEUDO;
 import static com.domain.evernet.controller.MainActivity.getDefaults;
 
-public class DashboardActivity extends AppCompatActivity  implements ImagePickFragment.ImagePickFragmentListener {
+public class DashboardActivity extends AppCompatActivity  implements ImagePickFragment.ImagePickFragmentListener, ContactManagerFragment.ContactManagerFragmentListener {
 
     ImagePickFragment imageFragment;
+    ContactManagerFragment addContactFragment;
 
     FragmentManager fragmentManager;
+    FrameLayout fragmentDisplay;
+
+    private Button imageButton;
+    private Button contactButton;
 
     private String pseudo; //Current user pseudo
     private SharedPreferences preferences;
@@ -48,8 +55,13 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
 
     private String dest;
 
+    private PhoneBook phoneBook;
+    private ReadWriteFile readWriteFile = new ReadWriteFile();
+
     private static int RESULT_LOAD_IMAGE = 1;
     private static final int SELECT_PICTURE = 1;
+
+    private final String PHONEBOOK_FILE_NAME = "savedPhoneBook.txt";
 
 
     @Override
@@ -76,13 +88,34 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
         displayPseudo = findViewById(R.id.viewPseudo);
         displayPseudo.setText(pseudo);
 
+        fragmentDisplay = findViewById(R.id.fragmentDisplay);
+
         imageFragment = new ImagePickFragment();
+        addContactFragment = new ContactManagerFragment();
 
         fragmentManager = getFragmentManager();
 
         fragmentManager.beginTransaction()
-                .replace(R.id.fragmentDisplay, imageFragment)
+                .replace(fragmentDisplay.getId(), imageFragment)
                 .commit();
+
+        imageButton = findViewById(R.id.imageButton);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+                sendImgButtonMenuClick();
+           }
+       });
+
+        contactButton = findViewById(R.id.contactButton);
+        contactButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addContactButtonMenuClick();
+            }
+        });
+
+        phoneBook = loadPhoneBookFromFile(PHONEBOOK_FILE_NAME);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -176,6 +209,69 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
     public void onSpinnerSelect(String destination) {
         dest = destination;
         Toast.makeText(getBaseContext(), "Contact selected :," + dest, Toast.LENGTH_LONG).show();
+    }
+
+    private void addContactButtonMenuClick(){
+        fragmentManager.beginTransaction()
+                .replace(fragmentDisplay.getId(), addContactFragment)
+                .commit();
+
+        contactButton.setBackgroundColor(getResources().getColor(R.color.blue));
+        imageButton.setBackgroundColor(getResources().getColor(R.color.purple_500));
+    }
+
+    private void sendImgButtonMenuClick(){
+        fragmentManager.beginTransaction()
+                .replace(fragmentDisplay.getId(), imageFragment)
+                .commit();
+
+        contactButton.setBackgroundColor(getResources().getColor(R.color.purple_500));
+        imageButton.setBackgroundColor(getResources().getColor(R.color.blue));
+    }
+
+
+
+    @Override
+    public void saveEvent(String name, String id) {
+        String newContactData = id + "," + name + "\n";
+        System.out.println(id + "," + name );
+        Contact newContact = new Contact(Integer.parseInt(id), name);
+        phoneBook.addContact(newContact);
+        readWriteFile.writeToFile(newContactData,getApplicationContext(),PHONEBOOK_FILE_NAME,MODE_APPEND);
+        phoneBook = loadPhoneBookFromFile(PHONEBOOK_FILE_NAME);
+    }
+
+    @Override
+    public void rstContact() {
+        File dir = getFilesDir();
+        File file = new File(dir, PHONEBOOK_FILE_NAME);
+        boolean delete = file.delete();
+
+        System.out.println("File deletion = " + delete);
+    }
+
+    public PhoneBook loadPhoneBookFromFile(String fileName){
+        PhoneBook savedPhoneBook = new PhoneBook();
+        String data;
+        data = readWriteFile.readFromFile(getApplicationContext(), fileName);
+
+        String[] contactEntries;
+
+        String name;
+        String id;
+
+        for(String savedContact : data.split("\n")){
+            contactEntries = savedContact.split(",");
+            if(contactEntries.length <2){
+                continue;
+            }
+            id = contactEntries[0];
+            name = contactEntries[1];
+            System.out.println("Contact Entries : " + id + "," + name);
+            savedPhoneBook.addContact(new Contact(Integer.parseInt(id),name));
+        }
+
+        return savedPhoneBook;
     }
 
 }
