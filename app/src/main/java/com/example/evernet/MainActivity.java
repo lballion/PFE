@@ -24,6 +24,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.provider.Telephony;
 import android.telephony.SmsManager;
@@ -42,6 +43,9 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -130,6 +134,36 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
+        InetAddress i = null;
+        try {
+            i = InetAddress.getByName("109.215.55.162");
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        Client c = new Client(i, 50000);
+        c.openSocket();
+
+        String s = null;
+
+        try {
+            s = c.receiveDataFromServer();
+            Toast.makeText(getApplicationContext(), "Received : " + s, Toast.LENGTH_SHORT).show();
+            System.out.println("debug :" + s);
+            //c.sendDataToServer("signIn Inop toto 0000000000 martin_|_END_COMMUNICATION");
+            c.sendDataToServer("Ok recu_|_END_COMMUNICATION");
+            s = null;
+            s = c.receiveDataFromServer();
+            System.out.println("debug :" + s);
+            Toast.makeText(getApplicationContext(), "Received : " + s, Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         setContentView(R.layout.fragment_first);
         spinner = (Spinner) findViewById(R.id.spinner);
