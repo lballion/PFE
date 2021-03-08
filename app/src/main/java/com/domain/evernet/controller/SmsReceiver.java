@@ -1,5 +1,5 @@
 package com.domain.evernet.controller;
-
+/*
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -34,4 +34,4 @@ public class SmsReceiver extends BroadcastReceiver {
     public String getSms() {
         return new String(sms);
     }
-}
+}*/

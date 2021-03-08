@@ -53,7 +53,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
 
     private TextView displayPseudo; //TextView to display the user's pseudo
 
-    private String dest;
+    private String dest ="0758107468";
 
     private PhoneBook phoneBook;
     private ReadWriteFile readWriteFile = new ReadWriteFile();
@@ -176,7 +176,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
             SmsManager smsMgr = SmsManager.getDefault();
             if (messageToSend != null)
                 //!!!!!! Add your phone number here !!!!!!
-                smsMgr.sendTextMessage("", null, messageToSend, sentPI, null);
+                smsMgr.sendTextMessage(dest, "0758107468", messageToSend, sentPI, null);
         } catch (Exception e) {
             Toast.makeText(getBaseContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
