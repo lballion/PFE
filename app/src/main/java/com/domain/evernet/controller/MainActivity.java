@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -48,6 +49,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
         setContentView(R.layout.activity_main);
 
         phone = (TextView) findViewById(R.id.phone);
@@ -80,18 +87,9 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                /*
-                try {
-                    sc.closeSocket();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                 */
-
                 startActivity(dashboardActivityIntent);
                 setDefaults(PREF_PSEUDO, pseudo.getText().toString(), getApplicationContext());
                 finish();
-
             }
         });
 
