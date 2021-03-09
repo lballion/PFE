@@ -3,7 +3,6 @@ package com.domain.evernet.controller;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,9 +17,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.domain.evernet.R;
-import com.domain.evernet.model.ServerCommunication;
+
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView pseudo;
     private TextView password;
     private Button loginButton;
-    private ServerCommunication sc;
+    private Client client;
 
     public static final String PREF_PSEUDO = "PREF_PSEUDO";
 
@@ -72,11 +70,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent dashboardActivityIntent = new Intent(MainActivity.this, DashboardActivity.class);
 
-                sc = new ServerCommunication("109.215.55.162", 50000);
+                //client = new Client("109.215.55.162", 50000); on instancie le client ici
                 // sc.openSocket();
 
                 try {
-                    HashMap<String, String> responseServer = sc.signIn("kara", "1234", "0602533556", "gag464gaegag4a4");
+                    HashMap<String, String> responseServer = client.signIn("kara", "1234", "0602533556", "gag464gaegag4a4");
 
                     ReadWriteFile readWriteFile = new ReadWriteFile();
                     readWriteFile.writeToFile(responseServer.get("certificat_client"), getApplicationContext(), "certificat_client.pem", MODE_PRIVATE);
