@@ -178,7 +178,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
             SmsManager smsMgr = SmsManager.getDefault();
             if (messageToSend != null)
                 //!!!!!! Add your phone number here !!!!!!
-                smsMgr.sendTextMessage("0758107468", "", messageToSend, sentPI, null);
+                smsMgr.sendTextMessage("0761375067", "", messageToSend, sentPI, null);
         } catch (Exception e) {
             Toast.makeText(getBaseContext(), e.toString(), Toast.LENGTH_LONG).show();
         }

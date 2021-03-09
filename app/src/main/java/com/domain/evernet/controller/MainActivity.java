@@ -73,6 +73,10 @@ public class MainActivity extends AppCompatActivity {
                 //client = new Client("109.215.55.162", 50000); on instancie le client ici
                 // sc.openSocket();
 
+                // Et la pour enregistrer les certificats
+
+                /*
+
                 try {
                     HashMap<String, String> responseServer = client.signIn("kara", "1234", "0602533556", "gag464gaegag4a4");
 
@@ -84,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                
+                 */
 
                 startActivity(dashboardActivityIntent);
                 setDefaults(PREF_PSEUDO, pseudo.getText().toString(), getApplicationContext());
