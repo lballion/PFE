@@ -36,7 +36,6 @@ import static com.domain.evernet.controller.MainActivity.PREF_PSEUDO;
 import static com.domain.evernet.controller.MainActivity.getDefaults;
 
 public class DashboardActivity extends AppCompatActivity  implements ImagePickFragment.ImagePickFragmentListener, ContactManagerFragment.ContactManagerFragmentListener {
-
     ImagePickFragment imageFragment;
     ContactManagerFragment addContactFragment;
 
@@ -63,6 +62,8 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
 
     private final String PHONEBOOK_FILE_NAME = "savedPhoneBook.txt";
 
+    private FileManager fileManager=null;
+    Bitmap finalBitmap = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,9 +126,10 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
             Uri selectedImage = data.getData();
             try {
                 selectedImageUri = data == null ? null : selectedImage;
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
-                imageFragment.setImage(bitmap);
-                Toast.makeText(getBaseContext(), "Image load from the phone !", Toast.LENGTH_LONG).show();
+                fileManager=new FileManager();
+                finalBitmap= fileManager.getResizedBitmap(this.getContentResolver(),selectedImageUri);
+               // imageFragment.setImage(finalBitmap);
+                Toast.makeText(getBaseContext(), " "+fileManager.getSizeOfBytesArray(), Toast.LENGTH_LONG).show();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -155,7 +157,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
                     int resultCode = getResultCode();
                     switch (resultCode) {
                         case Activity.RESULT_OK:
-                            Toast.makeText(getBaseContext(), "SMS sent", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getBaseContext(), "SMS sent", Toast.LENGTH_LONG).show();
                             break;
                         case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
                             Toast.makeText(getBaseContext(), "Generic failure", Toast.LENGTH_LONG).show();
@@ -176,7 +178,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
             SmsManager smsMgr = SmsManager.getDefault();
             if (messageToSend != null)
                 //!!!!!! Add your phone number here !!!!!!
-                smsMgr.sendTextMessage(dest, "0758107468", messageToSend, sentPI, null);
+                smsMgr.sendTextMessage("0758107468", "", messageToSend, sentPI, null);
         } catch (Exception e) {
             Toast.makeText(getBaseContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
@@ -202,7 +204,8 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
     //Listener on the sendButton of the ImagePickFragment
     @Override
     public void onClickSent() {
-        sendMessage(findViewById(R.id.dashboard_root));
+
+        sendAllFragments(findViewById(R.id.dashboard_root));
     }
 
     @Override
@@ -274,6 +277,18 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
         return savedPhoneBook;
     }
 
+    public void sendAllFragments(View view){
+        fileManager.setMaxOfCharsToSendBySms(70);
+        int ttl=3;
+        while (!fileManager.allFragmentsHaveBeenRecovered()){
+            String fragment=fileManager.getnextFragment();
+            int position=fileManager.getposOfThisFragment();
+            int nb_packets=fileManager.getNbPackets();
+            Packet p=new Packet("0758107468","0758107468",position,nb_packets,3,fileManager.getNameOfPicture(),fragment);
+            messageToSend=p.getPacket();
+            sendMessage(view);
+        }
+    }
 }
 
 

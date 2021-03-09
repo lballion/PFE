@@ -23,12 +23,13 @@ public class Packet {
         imageFragment = imgFrag;
     }
 
-    public String Packet() {
+    public  Packet(){}
+    public String getPacket() {
         String packet = ""
                 +  stuffString(source,'*',9)
                 +  stuffString(destination, '*', 9)
                 +  stuffString(""+position, '0',4)
-                + nbPackets
+                + stuffString(""+nbPackets, '0', 4)
                 + timeStamp
                 + ttl
                 + imageFragment
@@ -58,20 +59,43 @@ public class Packet {
     public String getDestination() { return destination; }
 
     public int getPosition() {
-        return new Integer(position);
+        return position;
     }
 
     public int getNbPackets() {
-        return new Integer(nbPackets);
+        return nbPackets;
     }
 
     public String getImageFragment() { return  imageFragment; }
 
-    public String getTimeStamp() {
-        return new String(timeStamp);
-    }
+    public String getTimeStamp() { return timeStamp; }
 
     public int getTtl() {
         return new Integer(ttl);
+    }
+
+    public String extractSrc(String stringPack){return stringPack.substring(0,10);}
+
+    public String extractDst(String stringPack){return stringPack.substring(10,20);}
+
+    public String extractPosition(String stringPack){return stringPack.substring(20,24);}
+
+    public String extractNBpackets(String stringPack){return stringPack.substring(24,28);}
+
+    public String extractNameOfIm(String stringPack){return stringPack.substring(28,34);}
+
+    public String extractTtl(String stringPack){return stringPack.substring(34,35);}
+
+    public String extractFragment(String stringPack){return stringPack.substring(35,stringPack.length());}
+
+    public void setPacket(String stringPack){
+        this.source=this.extractSrc(stringPack);
+        this.destination=this.extractDst(stringPack);
+        this.position=Integer.parseInt(this.extractPosition(stringPack));
+        this.nbPackets=Integer.parseInt(this.extractNBpackets(stringPack));
+        this.ttl=Integer.parseInt(this.extractTtl(stringPack));
+        this.timeStamp= this.extractNameOfIm(stringPack);
+        this.imageFragment=this.extractFragment(stringPack);
+
     }
 }

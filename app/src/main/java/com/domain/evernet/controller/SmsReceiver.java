@@ -1,19 +1,16 @@
 package com.domain.evernet.controller;
-/*
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
-
+import android.widget.Toast;
 public class SmsReceiver extends BroadcastReceiver {
-
     private String sms;
-
     @Override
     public void onReceive(Context context, Intent intent) {
         Bundle bundle = intent.getExtras();
-
         if (bundle != null) {
             Object[] pduArray = (Object[]) bundle.get("pdus");
             if (pduArray.length == 0) {
@@ -28,10 +25,14 @@ public class SmsReceiver extends BroadcastReceiver {
             }
             String sender = messages[0].getOriginatingAddress();
             sms = sb.toString();
-        }
-    }
+            ImageReceivedView  inst = ImageReceivedView.instance();
+            inst.updateList(context,sms);
 
+        }
+
+    }
     public String getSms() {
         return new String(sms);
     }
-}*/
+
+}
