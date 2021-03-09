@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -17,9 +18,9 @@ public class Client {
     private Socket serverSocket;
     private InetAddress serverAddress;
     private int port;
-    DataInputStream in;
     DataOutputStream out;
-
+    InputStream input;
+    InputStreamReader reader;
 
     public Client(InetAddress serverAddress, int port) {
         this.serverAddress = serverAddress;
@@ -40,7 +41,7 @@ public class Client {
     public void closeSocket() throws IOException {
         out.flush();
         out.close();
-        in.close();
+        input.close();
         serverSocket.close();
     }
 
@@ -52,8 +53,16 @@ public class Client {
     public String receiveDataFromServer() throws IOException {
         String s = null;
         try {
-            in = new DataInputStream(serverSocket.getInputStream());
-            s = in.readUTF();
+            int character;
+            input = serverSocket.getInputStream();
+            reader = new InputStreamReader(input);
+            StringBuilder data = new StringBuilder();
+
+            while ((character = reader.read()) != -1) {
+                data.append((char) character);
+                if (data.toString().contains("_|_END_COMMUNICATION")) break;
+            }
+            s = data.toString();
         } catch (IOException e) {
             e.printStackTrace();
         }

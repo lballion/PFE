@@ -155,12 +155,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             s = c.receiveDataFromServer();
             Toast.makeText(getApplicationContext(), "Received : " + s, Toast.LENGTH_SHORT).show();
             System.out.println("debug :" + s);
-            //c.sendDataToServer("signIn Inop toto 0000000000 martin_|_END_COMMUNICATION");
-            c.sendDataToServer("Ok recu_|_END_COMMUNICATION");
+            //c.sendDataToServer("_|_BEGIN_COMMUNICATION_|_getNb_|_inop_|_END_COMMUNICATION");
+
+            c.sendDataToServer("_|_BEGIN_COMMUNICATION_|_signIn_|_fuieguiv_|_feoiyugfdh_|_1548524_|_martin_|_END_COMMUNICATION");
+            //c.sendDataToServer("_|_BEGIN_COMMUNICATION_|_signIn_|_Inop_|_toto_|_00_|_martin_|_END_COMMUNICATION");
+            //c.sendDataToServer("_|_BEGIN_COMMUNICATION_|_Ok recu_|_END_COMMUNICATION");
             s = null;
             s = c.receiveDataFromServer();
             System.out.println("debug :" + s);
             Toast.makeText(getApplicationContext(), "Received : " + s, Toast.LENGTH_SHORT).show();
+            c.closeSocket();
         } catch (IOException e) {
             e.printStackTrace();
         }
