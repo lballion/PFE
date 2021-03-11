@@ -278,7 +278,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
     }
 
     public void sendAllFragments(View view){
-        fileManager.setMaxOfCharsToSendBySms(70);
+        fileManager.setMaxOfCharsToSendBySms(100);
         int ttl=3;
         while (!fileManager.allFragmentsHaveBeenRecovered()){
             String fragment=fileManager.getnextFragment();
