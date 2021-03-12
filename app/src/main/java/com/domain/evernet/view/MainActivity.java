@@ -1,4 +1,4 @@
-package com.domain.evernet.controller;
+package com.domain.evernet.view;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,9 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.domain.evernet.R;
-
-import java.io.IOException;
-import java.util.HashMap;
+import com.domain.evernet.controller.Client;
 
 public class MainActivity extends AppCompatActivity {
 

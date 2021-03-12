@@ -1,4 +1,4 @@
-package com.domain.evernet.controller;
+package com.domain.evernet.view;
 
 import android.app.Fragment;
 import android.content.Context;

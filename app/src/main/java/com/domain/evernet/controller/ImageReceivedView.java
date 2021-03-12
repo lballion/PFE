@@ -112,7 +112,7 @@ public class ImageReceivedView extends Activity implements OnItemClickListener {
            file.insertPacket(packet);
 
         }
-        //Toast.makeText(context,"handlerSize :"+file.getSize(), Toast.LENGTH_LONG).show();
+        Toast.makeText(context,"handlerSize :"+file.getSize(), Toast.LENGTH_LONG).show();
         this.imageView(context, file, key);
     }
 

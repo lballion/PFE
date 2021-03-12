@@ -1,4 +1,4 @@
-package com.domain.evernet.controller;
+package com.domain.evernet.view;
 
 import android.Manifest;
 import android.app.Activity;
@@ -13,7 +13,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
@@ -26,14 +25,18 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.domain.evernet.R;
+import com.domain.evernet.controller.ExitDialog;
+import com.domain.evernet.controller.FileManager;
+import com.domain.evernet.controller.Packet;
+import com.domain.evernet.controller.ReadWriteFile;
 import com.domain.evernet.model.Contact;
 import com.domain.evernet.model.PhoneBook;
 
 import java.io.File;
 import java.io.IOException;
 
-import static com.domain.evernet.controller.MainActivity.PREF_PSEUDO;
-import static com.domain.evernet.controller.MainActivity.getDefaults;
+import static com.domain.evernet.view.MainActivity.PREF_PSEUDO;
+import static com.domain.evernet.view.MainActivity.getDefaults;
 
 public class DashboardActivity extends AppCompatActivity  implements ImagePickFragment.ImagePickFragmentListener, ContactManagerFragment.ContactManagerFragmentListener {
     ImagePickFragment imageFragment;
@@ -178,7 +181,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
             SmsManager smsMgr = SmsManager.getDefault();
             if (messageToSend != null)
                 //!!!!!! Add your phone number here !!!!!!
-                smsMgr.sendTextMessage("0761375067", "", messageToSend, sentPI, null);
+                smsMgr.sendTextMessage("numéro de dest", "", messageToSend, sentPI, null);
         } catch (Exception e) {
             Toast.makeText(getBaseContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
@@ -278,13 +281,13 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
     }
 
     public void sendAllFragments(View view){
-        fileManager.setMaxOfCharsToSendBySms(70);
+        fileManager.setMaxOfCharsToSendBySms(100);
         int ttl=3;
         while (!fileManager.allFragmentsHaveBeenRecovered()){
             String fragment=fileManager.getnextFragment();
             int position=fileManager.getposOfThisFragment();
             int nb_packets=fileManager.getNbPackets();
-            Packet p=new Packet("0758107468","0758107468",position,nb_packets,3,fileManager.getNameOfPicture(),fragment);
+            Packet p=new Packet("0761375067","0763583423",position,nb_packets,3,fileManager.getNameOfPicture(),fragment);
             messageToSend=p.getPacket();
             sendMessage(view);
         }
