@@ -17,6 +17,7 @@ import java.util.HashMap;
 import androidx.annotation.RequiresApi;
 
 public class Client {
+
     private Socket serverSocket;
     private InetAddress serverAddress;
     private int port;
@@ -24,8 +25,8 @@ public class Client {
     InputStream input;
     InputStreamReader reader;
 
-
     public Client(InetAddress serverAddress, int port) {
+
         this.serverAddress = serverAddress;
         this.port = port;
     }
@@ -33,82 +34,136 @@ public class Client {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public HashMap<String, String> signIn(String alias, String password, String phoneNum, String invitationKey) throws IOException {
 
-        // Préparaion des données pour le serveur
-        String dataToSend =  String.join("_|_", alias, password, phoneNum, invitationKey);
-
-
-        //this.sendDataToServer(dataToSend);
-        // on appelle la fonction receive() pour le renvoyer
-
-        String response = "certificat_client_|_private_key_client_|_certificat_serveur_|_END_COMMUNICATION";
-        String[] responses = response.split("_\\|_");
+        // Prepare data to send
+        String dataToSend = String.join("_|_", alias, password, phoneNum, invitationKey);
+        dataToSend = addMarkers(dataToSend, "signIn");
         HashMap<String, String> map = new HashMap<>();
-        map.put("certificat_client", responses[0]);
-        map.put("private_key_client", responses[1]);
-        map.put("certificat_serveur", responses[2]);
 
+        sendDataToServer(dataToSend);
+        String response = receiveDataFromServer();
+        response = truncateMarkers(response);
+        String[] responses = response.split("_\\|_");
+
+        if (responses[0].contains("Invalid callBack") || responses[0].contains("ERROR")) {
+            return map;
+        } else {
+            map.put("certificat_client", responses[0]);
+            map.put("private_key_client", responses[1]);
+            map.put("certificat_serveur", responses[2]);
+        }
+
+        System.out.println("debug : " + map.toString());
         return map;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public HashMap<String, String> logIn(String alias, String password) {
+    public HashMap<String, String> logIn(String alias, String password) throws IOException {
 
-        String dataToSend =  String.join("_|_", alias, password);
-
-        String response = "Authentified_|_END_COMMUNICATION";
+        String dataToSend = String.join("_|_", alias, password);
+        dataToSend = addMarkers(dataToSend, "logIn");
+        sendDataToServer(dataToSend);
+        String response = receiveDataFromServer();
+        response = truncateMarkers(response);
         String[] responses = response.split("_\\|_");
 
         HashMap<String, String> map = new HashMap<>();
-        map.put("Authentified", responses[0]);
+        if (responses[0].contains("Invalid callBack") || responses[0].contains("ERROR")) {
+            map.put("Authentified", responses[0]);
+        }
 
+        System.out.println("debug login : " + dataToSend);
+        System.out.println("debug login : " + response);
         return map;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public HashMap<String, String> getNb(String alias) {
+    public HashMap<String, String> getPhoneNb(String alias) throws IOException {
 
-        String dataToSend =  String.join("_|_", alias);
-
-        String response = "0761375067_|_certificat_|_END_COMMUNICATION";
+        String dataToSend = String.join("_|_", alias);
+        dataToSend = addMarkers(dataToSend, "getPhoneNum");
+        sendDataToServer(dataToSend);
+        String response = receiveDataFromServer();
+        response = truncateMarkers(response);
         String[] responses = response.split("_\\|_");
 
-
         HashMap<String, String> map = new HashMap<>();
-        map.put("number", responses[0]);
-        map.put("certificat", responses[1]);
 
+        if (responses[0].contains("Invalid callBack") || responses[0].contains("ERROR")) {
+            return map;
+        } else {
+            map.put("number", responses[0]);
+            map.put("certificat", responses[1]);
+        }
+        System.out.println("debug : " + response);
         return map;
     }
 
-    public ArrayList<ArrayList<String>> getPhoneNumList(int n) {
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public ArrayList<ArrayList<String>> getPhoneNumList(String sizeList) throws IOException {
 
-        int dataToSend = n;
-
-
-        String response = "*0761375067*_|_*certif1*_|_*0761375067*_|_*certif2*_|_END_COMMUNICATION";
+        String dataToSend = String.join("_|_", sizeList);
+        dataToSend = addMarkers(dataToSend, "getPhoneNumList");
+        sendDataToServer(dataToSend);
+        String response = receiveDataFromServer();
+        response = truncateMarkers(response);
         String[] responses = response.split("_\\|_");
         ArrayList<ArrayList<String>> array = new ArrayList<>();
 
-        for(int i=0; i<responses.length; i++) {
-            if (i%2 == 0) {
-                ArrayList<String> ele = new ArrayList<>();
-                ele.add(responses[i]);
-                ele.add(responses[i+1]);
-                array.add(ele);
+        if (responses[0].contains("Invalid callBack") || responses[0].contains("ERROR")) {
+            return array;
+        } else {
+            for (int i = 0; i < responses.length; i++) {
+                if (i % 2 == 0) {
+                    ArrayList<String> ele = new ArrayList<>();
+                    ele.add(responses[i]);
+                    ele.add(responses[i + 1]);
+                    array.add(ele);
+                }
             }
         }
+        System.out.println("debug :  " + array);
         return array;
     }
 
-    public String getInvitationKey() {
+    public String getInvitationKey() throws IOException {
 
-        String response = "*invitation_key*_|_END_COMMUNICATION";
+        String dataToSend = "";
+        dataToSend = addMarkers(dataToSend, "getInvitationKey");
+        sendDataToServer(dataToSend);
+        String response = receiveDataFromServer();
+        response = truncateMarkers(response);
         String[] responses = response.split("_\\|_");
 
+        if (responses[0].contains("Invalid callBack") || responses[0].contains("ERROR")) {
+            responses[0] = "";
+            return responses[0];
+        }
         return responses[0];
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public ArrayList<String> getAllAlias(String adminPw) throws IOException {
+
+        String dataToSend = String.join("_|_", adminPw);
+        dataToSend = addMarkers(dataToSend, "getInvitationKey");
+        sendDataToServer(dataToSend);
+        String response = receiveDataFromServer();
+
+        String[] responses = response.split("_\\|_");
+        ArrayList<String> list = new ArrayList<>();
+        System.out.println("debug : " + response);
+        if (responses[0].contains("Invalid callBack") || responses[0].contains("ERROR")) {
+            return list;
+        } else {
+            for (int i = 0; i < responses.length; i++) {
+                list.add(i,responses[i]);
+            }
+        }
+        return list;
+    }
+
     public void openSocket() {
+
         try {
             serverSocket = new Socket(serverAddress, port);
 
@@ -120,6 +175,7 @@ public class Client {
     }
 
     public void closeSocket() throws IOException {
+
         out.flush();
         out.close();
         input.close();
@@ -127,11 +183,13 @@ public class Client {
     }
 
     public void sendDataToServer(String dataToSend) throws IOException {
+
         out = new DataOutputStream(serverSocket.getOutputStream());
         out.writeUTF(dataToSend);
     }
 
     public String receiveDataFromServer() throws IOException {
+
         String s = null;
         try {
             int character;
@@ -148,5 +206,21 @@ public class Client {
             e.printStackTrace();
         }
         return s;
+    }
+
+    // Remove markers from server's response
+    public String truncateMarkers(String s) {
+
+        String truncatedStr = s.replace("_|_BEGIN_COMMUNICATION_|_", "");
+        truncatedStr = truncatedStr.replace("_|_END_COMMUNICATION", "");
+        return truncatedStr;
+    }
+
+    // Adding required markers from the server to understand the future request
+    public String addMarkers(String s, String callback) {
+
+        String markerBegin = "_|_BEGIN_COMMUNICATION_|_" + callback + "_|_";
+        String markerEnd = "_|_END_COMMUNICATION";
+        return markerBegin.concat(s.concat(markerEnd));
     }
 }
