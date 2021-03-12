@@ -153,23 +153,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         c.openSocket();
         String s = null;
 
-        /*
-        try {
-            s = c.receiveDataFromServer();
-            Toast.makeText(getApplicationContext(), "Received : " + s, Toast.LENGTH_SHORT).show();
-            System.out.println("debug :" + s);
-            //c.sendDataToServer("_|_BEGIN_COMMUNICATION_|_getNb_|_inop_|_END_COMMUNICATION");
-            c.sendDataToServer("_|_BEGIN_COMMUNICATION_|_signIn_|_fuieguiv_|_feoiyugfdh_|_1548524_|_martin_|_END_COMMUNICATION");
-            s = null;
-            s = c.receiveDataFromServer();
-            System.out.println("debug :" + s);
-            Toast.makeText(getApplicationContext(), "Received : " + s, Toast.LENGTH_SHORT).show();
-            c.closeSocket();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
-
         try {
             s = c.receiveDataFromServer();
             System.out.println("debug :" + s);
@@ -180,13 +163,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             //c.getPhoneNumList("2");
             //c.getInvitationKey();
             c.getAllAlias("toto");
-            //c.sendDataToServer("_|_BEGIN_COMMUNICATION_|_signIn_|_fuieguiv_|_feoiyugfdh_|_1548524_|_martin_|_END_COMMUNICATION");
             c.closeSocket();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //String tmp = "_|_BEGIN_COMMUNICATION_|_0761375067_|_certificat_|_END_COMMUNICATION";
-        //System.out.println("debug : " + c.truncateMarkers(tmp));
 
         setContentView(R.layout.fragment_first);
         spinner = (Spinner) findViewById(R.id.spinner);
