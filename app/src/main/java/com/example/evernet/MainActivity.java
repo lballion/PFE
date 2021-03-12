@@ -12,11 +12,13 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -131,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         //Toast.makeText(getBaseContext(), "rien", Toast.LENGTH_LONG).show();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -148,18 +151,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         Client c = new Client(i, 50000);
         c.openSocket();
-
         String s = null;
 
+        /*
         try {
             s = c.receiveDataFromServer();
             Toast.makeText(getApplicationContext(), "Received : " + s, Toast.LENGTH_SHORT).show();
             System.out.println("debug :" + s);
             //c.sendDataToServer("_|_BEGIN_COMMUNICATION_|_getNb_|_inop_|_END_COMMUNICATION");
-
             c.sendDataToServer("_|_BEGIN_COMMUNICATION_|_signIn_|_fuieguiv_|_feoiyugfdh_|_1548524_|_martin_|_END_COMMUNICATION");
-            //c.sendDataToServer("_|_BEGIN_COMMUNICATION_|_signIn_|_Inop_|_toto_|_00_|_martin_|_END_COMMUNICATION");
-            //c.sendDataToServer("_|_BEGIN_COMMUNICATION_|_Ok recu_|_END_COMMUNICATION");
             s = null;
             s = c.receiveDataFromServer();
             System.out.println("debug :" + s);
@@ -167,7 +167,26 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             c.closeSocket();
         } catch (IOException e) {
             e.printStackTrace();
+        }*/
+
+
+        try {
+            s = c.receiveDataFromServer();
+            System.out.println("debug :" + s);
+            //c.signIn("oefk", "zoiefj", "984516", "martin");
+            //c.logIn("test", "test");
+            //c.getPhoneNb("test");
+            //c.getPhoneNb("aaaa");
+            //c.getPhoneNumList("2");
+            //c.getInvitationKey();
+            c.getAllAlias("toto");
+            //c.sendDataToServer("_|_BEGIN_COMMUNICATION_|_signIn_|_fuieguiv_|_feoiyugfdh_|_1548524_|_martin_|_END_COMMUNICATION");
+            c.closeSocket();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        //String tmp = "_|_BEGIN_COMMUNICATION_|_0761375067_|_certificat_|_END_COMMUNICATION";
+        //System.out.println("debug : " + c.truncateMarkers(tmp));
 
         setContentView(R.layout.fragment_first);
         spinner = (Spinner) findViewById(R.id.spinner);
