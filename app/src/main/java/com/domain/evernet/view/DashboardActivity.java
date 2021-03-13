@@ -214,7 +214,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
     @Override
     public void onSpinnerSelect(String destination) {
         dest = destination;
-        Toast.makeText(getBaseContext(), "Contact selected :," + dest, Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), "Contact selected : " + dest, Toast.LENGTH_LONG).show();
     }
 
     private void addContactButtonMenuClick(){

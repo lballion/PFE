@@ -41,6 +41,7 @@ public class Client {
 
         sendDataToServer(dataToSend);
         String response = receiveDataFromServer();
+        response = response.replace("*", "");
         response = truncateMarkers(response);
         String[] responses = response.split("_\\|_");
 
@@ -63,10 +64,12 @@ public class Client {
         dataToSend = addMarkers(dataToSend, "logIn");
         sendDataToServer(dataToSend);
         String response = receiveDataFromServer();
+        response = response.replace("*", "");
         response = truncateMarkers(response);
         String[] responses = response.split("_\\|_");
 
         HashMap<String, String> map = new HashMap<>();
+
         if (responses[0].contains("Invalid callBack") || responses[0].contains("ERROR")) {
             map.put("Authentified", responses[0]);
         }
@@ -83,6 +86,7 @@ public class Client {
         dataToSend = addMarkers(dataToSend, "getPhoneNum");
         sendDataToServer(dataToSend);
         String response = receiveDataFromServer();
+        response = response.replace("*", "");
         response = truncateMarkers(response);
         String[] responses = response.split("_\\|_");
 
@@ -94,7 +98,7 @@ public class Client {
             map.put("number", responses[0]);
             map.put("certificat", responses[1]);
         }
-        System.out.println("debug : " + response);
+
         return map;
     }
 
@@ -105,6 +109,7 @@ public class Client {
         dataToSend = addMarkers(dataToSend, "getPhoneNumList");
         sendDataToServer(dataToSend);
         String response = receiveDataFromServer();
+        response = response.replace("*", "");
         response = truncateMarkers(response);
         String[] responses = response.split("_\\|_");
         ArrayList<ArrayList<String>> array = new ArrayList<>();
@@ -115,13 +120,11 @@ public class Client {
             for (int i = 0; i < responses.length; i++) {
                 if (i % 2 == 0) {
                     ArrayList<String> ele = new ArrayList<>();
-                    ele.add(responses[i]);
-                    ele.add(responses[i + 1]);
                     array.add(ele);
                 }
             }
         }
-        System.out.println("debug :  " + array);
+
         return array;
     }
 
@@ -131,6 +134,7 @@ public class Client {
         dataToSend = addMarkers(dataToSend, "getInvitationKey");
         sendDataToServer(dataToSend);
         String response = receiveDataFromServer();
+        response = response.replace("*", "");
         response = truncateMarkers(response);
         String[] responses = response.split("_\\|_");
 
@@ -138,6 +142,7 @@ public class Client {
             responses[0] = "";
             return responses[0];
         }
+
         return responses[0];
     }
 
@@ -148,10 +153,10 @@ public class Client {
         dataToSend = addMarkers(dataToSend, "getInvitationKey");
         sendDataToServer(dataToSend);
         String response = receiveDataFromServer();
+        response = response.replace("*", "");
 
         String[] responses = response.split("_\\|_");
         ArrayList<String> list = new ArrayList<>();
-        System.out.println("debug : " + response);
         if (responses[0].contains("Invalid callBack") || responses[0].contains("ERROR")) {
             return list;
         } else {
@@ -159,6 +164,7 @@ public class Client {
                 list.add(i,responses[i]);
             }
         }
+
         return list;
     }
 
@@ -205,6 +211,7 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return s;
     }
 
@@ -213,6 +220,7 @@ public class Client {
 
         String truncatedStr = s.replace("_|_BEGIN_COMMUNICATION_|_", "");
         truncatedStr = truncatedStr.replace("_|_END_COMMUNICATION", "");
+
         return truncatedStr;
     }
 
