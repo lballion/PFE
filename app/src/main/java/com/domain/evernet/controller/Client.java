@@ -120,6 +120,8 @@ public class Client {
             for (int i = 0; i < responses.length; i++) {
                 if (i % 2 == 0) {
                     ArrayList<String> ele = new ArrayList<>();
+                    ele.add(responses[i]);
+                    ele.add(responses[i+1]);
                     array.add(ele);
                 }
             }
