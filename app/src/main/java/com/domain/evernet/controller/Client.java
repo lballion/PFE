@@ -103,7 +103,7 @@ public class Client {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public ArrayList<ArrayList<String>> getPhoneNumList(String sizeList) throws IOException {
+    public HashMap<String,String> getPhoneNumList(String sizeList) throws IOException {
 
         String dataToSend = String.join("_|_", sizeList);
         dataToSend = addMarkers(dataToSend, "getPhoneNumList");
@@ -112,22 +112,18 @@ public class Client {
         response = response.replace("*", "");
         response = truncateMarkers(response);
         String[] responses = response.split("_\\|_");
-        ArrayList<ArrayList<String>> array = new ArrayList<>();
-
+        HashMap<String,String> numbersList=new HashMap<>();
         if (responses[0].contains("Invalid callBack") || responses[0].contains("ERROR")) {
-            return array;
+            return numbersList;
         } else {
             for (int i = 0; i < responses.length; i++) {
                 if (i % 2 == 0) {
-                    ArrayList<String> ele = new ArrayList<>();
-                    ele.add(responses[i]);
-                    ele.add(responses[i+1]);
-                    array.add(ele);
+                    numbersList.put(responses[i],responses[i+1]);
                 }
             }
         }
 
-        return array;
+        return numbersList;
     }
 
     public String getInvitationKey() throws IOException {
