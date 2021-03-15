@@ -12,14 +12,15 @@ import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ReceivedFile {
     private String name;
-    private ArrayList<Packet>packetLists=new ArrayList<>();
+    private HashMap<Integer, String> packetLists=new HashMap<>();
     public ReceivedFile(String name){
         this.name=name;
     }
-
+    private int nb_packets=0;
     public String getName() {
         return name;
     }
@@ -28,46 +29,18 @@ public class ReceivedFile {
         this.name = name;
     }
 
-    public ArrayList<Packet> getPacketLists() {
-        return packetLists;
-    }
+    public void setNbPackets(int nb_packets){ this.nb_packets=nb_packets; }
 
-    public void setPacketLists(ArrayList<Packet> packetLists) {
-        packetLists = packetLists;
-    }
 
-    public void insertPacket(Packet packet){
-        if(this.packetInTheList(packet)==false){
-            int pos=packet.getPosition();
-            if(packetLists.size()==0){
-                packetLists.add(packet);
-            }else{
-                int i=0;
-                while (i<packetLists.size()&& packetLists.get(i).getPosition()<pos  ){
-                    i+=1;
-
-                }
-                packetLists.add(i, packet);
-            }
+    public void insertPacket(int key,String fragment){
+        if(packetLists.containsKey(key)==false){
+          packetLists.put(key,fragment);
         }
     }
-    public boolean packetInTheList(Packet packet){
-        int position=packet.getPosition();
-        boolean response=false;
-        for (Packet p:packetLists
-        ) {
-            if (p.getPosition()==position){
-                response= true;
-            }
-
-        }
-        return response;
-    }
-
     public boolean allPacketReceived(){
         if(packetLists.size()==0){ return false; }
 
-        return packetLists.get(0).getNbPackets()==packetLists.size();
+        return this.nb_packets==packetLists.size();
     }
     public byte [] stringToArrayBites(){
         String imageString=toImageString();
@@ -80,9 +53,9 @@ public class ReceivedFile {
     }
     public String toImageString(){
         String fragment="";
-        for (Packet p:packetLists
-        ) {
-            fragment+=p.getImageFragment();
+        int size=packetLists.size();
+        for(int i=0;i<size;i++){
+            fragment+=packetLists.get(i);
         }
         return fragment;
     }

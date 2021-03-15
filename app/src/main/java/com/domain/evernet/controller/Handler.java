@@ -11,9 +11,6 @@ public class Handler {
     public boolean contains(String name){ return handler.containsKey(name);}
 
     public void insertFile(String key,ReceivedFile receivedFile){ handler.put(key,receivedFile); }
-
-    public void insertPacket(ReceivedFile receivedFile,Packet packet){ receivedFile.insertPacket(packet); }
-
     public ReceivedFile getFileByKey(String key){ return handler.get(key);}
 
 }
