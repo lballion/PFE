@@ -210,7 +210,6 @@ public class Client {
         return s;
     }
 
-
     // Remove markers from server's response
     public String truncateMarkers(String s) {
 
