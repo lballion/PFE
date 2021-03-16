@@ -1,4 +1,9 @@
 package com.domain.evernet.controller;
 
-public class NetworkEncoderDecoder {
+import com.domain.evernet.model.EncodedPayload;
+
+public interface NetworkEncoderDecoder {
+
+    public byte[][] decodePacket(EncodedPayload firstPacket, EncodedPayload secondPacket);
+    public EncodedPayload encodeTwoPacket(byte[] fisrtPayload, byte[] secondPayload);
 }
