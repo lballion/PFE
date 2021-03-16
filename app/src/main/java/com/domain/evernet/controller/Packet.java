@@ -11,6 +11,7 @@ public class Packet {
     private String imageFragment;
 
     public Packet(String src, String dst, int pos, int nbPackets, int ttl, String timeStmp, String imgFrag) {
+
         if( src.equals("") || dst.equals("") || pos < 0 || nbPackets < 0 || imgFrag.equals("") || ttl < 0){
             throw new IllegalArgumentException("Args must be positive integers.");
         }
@@ -23,8 +24,10 @@ public class Packet {
         imageFragment = imgFrag;
     }
 
-    public  Packet(){}
+    public  Packet() { }
+
     public String getPacket() {
+
         String packet = ""
                 +  stuffString(source,'*',9)
                 +  stuffString(destination, '*', 9)
@@ -36,18 +39,22 @@ public class Packet {
                 ;
         return packet;
     }
-    public String  stuffString(String stringToStuff, char c, int maxSize){
+
+    public String  stuffString(String stringToStuff, char c, int maxSize) {
+
         int size=stringToStuff.length();//put the position on four digits
         for(int i=0;i<maxSize-size;i++){
             stringToStuff=c+stringToStuff;
         }
         return stringToStuff;
     }
+
     public void decreaseTTL() {
         ttl--;
     }
 
     public boolean isSameSrcAndDst(Packet p) {
+
         if(p instanceof Packet){
             return (source.equals(p.getSource())  && destination.equals(p.getDestination()));
         }
@@ -74,21 +81,22 @@ public class Packet {
         return new Integer(ttl);
     }
 
-    public String extractSrc(String stringPack){return stringPack.substring(0,10);}
+    public String extractSrc(String stringPack) { return stringPack.substring(0,10); }
 
-    public String extractDst(String stringPack){return stringPack.substring(10,20);}
+    public String extractDst(String stringPack) { return stringPack.substring(10,20); }
 
-    public String extractPosition(String stringPack){return stringPack.substring(20,24);}
+    public String extractPosition(String stringPack) { return stringPack.substring(20,24); }
 
-    public String extractNBpackets(String stringPack){return stringPack.substring(24,28);}
+    public String extractNBpackets(String stringPack) { return stringPack.substring(24,28); }
 
-    public String extractNameOfIm(String stringPack){return stringPack.substring(28,34);}
+    public String extractNameOfIm(String stringPack) { return stringPack.substring(28,34); }
 
-    public String extractTtl(String stringPack){return stringPack.substring(34,35);}
+    public String extractTtl(String stringPack) { return stringPack.substring(34,35); }
 
-    public String extractFragment(String stringPack){return stringPack.substring(35,stringPack.length());}
+    public String extractFragment(String stringPack) { return stringPack.substring(35,stringPack.length()); }
 
-    public void setPacket(String stringPack){
+    public void setPacket(String stringPack) {
+
         this.source=this.extractSrc(stringPack);
         this.destination=this.extractDst(stringPack);
         this.position=Integer.parseInt(this.extractPosition(stringPack));
@@ -96,6 +104,5 @@ public class Packet {
         this.ttl=Integer.parseInt(this.extractTtl(stringPack));
         this.timeStamp= this.extractNameOfIm(stringPack);
         this.imageFragment=this.extractFragment(stringPack);
-
     }
 }

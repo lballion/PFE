@@ -39,6 +39,7 @@ import static com.domain.evernet.view.MainActivity.PREF_PSEUDO;
 import static com.domain.evernet.view.MainActivity.getDefaults;
 
 public class DashboardActivity extends AppCompatActivity  implements ImagePickFragment.ImagePickFragmentListener, ContactManagerFragment.ContactManagerFragmentListener {
+
     ImagePickFragment imageFragment;
     ContactManagerFragment addContactFragment;
 
@@ -55,7 +56,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
 
     private TextView displayPseudo; //TextView to display the user's pseudo
 
-    private String dest ="0758107468";
+    private String dest = "0758107468";
 
     private PhoneBook phoneBook;
     private ReadWriteFile readWriteFile = new ReadWriteFile();
@@ -65,64 +66,73 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
 
     private final String PHONEBOOK_FILE_NAME = "savedPhoneBook.txt";
 
-    private FileManager fileManager=null;
+    private FileManager fileManager = null;
     Bitmap finalBitmap = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_dashboard);
-
-        //Display user pseudo on the main window
-        pseudo = getDefaults(PREF_PSEUDO, getApplicationContext());
-
-
-        if (pseudo == null) {
-            Intent dashboardActivityIntent = new Intent(DashboardActivity.this, MainActivity.class);
-            startActivity(dashboardActivityIntent);
-            finish();
-        } else {
-            // sinon on dans la DashboardActivity
+        // Check and ask for permissions to the user, will display pop up
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED
+            || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    0);
+            onCreate(savedInstanceState);
         }
+        else {
+            setContentView(R.layout.activity_dashboard);
+            //Display user pseudo on the main window
+            pseudo = getDefaults(PREF_PSEUDO, getApplicationContext());
 
-        pseudo = '@' + pseudo;
-
-
-        displayPseudo = findViewById(R.id.viewPseudo);
-        displayPseudo.setText(pseudo);
-
-        fragmentDisplay = findViewById(R.id.fragmentDisplay);
-
-        imageFragment = new ImagePickFragment();
-        addContactFragment = new ContactManagerFragment();
-
-        fragmentManager = getFragmentManager();
-
-        fragmentManager.beginTransaction()
-                .replace(fragmentDisplay.getId(), imageFragment)
-                .commit();
-
-        imageButton = findViewById(R.id.imageButton);
-        imageButton.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-                sendImgButtonMenuClick();
-           }
-       });
-
-        contactButton = findViewById(R.id.contactButton);
-        contactButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addContactButtonMenuClick();
+            if (pseudo == null) {
+                Intent dashboardActivityIntent = new Intent(DashboardActivity.this, MainActivity.class);
+                startActivity(dashboardActivityIntent);
+                finish();
+            } else {
+                // sinon on dans la DashboardActivity
             }
-        });
 
-        phoneBook = loadPhoneBookFromFile(PHONEBOOK_FILE_NAME);
+            pseudo = '@' + pseudo;
+
+            displayPseudo = findViewById(R.id.viewPseudo);
+            displayPseudo.setText(pseudo);
+
+            fragmentDisplay = findViewById(R.id.fragmentDisplay);
+
+            imageFragment = new ImagePickFragment();
+            addContactFragment = new ContactManagerFragment();
+
+            fragmentManager = getFragmentManager();
+
+            fragmentManager.beginTransaction()
+                    .replace(fragmentDisplay.getId(), imageFragment)
+                    .commit();
+
+            imageButton = findViewById(R.id.imageButton);
+            imageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sendImgButtonMenuClick();
+                }
+            });
+
+            contactButton = findViewById(R.id.contactButton);
+            contactButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addContactButtonMenuClick();
+                }
+            });
+
+            phoneBook = loadPhoneBookFromFile(PHONEBOOK_FILE_NAME);
+        }
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         super.onActivityResult(requestCode, resultCode, data);
         Uri selectedImageUri;
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
@@ -139,9 +149,9 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
         }
     }
 
-
-    //Send an SMS to a phone number, after will be used to send an image to the contect choose in the spinner
+    //Send an SMS to a phone number, after will be used to send an image to the contact chosen in the spinner
     public void sendMessage(View view) {
+
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.SEND_SMS)) {
             } else {
@@ -190,6 +200,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
 
     //Launch the exit windows when the user want to leave the app
     public void launchExitDialog(View view) {
+
         ExitDialog exitDialog = new ExitDialog();
         exitDialog.show(getSupportFragmentManager(), "Exit");
     }
@@ -197,6 +208,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
     //Listener on the loadButton of the ImagePickFragment
     @Override
     public void onClickLoad() {
+
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -213,11 +225,13 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
 
     @Override
     public void onSpinnerSelect(String destination) {
+
         dest = destination;
         Toast.makeText(getBaseContext(), "Contact selected : " + dest, Toast.LENGTH_LONG).show();
     }
 
     private void addContactButtonMenuClick(){
+
         fragmentManager.beginTransaction()
                 .replace(fragmentDisplay.getId(), addContactFragment)
                 .commit();
@@ -227,6 +241,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
     }
 
     private void sendImgButtonMenuClick(){
+
         fragmentManager.beginTransaction()
                 .replace(fragmentDisplay.getId(), imageFragment)
                 .commit();
@@ -235,10 +250,9 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
         imageButton.setBackgroundColor(getResources().getColor(R.color.blue));
     }
 
-
-
     @Override
     public void saveEvent(String name, String id) {
+
         String newContactData = id + "," + name + "\n";
         System.out.println(id + "," + name );
         Contact newContact = new Contact(Integer.parseInt(id), name);
@@ -249,6 +263,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
 
     @Override
     public void rstContact() {
+
         File dir = getFilesDir();
         File file = new File(dir, PHONEBOOK_FILE_NAME);
         boolean delete = file.delete();
@@ -257,6 +272,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
     }
 
     public PhoneBook loadPhoneBookFromFile(String fileName){
+
         PhoneBook savedPhoneBook = new PhoneBook();
         String data;
         data = readWriteFile.readFromFile(getApplicationContext(), fileName);
@@ -267,6 +283,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
         String id;
 
         for(String savedContact : data.split("\n")){
+
             contactEntries = savedContact.split(",");
             if(contactEntries.length <2){
                 continue;
@@ -281,6 +298,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
     }
 
     public void sendAllFragments(View view){
+
         fileManager.setMaxOfCharsToSendBySms(100);
         int ttl=3;
         while (!fileManager.allFragmentsHaveBeenRecovered()){

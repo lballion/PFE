@@ -14,6 +14,7 @@ public class ExitDialog extends AppCompatDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Quit and disconnect");
         builder.setMessage("Do you really want to leave ?");
@@ -31,8 +32,6 @@ public class ExitDialog extends AppCompatDialogFragment {
                     }
                 });
 
-
         return builder.create();
     }
-
 }

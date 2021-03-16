@@ -16,7 +16,6 @@ import java.io.*;
 import java.util.Calendar;
 import java.util.Date;
 
-
 public class FileManager {
 
     ImageView im;
@@ -27,21 +26,21 @@ public class FileManager {
     int newHeight = 200;
     Matrix matrix;
     Bitmap resizedBitmap;
-    float scaleWidth ;
+    float scaleWidth;
     float scaleHeight;
     ByteArrayOutputStream outputStream;
-    private int currentChar=0;
-    private int posOfThisFragment =-1;
+    private int currentChar = 0;
+    private int posOfThisFragment = -1;
     private byte[] imageBytes;
     private String imageString;
-    private int maxCharsToSendBySms=80;
-    private int nbPackets=0;
-    private String imageName=null;
-
+    private int maxCharsToSendBySms = 80;
+    private int nbPackets = 0;
+    private String imageName = null;
 
     public FileManager(){ }
 
     public Bitmap getResizedBitmap( ContentResolver cr, Uri u) throws IOException {
+
         originalImage = MediaStore.Images.Media.getBitmap(cr,u);
 
         width = originalImage.getWidth();
@@ -67,7 +66,9 @@ public class FileManager {
         this.imageName=intToString(heure)+intToString(min)+intToString(sec);
         return resizedBitmap;
     }
-    public String intToString(int value){
+
+    public String intToString(int value) {
+
         String val=""+value;
         int size=val.length();//put the position on four digits
         for(int i=0;i<2-size;i++){
@@ -75,24 +76,24 @@ public class FileManager {
         }
         return val;
     }
-    public int getWidth(){return this.width;}
 
-    public int getHeight(){return this.height;}
+    public int getWidth() { return this.width; }
 
-    public ImageView getImg(){ return this.im; }
+    public int getHeight() { return this.height; }
 
-    public int getSizeOfBytesArray(){ return this.imageBytes.length; }
+    public ImageView getImg() { return this.im; }
 
-    public int getSizeOfImageString(){return this.imageString.length();}
+    public int getSizeOfBytesArray() { return this.imageBytes.length; }
 
+    public int getSizeOfImageString() { return this.imageString.length(); }
 
+    public void setMaxOfCharsToSendBySms(int max_chars) {
 
-    public void setMaxOfCharsToSendBySms(int max_chars){
         this.maxCharsToSendBySms=max_chars;
         int modulo=(getSizeOfImageString()% max_chars)>0?1:0;
         this.nbPackets=(getSizeOfImageString()/max_chars) +modulo;
-
     }
+
     public String getnextFragment( ) {
         String fragment = "";
         for (int i = this.currentChar; i < this.currentChar + this.maxCharsToSendBySms; i++) {
@@ -104,18 +105,20 @@ public class FileManager {
 
         this.currentChar += maxCharsToSendBySms;
         return fragment;
-
     }
-    public int getposOfThisFragment(){
-        this.posOfThisFragment+=1;
+
+    public int getposOfThisFragment() {
+        this.posOfThisFragment += 1 ;
         return this.posOfThisFragment;
     }
+
     public int getNbPackets(){
         return this.nbPackets;
     }
-    public boolean allFragmentsHaveBeenRecovered(){
-        return this.currentChar>=getSizeOfImageString()-1;
-    }
-    public String getNameOfPicture(){ return this.imageName;}
 
+    public boolean allFragmentsHaveBeenRecovered() {
+        return this.currentChar >= getSizeOfImageString() - 1;
+    }
+
+    public String getNameOfPicture() { return this.imageName; }
 }

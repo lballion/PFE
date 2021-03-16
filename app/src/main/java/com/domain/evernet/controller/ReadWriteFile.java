@@ -17,7 +17,6 @@ public class ReadWriteFile {
         String ret = "";
 
         try {
-
             InputStream inputStream = context.openFileInput(fileName);
 
             if ( inputStream != null ) {
@@ -45,6 +44,7 @@ public class ReadWriteFile {
     }
 
     public void writeToFile(String data,Context context, String fileName, int mode) {
+
         try {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(fileName,mode));
             outputStreamWriter.write(data);
