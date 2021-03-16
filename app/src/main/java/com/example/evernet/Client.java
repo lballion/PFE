@@ -20,9 +20,9 @@ public class Client {
     private Socket serverSocket;
     private InetAddress serverAddress;
     private int port;
-    DataOutputStream out;
-    InputStream input;
-    InputStreamReader reader;
+    private DataOutputStream out;
+    private InputStream input;
+    private InputStreamReader reader;
 
 
     public Client(InetAddress serverAddress, int port) {
@@ -210,6 +210,7 @@ public class Client {
         return s;
     }
 
+
     // Remove markers from server's response
     public String truncateMarkers(String s) {
 
@@ -225,4 +226,9 @@ public class Client {
         String markerEnd = "_|_END_COMMUNICATION";
         return markerBegin.concat(s.concat(markerEnd));
     }
+
+    public Socket getSocket() {
+        return serverSocket;
+    }
 }
+
