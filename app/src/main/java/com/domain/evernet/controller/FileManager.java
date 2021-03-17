@@ -18,28 +18,36 @@ import java.util.Date;
 
 public class FileManager {
 
-    ImageView im;
-    Bitmap originalImage;
-    int width;
-    int height;
-    int newWidth = 200;
-    int newHeight = 200;
-    Matrix matrix;
-    Bitmap resizedBitmap;
-    float scaleWidth;
-    float scaleHeight;
-    ByteArrayOutputStream outputStream;
-    private int currentChar = 0;
-    private int posOfThisFragment = -1;
+    private Bitmap originalImage;
+    private int width;
+    private int height;
+    private int newWidth;
+    private int newHeight;
+    private Matrix matrix;
+    private Bitmap resizedBitmap;
+    private float scaleWidth;
+    private float scaleHeight;
+    private ByteArrayOutputStream outputStream;
+    private int currentChar;
+    private int posOfThisFragment;
     private byte[] imageBytes;
     private String imageString;
-    private int maxCharsToSendBySms = 80;
-    private int nbPackets = 0;
-    private String imageName = null;
+    private int maxCharsToSendBySms;
+    private int nbPackets;
+    private String imageName;
 
-    public FileManager(){ }
+    public FileManager() {
 
-    public Bitmap getResizedBitmap( ContentResolver cr, Uri u) throws IOException {
+        newWidth = 200;
+        newHeight = 200;
+        currentChar = 0;
+        posOfThisFragment = -1;
+        maxCharsToSendBySms = 80;
+        nbPackets = 0;
+        imageName = null;
+    }
+
+    public Bitmap getResizedBitmap(ContentResolver cr, Uri u) throws IOException {
 
         originalImage = MediaStore.Images.Media.getBitmap(cr,u);
 
@@ -52,36 +60,29 @@ public class FileManager {
         matrix.postScale(scaleWidth, scaleHeight);
         resizedBitmap = Bitmap.createBitmap(originalImage, 0, 0, width, height, matrix, true);
 
-
         outputStream = new ByteArrayOutputStream();
         resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 10, outputStream);
-        imageBytes=outputStream.toByteArray();
+        imageBytes = outputStream.toByteArray();
         newWidth = resizedBitmap.getWidth();
         newHeight = resizedBitmap.getHeight();
         imageString = Base64.encodeToString(this.imageBytes, Base64.DEFAULT);
         Date currentTime = Calendar.getInstance().getTime();
-        int heure= currentTime.getHours();
-        int min=currentTime.getMinutes();
-        int sec=currentTime.getSeconds();
-        this.imageName=intToString(heure)+intToString(min)+intToString(sec);
+        int heure = currentTime.getHours();
+        int min = currentTime.getMinutes();
+        int sec = currentTime.getSeconds();
+        this.imageName = intToString(heure) + intToString(min) + intToString(sec);
         return resizedBitmap;
     }
 
     public String intToString(int value) {
 
-        String val=""+value;
-        int size=val.length();//put the position on four digits
-        for(int i=0;i<2-size;i++){
-            val="0"+val;
+        String val = "" + value;
+        int size = val.length();//put the position on four digits
+        for (int i = 0; i < 2 - size; i++){
+            val = "0" + val;
         }
         return val;
     }
-
-    public int getWidth() { return this.width; }
-
-    public int getHeight() { return this.height; }
-
-    public ImageView getImg() { return this.im; }
 
     public int getSizeOfBytesArray() { return this.imageBytes.length; }
 
@@ -89,9 +90,9 @@ public class FileManager {
 
     public void setMaxOfCharsToSendBySms(int max_chars) {
 
-        this.maxCharsToSendBySms=max_chars;
-        int modulo=(getSizeOfImageString()% max_chars)>0?1:0;
-        this.nbPackets=(getSizeOfImageString()/max_chars) +modulo;
+        this.maxCharsToSendBySms = max_chars;
+        int modulo = (getSizeOfImageString()% max_chars) > 0 ? 1 : 0;
+        this.nbPackets = (getSizeOfImageString() / max_chars) + modulo;
     }
 
     public String getnextFragment( ) {

@@ -40,11 +40,11 @@ import static com.domain.evernet.view.MainActivity.getDefaults;
 
 public class DashboardActivity extends AppCompatActivity  implements ImagePickFragment.ImagePickFragmentListener, ContactManagerFragment.ContactManagerFragmentListener {
 
-    ImagePickFragment imageFragment;
-    ContactManagerFragment addContactFragment;
+    private ImagePickFragment imageFragment;
+    private ContactManagerFragment addContactFragment;
 
-    FragmentManager fragmentManager;
-    FrameLayout fragmentDisplay;
+    private FragmentManager fragmentManager;
+    private FrameLayout fragmentDisplay;
 
     private Button imageButton;
     private Button contactButton;

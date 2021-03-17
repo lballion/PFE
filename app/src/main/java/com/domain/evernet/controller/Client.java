@@ -21,9 +21,9 @@ public class Client {
     private Socket serverSocket;
     private InetAddress serverAddress;
     private int port;
-    DataOutputStream out;
-    InputStream input;
-    InputStreamReader reader;
+    private DataOutputStream out;
+    private InputStream input;
+    private InputStreamReader reader;
 
     public Client(InetAddress serverAddress, int port) {
 
@@ -228,5 +228,9 @@ public class Client {
         String markerBegin = "_|_BEGIN_COMMUNICATION_|_" + callback + "_|_";
         String markerEnd = "_|_END_COMMUNICATION";
         return markerBegin.concat(s.concat(markerEnd));
+    }
+
+    public Socket getSocket() {
+        return serverSocket;
     }
 }
