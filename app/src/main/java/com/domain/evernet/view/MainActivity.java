@@ -18,6 +18,12 @@ import android.widget.TextView;
 
 import com.domain.evernet.R;
 import com.domain.evernet.controller.Client;
+import com.domain.evernet.controller.ReadWriteFile;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -63,31 +69,32 @@ public class MainActivity extends AppCompatActivity {
         password.addTextChangedListener(loginTextWatcher);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
+
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
+
                 Intent dashboardActivityIntent = new Intent(MainActivity.this, DashboardActivity.class);
 
-                //client = new Client("109.215.55.162", 50000); on instancie le client ici
-                // sc.openSocket();
+                InetAddress i = null;
+                try {
+                    i = InetAddress.getByName("109.215.55.162");
+                } catch (UnknownHostException e) {
+                    e.printStackTrace();
+                }
 
-                // Et la pour enregistrer les certificats
-
-                /*
+                Client c = new Client(i, 50000);
+                c.openSocket();
 
                 try {
-                    HashMap<String, String> responseServer = client.signIn("kara", "1234", "0602533556", "gag464gaegag4a4");
-
-                    ReadWriteFile readWriteFile = new ReadWriteFile();
-                    readWriteFile.writeToFile(responseServer.get("certificat_client"), getApplicationContext(), "certificat_client.pem", MODE_PRIVATE);
-                    readWriteFile.writeToFile(responseServer.get("private_key_client"), getApplicationContext(), "private_key_client.pem", MODE_PRIVATE);
-                    readWriteFile.writeToFile(responseServer.get("certificat_serveur"), getApplicationContext(), "certificat_serveur.pem", MODE_PRIVATE);
-
+                    String phoneInput = phone.getText().toString().trim();
+                    String pseudoInput = pseudo.getText().toString().trim();
+                    String passwordInput = password.getText().toString().trim();
+                    c.signIn(pseudoInput, passwordInput, phoneInput, "martin");
+                    c.closeSocket();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                
-                 */
 
                 startActivity(dashboardActivityIntent);
                 setDefaults(PREF_PSEUDO, pseudo.getText().toString(), getApplicationContext());

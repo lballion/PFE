@@ -32,12 +32,11 @@ public class Client {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public HashMap<String, String> signIn(String alias, String password, String phoneNum, String invitationKey) throws IOException {
+    public String signIn(String alias, String password, String phoneNum, String invitationKey) throws IOException {
 
         // Prepare data to send
         String dataToSend = String.join("_|_", alias, password, phoneNum, invitationKey);
         dataToSend = addMarkers(dataToSend, "signIn");
-        HashMap<String, String> map = new HashMap<>();
 
         sendDataToServer(dataToSend);
         String response = receiveDataFromServer();
@@ -46,15 +45,11 @@ public class Client {
         String[] responses = response.split("_\\|_");
 
         if (responses[0].contains("Invalid callBack") || responses[0].contains("ERROR")) {
-            return map;
+            return null;
         } else {
-            map.put("certificat_client", responses[0]);
-            map.put("private_key_client", responses[1]);
-            map.put("certificat_serveur", responses[2]);
+            return responses[0];
         }
 
-        System.out.println("debug : " + map.toString());
-        return map;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
