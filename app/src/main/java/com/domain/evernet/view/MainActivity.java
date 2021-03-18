@@ -15,6 +15,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.domain.evernet.R;
 import com.domain.evernet.controller.Client;
@@ -32,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView password;
     private Button loginButton;
     private Client client;
+    private String phoneInput;
+    private String pseudoInput;
+    private String passwordInput;
 
     public static final String PREF_PSEUDO = "PREF_PSEUDO";
 
@@ -74,31 +78,81 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent dashboardActivityIntent = new Intent(MainActivity.this, DashboardActivity.class);
 
-                InetAddress i = null;
-                try {
-                    i = InetAddress.getByName("109.215.55.162");
-                } catch (UnknownHostException e) {
-                    e.printStackTrace();
+                boolean isPseudoTrue = false;
+                boolean isPhonenumberTrue = false;
+
+                boolean pseudoLengthTrue = true;
+                boolean pseudoContainsTrue = true;
+
+                boolean numberLengthTrue = true;
+                boolean numbercontains = true;
+
+
+                if (pseudoInput.length() > 9) {
+                    Toast.makeText(getBaseContext(), "Pseudo might be under 9 characters !", Toast.LENGTH_LONG).show();
+                    pseudoLengthTrue = false;
+
+                }
+                if (pseudoInput.contains("*")) {
+                    Toast.makeText(getBaseContext(), "Pseudo can't contains '*' !", Toast.LENGTH_LONG).show();
+                    pseudoContainsTrue = false;
+
                 }
 
-                Client c = new Client(i, 50000);
-                c.openSocket();
-
-                try {
-                    String phoneInput = phone.getText().toString().trim();
-                    String pseudoInput = pseudo.getText().toString().trim();
-                    String passwordInput = password.getText().toString().trim();
-                    c.signIn(pseudoInput, passwordInput, phoneInput, "martin");
-                    c.closeSocket();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if ((pseudoLengthTrue && pseudoContainsTrue) == true) {
+                    isPseudoTrue = true;
                 }
 
-                startActivity(dashboardActivityIntent);
-                setDefaults(PREF_PSEUDO, pseudo.getText().toString(), getApplicationContext());
-                finish();
+
+                try {
+                    Integer i = Integer.parseInt(phoneInput);
+                } catch (NumberFormatException e) {
+                    Toast.makeText(getBaseContext(), "Phone number will only contains numbers (0-9) !", Toast.LENGTH_LONG).show();
+                    numbercontains = false;
+
+
+                }
+                if (!(phoneInput.length() == 10)) {
+                    Toast.makeText(getBaseContext(), "Bad phone number forms !", Toast.LENGTH_LONG).show();
+                    numberLengthTrue = false;
+
+                }
+
+                if ((numbercontains && numberLengthTrue) == true) {
+                    isPhonenumberTrue = true;
+                }
+
+
+                if (isPhonenumberTrue && isPseudoTrue) {
+
+
+                    Intent dashboardActivityIntent = new Intent(MainActivity.this, DashboardActivity.class);
+
+                    InetAddress i = null;
+                    try {
+                        i = InetAddress.getByName("109.215.55.162");
+                    } catch (UnknownHostException e) {
+                        e.printStackTrace();
+                    }
+
+                    Client c = new Client(i, 50000);
+                    c.openSocket();
+
+                    try {
+                        String phoneInput = phone.getText().toString().trim();
+                        String pseudoInput = pseudo.getText().toString().trim();
+                        String passwordInput = password.getText().toString().trim();
+                        c.signIn(pseudoInput, passwordInput, phoneInput, "martin");
+                        c.closeSocket();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    startActivity(dashboardActivityIntent);
+                    setDefaults(PREF_PSEUDO, pseudo.getText().toString(), getApplicationContext());
+                    finish();
+                }
             }
         });
 
@@ -113,9 +167,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-            String phoneInput = phone.getText().toString().trim();
-            String pseudoInput = pseudo.getText().toString().trim();
-            String passwordInput = password.getText().toString().trim();
+            phoneInput = phone.getText().toString().trim();
+            pseudoInput = pseudo.getText().toString().trim();
+            passwordInput = password.getText().toString().trim();
 
             loginButton.setEnabled(!phoneInput.isEmpty() && !pseudoInput.isEmpty() && !passwordInput.isEmpty());
         }
