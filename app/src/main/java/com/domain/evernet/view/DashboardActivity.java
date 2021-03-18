@@ -16,7 +16,9 @@ import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +27,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.domain.evernet.R;
+import com.domain.evernet.controller.ClientDebug;
 import com.domain.evernet.controller.ExitDialog;
 import com.domain.evernet.controller.FileManager;
 import com.domain.evernet.controller.Packet;
@@ -48,6 +51,9 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
 
     private Button imageButton;
     private Button contactButton;
+
+    private Switch activitySwitch;
+    private boolean isActive;
 
     private String pseudo; //Current user pseudo
     private SharedPreferences preferences;
@@ -127,6 +133,32 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
                 @Override
                 public void onClick(View v) {
                     addContactButtonMenuClick();
+                }
+            });
+
+            activitySwitch = (Switch) findViewById(R.id.activitySwitch);
+            activitySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    String myId = getDefaults(PREF_PSEUDO, getApplicationContext());
+                    if (!isChecked) {
+                        ClientDebug clientDebug = new ClientDebug(2,myId);
+                        clientDebug.execute();
+                        isActive = false;
+
+                        //stop pinging
+                        //backgroundDebug.stopTimerTask();
+                        Toast.makeText(getBaseContext(), "Vous êtes inactif dans le réseau!" + "\n", Toast.LENGTH_LONG).show(); // display the current state for switch's
+
+                    } else {
+                        ClientDebug clientDebug = new ClientDebug(1 ,myId);
+                        clientDebug.execute();
+                        isActive = true;
+
+                        //start pinging
+                        //backgroundDebug.startTimerTask();
+                        Toast.makeText(getBaseContext(), "Vous êtes actif dans le réseau!" + "\n", Toast.LENGTH_LONG).show(); // display the current state for switch's
+
+                    }
                 }
             });
 

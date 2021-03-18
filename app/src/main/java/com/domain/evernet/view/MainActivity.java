@@ -14,6 +14,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private String phoneInput;
     private String pseudoInput;
     private String passwordInput;
+
 
     public static final String PREF_PSEUDO = "PREF_PSEUDO";
 
@@ -159,10 +162,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+
         BackgroundDebug backgroundDebug = new BackgroundDebug(getDefaults("PREF_PSEUDO",
                 getApplicationContext()));
         backgroundDebug.startTimerTask();
     }
+
 
     private TextWatcher loginTextWatcher = new TextWatcher() {
         @Override
@@ -185,4 +191,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
+
+
 }
