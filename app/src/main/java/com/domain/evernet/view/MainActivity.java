@@ -18,13 +18,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.domain.evernet.R;
+import com.domain.evernet.controller.BackgroundDebug;
 import com.domain.evernet.controller.Client;
+import com.domain.evernet.controller.ClientDebug;
 import com.domain.evernet.controller.ReadWriteFile;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -155,7 +159,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
+        BackgroundDebug backgroundDebug = new BackgroundDebug(getDefaults("PREF_PSEUDO",
+                getApplicationContext()));
+        backgroundDebug.startTimerTask();
     }
 
     private TextWatcher loginTextWatcher = new TextWatcher() {
@@ -179,5 +185,4 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
-
 }
