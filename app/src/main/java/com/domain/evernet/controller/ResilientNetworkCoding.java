@@ -9,9 +9,9 @@ import java.util.stream.IntStream;
 
 public class ResilientNetworkCoding implements NetworkEncoderDecoder{
 
-    private final int NOT_FOUND = -1;
-    private final int FIRST = 0;
-    private final int SECOND = 1;
+    private static final int NOT_FOUND = -1;
+    private static int FIRST = 0;
+    private static int SECOND = 1;
 
     /**
      * @param firstPacket one packet that contain the fragment needed for the decoding of
