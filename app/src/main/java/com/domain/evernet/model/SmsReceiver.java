@@ -61,15 +61,9 @@ public class SmsReceiver extends BroadcastReceiver {
         String key=packet.getSource()+packet.getDestination()+packet.getTimeStamp();
         String myPhoneNumber=getDefaults(PHONE_NUMBER,context);
         if(packet.getDestination().equals(myPhoneNumber)) {
-<<<<<<< HEAD
             boolean contains = handler.contains(key);
             if (contains==false) {
                 file = new ReceivedFile(key);
-=======
-            boolean contains =handler.contains(key);
-            if (contains==false) {
-                file=new ReceivedFile(key);
->>>>>>> 81d657d60709e2633789062e8214477d57fcfc26
                 file.insertPacket(packet.getPosition(),packet.getImageFragment());
                 file.setNbPackets(packet.getNbPackets());
                 handler.insertFile(key,file);
@@ -82,11 +76,7 @@ public class SmsReceiver extends BroadcastReceiver {
             dashboardActivity = DashboardActivity.instance();
             packet.decreaseTTL();
             String target=null;
-<<<<<<< HEAD
             if( packet.getTtl() <=1 ) {
-=======
-            if( packet.getTtl() <=1) {
->>>>>>> 81d657d60709e2633789062e8214477d57fcfc26
                 target= packet.getDestination();
             }
             dashboardActivity.sendTo(packet.getPacket(),target);
