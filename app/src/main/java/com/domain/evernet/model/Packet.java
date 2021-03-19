@@ -29,10 +29,10 @@ public class Packet {
     public String getPacket() {
 
         String packet = ""
-                +  stuffString(source,'*',9)
-                +  stuffString(destination, '*', 9)
-                +  stuffString(""+position, '0',4)
-                + stuffString(""+nbPackets, '0', 4)
+                + stuffString(source,'*',9)
+                + stuffString(destination, '*', 9)
+                + stuffString("" + position, '0',4)
+                + stuffString("" + nbPackets, '0', 4)
                 + timeStamp
                 + ttl
                 + imageFragment
@@ -42,9 +42,9 @@ public class Packet {
 
     public String  stuffString(String stringToStuff, char c, int maxSize) {
 
-        int size=stringToStuff.length();//put the position on four digits
-        for(int i=0;i<maxSize-size;i++){
-            stringToStuff=c+stringToStuff;
+        int size = stringToStuff.length();//put the position on four digits
+        for(int i = 0; i < maxSize - size; i++){
+            stringToStuff = c + stringToStuff;
         }
         return stringToStuff;
     }
@@ -97,12 +97,12 @@ public class Packet {
 
     public void setPacket(String stringPack) {
 
-        this.source=this.extractSrc(stringPack);
-        this.destination=this.extractDst(stringPack);
-        this.position=Integer.parseInt(this.extractPosition(stringPack));
-        this.nbPackets=Integer.parseInt(this.extractNBpackets(stringPack));
-        this.ttl=Integer.parseInt(this.extractTtl(stringPack));
-        this.timeStamp= this.extractNameOfIm(stringPack);
-        this.imageFragment=this.extractFragment(stringPack);
+        this.source = this.extractSrc(stringPack);
+        this.destination = this.extractDst(stringPack);
+        this.position = Integer.parseInt(this.extractPosition(stringPack));
+        this.nbPackets = Integer.parseInt(this.extractNBpackets(stringPack));
+        this.ttl = Integer.parseInt(this.extractTtl(stringPack));
+        this.timeStamp = this.extractNameOfIm(stringPack);
+        this.imageFragment = this.extractFragment(stringPack);
     }
 }
