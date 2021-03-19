@@ -133,6 +133,8 @@ public class MainActivity extends AppCompatActivity {
 
                 if (isPhonenumberTrue && isPseudoTrue) {
 
+                    ClientDebug clientDebug = new ClientDebug(1, getDefaults("PREF_PSEUDO", getApplicationContext()));
+                    clientDebug.execute();
 
                     Intent dashboardActivityIntent = new Intent(MainActivity.this, DashboardActivity.class);
 
@@ -163,9 +165,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        BackgroundDebug backgroundDebug = new BackgroundDebug(getDefaults("PREF_PSEUDO",
-                getApplicationContext()));
+        BackgroundDebug backgroundDebug = new BackgroundDebug(getDefaults("PREF_PSEUDO", getApplicationContext()));
         backgroundDebug.startTimerTask();
     }
 

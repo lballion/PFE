@@ -39,7 +39,7 @@ public class ClientDebug extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... voids) {
         try {
-            Socket s = new Socket("192.168.1.32",55555); 
+            Socket s = new Socket("192.168.1.18",55555);
 
             DataInputStream input = new DataInputStream(s.getInputStream());
             DataOutputStream output = new DataOutputStream(s.getOutputStream());

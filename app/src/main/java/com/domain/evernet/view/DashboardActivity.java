@@ -27,6 +27,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.domain.evernet.R;
+import com.domain.evernet.controller.BackgroundDebug;
 import com.domain.evernet.controller.ClientDebug;
 import com.domain.evernet.controller.ExitDialog;
 import com.domain.evernet.controller.FileManager;
@@ -54,6 +55,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
 
     private Switch activitySwitch;
     private boolean isActive;
+    private BackgroundDebug backgroundDebug;
 
     private String pseudo; //Current user pseudo
     private SharedPreferences preferences;
@@ -80,7 +82,6 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
         // Check and ask for permissions to the user, will display pop up
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED
                 || ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED
@@ -136,17 +137,20 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
                 }
             });
 
+            String myId = getDefaults(PREF_PSEUDO, getApplicationContext());
+            backgroundDebug = new BackgroundDebug(myId);
+            backgroundDebug.startTimerTask();
             activitySwitch = (Switch) findViewById(R.id.activitySwitch);
             activitySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    String myId = getDefaults(PREF_PSEUDO, getApplicationContext());
+
                     if (!isChecked) {
                         ClientDebug clientDebug = new ClientDebug(2,myId);
                         clientDebug.execute();
                         isActive = false;
 
                         //stop pinging
-                        //backgroundDebug.stopTimerTask();
+                        backgroundDebug.stopTimerTask();
                         Toast.makeText(getBaseContext(), "Vous êtes inactif dans le réseau!" + "\n", Toast.LENGTH_LONG).show(); // display the current state for switch's
 
                     } else {
@@ -155,7 +159,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
                         isActive = true;
 
                         //start pinging
-                        //backgroundDebug.startTimerTask();
+                        backgroundDebug.startTimerTask();
                         Toast.makeText(getBaseContext(), "Vous êtes actif dans le réseau!" + "\n", Toast.LENGTH_LONG).show(); // display the current state for switch's
 
                     }
