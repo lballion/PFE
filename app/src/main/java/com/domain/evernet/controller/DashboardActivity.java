@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
@@ -20,11 +21,13 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.domain.evernet.R;
+import com.domain.evernet.model.Client;
 import com.domain.evernet.model.ExitDialog;
 import com.domain.evernet.model.FileManager;
 import com.domain.evernet.model.Packet;
@@ -34,6 +37,10 @@ import com.domain.evernet.model.PhoneBook;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Set;
 
 import static com.domain.evernet.controller.MainActivity.PREF_PSEUDO;
 import static com.domain.evernet.controller.MainActivity.getDefaults;
@@ -67,8 +74,8 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
     private final String PHONEBOOK_FILE_NAME = "savedPhoneBook.txt";
 
     private FileManager fileManager = null;
-    Bitmap finalBitmap = null;
-
+    private Bitmap finalBitmap = null;
+    private static DashboardActivity dashboardActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +141,12 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
         }
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        dashboardActivity = this;
+    }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -194,7 +207,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
             SmsManager smsMgr = SmsManager.getDefault();
             if (messageToSend != null)
                 //!!!!!! Add your phone number here !!!!!!
-                smsMgr.sendTextMessage("0605831895", "", messageToSend, sentPI, null);
+                smsMgr.sendTextMessage(this.dest, "", messageToSend, sentPI, null);
         } catch (Exception e) {
             Toast.makeText(getBaseContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
@@ -220,6 +233,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
     }
 
     //Listener on the sendButton of the ImagePickFragment
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onClickSent() {
 
@@ -300,19 +314,75 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
         return savedPhoneBook;
     }
 
-    public void sendAllFragments(View view){
-
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void sendAllFragments(View view) {
+        this.dest="0758107468";
         fileManager.setMaxOfCharsToSendBySms(100);
-        int ttl=3;
-        while (!fileManager.allFragmentsHaveBeenRecovered()){
+        int ttl = 2;
+        while (!fileManager.allFragmentsHaveBeenRecovered()) {
             String fragment=fileManager.getnextFragment();
             int position=fileManager.getposOfThisFragment();
             int nb_packets=fileManager.getNbPackets();
-            Packet p=new Packet("0761375067","0763583423",position,nb_packets,3,fileManager.getNameOfPicture(),fragment);
+            Packet p=new Packet(getMyPhonenumber(),"0605831895", position,nb_packets,ttl, fileManager.getNameOfPicture(), fragment);
             messageToSend=p.getPacket();
-            sendMessage(view);
+            sendMessage(view); // function to use without callBack server
+            //  sendTo(p.getPacket(),null); //function with callBack server
+
         }
     }
+
+    private String getMyPhonenumber() {
+        return "0758107468";
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public  void sendTo(String sms,String dest) {
+        messageToSend=sms;
+        if(dest==null){
+            Set<String> allTargets= this.getIntermediatesNumbers(""+4);
+            if (allTargets.size()== 0) {
+                this.sendMessage(null);
+            } else {
+                for (String target : allTargets) {
+                    this.dest=target;
+                    sendMessage(null);
+
+                }
+            }
+        } else {
+            this.dest=dest;
+            sendMessage(null);
+        }
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public Set<String> getIntermediatesNumbers(String size) {
+        InetAddress i = null;
+        try {
+            i = InetAddress.getByName("109.215.55.162");
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        Client c = new Client(i, 50000);
+        c.openSocket();
+        HashMap<String, String> numbersList=new HashMap<>();
+
+        try {
+            numbersList=c.getPhoneNumList(size);
+            c.closeSocket();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return numbersList.keySet();
+    }
+
+    public static DashboardActivity instance() {
+        return dashboardActivity;
+    }
+
 }
 
 

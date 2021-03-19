@@ -55,7 +55,7 @@ public class Packet {
 
     public boolean isSameSrcAndDst(Packet p) {
 
-        if(p instanceof Packet){
+        if(p instanceof Packet) {
             return (source.equals(p.getSource())  && destination.equals(p.getDestination()));
         }
         return false;
