@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private String passwordInput;
 
     public static final String PREF_PSEUDO = "PREF_PSEUDO";
+    public static  String PHONE_NUMBER;
 
     public static void setDefaults(String key, String value, Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -148,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
                     startActivity(dashboardActivityIntent);
                     setDefaults(PREF_PSEUDO, pseudo.getText().toString(), getApplicationContext());
+                    setDefaults(PHONE_NUMBER, phone.getText().toString(), getApplicationContext());
                     finish();
                 }
             }

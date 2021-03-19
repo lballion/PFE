@@ -4,17 +4,29 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.telephony.SmsMessage;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
+
+import com.domain.evernet.controller.DashboardActivity;
+
+import static com.domain.evernet.controller.MainActivity.PHONE_NUMBER;
+import static com.domain.evernet.controller.MainActivity.getDefaults;
+
 public class SmsReceiver extends BroadcastReceiver {
 
     private String sms;
     private static Handler handler=new Handler ();
+    private static DashboardActivity dashboardActivity;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onReceive(Context context, Intent intent) {
+
         Bundle bundle = intent.getExtras();
         if (bundle != null) {
             Object[] pduArray = (Object[]) bundle.get("pdus");
@@ -34,35 +46,41 @@ public class SmsReceiver extends BroadcastReceiver {
         }
     }
 
-    public String getSms() {
-        return new String(sms);
-    }
-
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void updateHandler(Context context, String sms) {
 
         this.setPacketInHandler(context, sms);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void setPacketInHandler(Context context, String stringPack) {
 
         Packet packet=new Packet();
         packet.setPacket(stringPack);
         ReceivedFile file;
         String key=packet.getSource()+packet.getDestination()+packet.getTimeStamp();
-        boolean contains =handler.contains(key);
-
-        if (contains==false) {
-            file=new ReceivedFile(key);
-            file.insertPacket(packet.getPosition(),packet.getImageFragment());
-            file.setNbPackets(packet.getNbPackets());
-            handler.insertFile(key,file);
-
+        String myPhoneNumber=getDefaults(PHONE_NUMBER,context);
+        if(packet.getDestination().equals(myPhoneNumber)) {
+            boolean contains =handler.contains(key);
+            if (contains==false) {
+                file=new ReceivedFile(key);
+                file.insertPacket(packet.getPosition(),packet.getImageFragment());
+                file.setNbPackets(packet.getNbPackets());
+                handler.insertFile(key,file);
+            } else {
+                file=handler.getFileByKey(key);
+                file.insertPacket(packet.getPosition(),packet.getImageFragment());
+            }
+            this.imageView(context, file, key);
         } else {
-            file=handler.getFileByKey(key);
-            file.insertPacket(packet.getPosition(),packet.getImageFragment());
+            dashboardActivity = DashboardActivity.instance();
+            packet.decreaseTTL();
+            String target=null;
+            if( packet.getTtl() <=1) {
+                target= packet.getDestination();
+            }
+            dashboardActivity.sendTo(packet.getPacket(),target);
         }
-        Toast.makeText(context,"handlerSize :" + file.getSize(), Toast.LENGTH_LONG).show();
-        this.imageView(context, file, key);
     }
 
     public void imageView(Context context, ReceivedFile file, String key) {
