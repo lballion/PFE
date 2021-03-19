@@ -54,7 +54,6 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
     private Button contactButton;
 
     private Switch activitySwitch;
-    private boolean isActive;
     private BackgroundDebug backgroundDebug;
 
     private String pseudo; //Current user pseudo
@@ -137,26 +136,24 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
                 }
             });
 
-            String myId = getDefaults(PREF_PSEUDO, getApplicationContext());
-            backgroundDebug = new BackgroundDebug(myId);
+
+            backgroundDebug = new BackgroundDebug(pseudo);
             backgroundDebug.startTimerTask();
             activitySwitch = (Switch) findViewById(R.id.activitySwitch);
             activitySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                     if (!isChecked) {
-                        ClientDebug clientDebug = new ClientDebug(2,myId);
+                        ClientDebug clientDebug = new ClientDebug(2,pseudo);
                         clientDebug.execute();
-                        isActive = false;
 
                         //stop pinging
                         backgroundDebug.stopTimerTask();
                         Toast.makeText(getBaseContext(), "Vous êtes inactif dans le réseau!" + "\n", Toast.LENGTH_LONG).show(); // display the current state for switch's
 
                     } else {
-                        ClientDebug clientDebug = new ClientDebug(1 ,myId);
+                        ClientDebug clientDebug = new ClientDebug(1 ,pseudo);
                         clientDebug.execute();
-                        isActive = true;
 
                         //start pinging
                         backgroundDebug.startTimerTask();

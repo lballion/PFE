@@ -8,14 +8,20 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.telephony.SmsMessage;
 import android.widget.Toast;
+
+import static com.domain.evernet.view.MainActivity.PREF_PSEUDO;
+import static com.domain.evernet.view.MainActivity.getDefaults;
+
 public class SmsReceiver extends BroadcastReceiver {
 
     private String sms;
     private static Handler handler=new Handler ();
+    private ClientDebug clientDebug;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         Bundle bundle = intent.getExtras();
+
         if (bundle != null) {
             Object[] pduArray = (Object[]) bundle.get("pdus");
             if (pduArray.length == 0) {
@@ -48,7 +54,13 @@ public class SmsReceiver extends BroadcastReceiver {
         Packet packet=new Packet();
         packet.setPacket(stringPack);
         ReceivedFile file;
+        
+        String pseudo =  getDefaults(PREF_PSEUDO, context.getApplicationContext());
         String key=packet.getSource()+packet.getDestination()+packet.getTimeStamp();
+
+        clientDebug = new ClientDebug(packet.getSource(), packet.getDestination(), 3, pseudo, null );
+        clientDebug.execute();
+
         boolean contains =handler.contains(key);
 
         if (contains==false) {

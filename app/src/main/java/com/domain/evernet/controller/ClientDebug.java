@@ -7,7 +7,7 @@ import java.io.DataOutputStream;
 import java.net.Socket;
 
 public class ClientDebug extends AsyncTask<Void, Void, Void> {
-    private String previousId = "Je propose que ce message soit transmis";
+    private String previousId;
 
     //the id of the next destination of the message
     private String nextId;
