@@ -39,7 +39,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static com.domain.evernet.controller.MainActivity.PREF_PSEUDO;
@@ -64,6 +67,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
     private TextView displayPseudo; //TextView to display the user's pseudo
 
     private String dest = "0758107468";
+    private int destId;
 
     private PhoneBook phoneBook;
     private ReadWriteFile readWriteFile = new ReadWriteFile();
@@ -94,6 +98,19 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
         }
         else {
             setContentView(R.layout.activity_dashboard);
+
+            Intent intent = getIntent();
+
+            if(intent.hasExtra("id") && intent.hasExtra("contact")){
+                Bundle bundle = intent.getExtras();
+                if(!bundle.getString("contact").equals(null)){
+                    this.dest = bundle.getString("contact");
+                }
+                this.destId = bundle.getInt("id");
+                Toast.makeText(getBaseContext(), "Contact selected : " + this.dest, Toast.LENGTH_LONG).show();
+
+            }
+
             //Display user pseudo on the main window
             pseudo = getDefaults(PREF_PSEUDO, getApplicationContext());
 
@@ -163,6 +180,37 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
                 e.printStackTrace();
             }
         }
+    }
+
+
+    public  ArrayList<Contact> changeContactMapIntoList(Map<Integer, Contact> contactMap){
+        ArrayList<Contact> contactItemList = new ArrayList<Contact>();
+
+        for (Contact i : contactMap.values()){
+            contactItemList.add(i);
+        }
+
+        return contactItemList;
+
+    }
+
+    public void launchContactList(){
+        Map<Integer, Contact> contactMap =  this.phoneBook.getContacts();
+
+        ArrayList<Contact> contactItemList = changeContactMapIntoList(contactMap);
+        contactItemList.add(new Contact(1254,"test"));
+        contactItemList.add(new Contact(1244,"test2"));
+
+
+        Intent contactListActivity = new Intent(DashboardActivity.this, DisplayContact.class);
+        //contactListActivity.putParcelableArrayListExtra("contact",contactItemList);
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("contact",contactItemList);
+        contactListActivity.putExtras(bundle);
+
+        startActivity(contactListActivity);
+
     }
 
     //Send an SMS to a phone number, after will be used to send an image to the contact chosen in the spinner
