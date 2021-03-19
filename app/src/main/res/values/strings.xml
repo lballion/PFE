@@ -8,6 +8,9 @@
     <string name="contact">Ajouter contact</string>
     <string name="image">Envoyer img</string>
 
+    <string name="contact_name">contact_name</string>
+    <string name="default_name">unknown</string>
+
     <string name="saveContactName">Name :</string>
     <string name="saveContactID">ID :</string>
     <string name="saveContactButton">Save</string>
