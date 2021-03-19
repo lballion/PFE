@@ -12,8 +12,22 @@ public class Packet {
 
     public Packet(String src, String dst, int pos, int nbPackets, int ttl, String timeStmp, String imgFrag) {
 
-        if( src.equals("") || dst.equals("") || pos < 0 || nbPackets < 0 || imgFrag.equals("") || ttl < 0){
-            throw new IllegalArgumentException("Args must be positive integers.");
+
+        boolean maxValues = pos <= 9999 &&  nbPackets <= 9999 && ttl <= 9;
+        boolean minValues = pos >= 0 && nbPackets >= 0 && ttl >= 0;
+
+        if( ! minValues || ! maxValues) {
+            throw new IllegalArgumentException("Args must be positive integers  and includes between 0 and 9999.");
+        }
+
+        if(src == null || dst== null || timeStmp == null || imgFrag == null) {
+            throw new IllegalArgumentException("Strings must not be null.");
+        }
+
+        boolean containsEmptyValues = src.equals("") || dst.equals("") || imgFrag.equals("");
+        boolean maxSizeExceeded = src.length() >= 10 || dst.length() >= 10 || timeStmp.length() != 6 ;
+        if(containsEmptyValues  || maxSizeExceeded) {
+            throw new IllegalArgumentException("Max size exceeded.");
         }
         source = src;
         destination = dst;
