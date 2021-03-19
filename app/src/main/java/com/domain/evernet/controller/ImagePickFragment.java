@@ -36,7 +36,7 @@ public class ImagePickFragment extends Fragment {
 
     public interface ImagePickFragmentListener {
         public void onClickLoad();
-        public void onClickSent();
+        public void onClickSent() throws JSONException;
         public void launchContactList();
     }
 
@@ -72,7 +72,11 @@ public class ImagePickFragment extends Fragment {
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClickSent();
+                try {
+                    listener.onClickSent();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
         contactButton.setOnClickListener(new View.OnClickListener() {

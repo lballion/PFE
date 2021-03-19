@@ -27,12 +27,17 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.domain.evernet.R;
+import com.domain.evernet.controller.Client;
 import com.domain.evernet.model.Client;
 import com.domain.evernet.model.FileManager;
+import com.domain.evernet.controller.NetworkCoding;
 import com.domain.evernet.model.Packet;
 import com.domain.evernet.model.ReadWriteFile;
 import com.domain.evernet.model.Contact;
 import com.domain.evernet.model.PhoneBook;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -281,7 +286,36 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
     //Listener on the sendButton of the ImagePickFragment
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
-    public void onClickSent() {
+    public void onClickSent() throws JSONException {
+
+        NetworkCoding networkCoding = new NetworkCoding();
+        JSONObject topology = networkCoding.generateTopology();
+
+        System.out.println(topology.toString());
+
+        // Envoyer la topologie pour le serveur
+
+        /*
+        InetAddress i = null;
+        try {
+            i = InetAddress.getByName("109.215.55.162");
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
+        Client c = new Client(i, 50000);
+        c.openSocket();
+
+        HashMap<String, String> phoneNumList;
+
+        try {
+            c.setTopology(topology.toString());
+            c.closeSocket();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+         */
 
         sendAllFragments(findViewById(R.id.dashboard_root));
     }
