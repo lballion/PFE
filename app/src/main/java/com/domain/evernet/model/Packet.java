@@ -25,8 +25,13 @@ public class Packet {
         }
 
         boolean containsEmptyValues = src.equals("") || dst.equals("") || imgFrag.equals("");
-        boolean maxSizeExceeded = src.length() >= 10 || dst.length() >= 10 || timeStmp.length() != 6 ;
-        if(containsEmptyValues  || maxSizeExceeded) {
+
+        if(containsEmptyValues  ){
+            throw new IllegalArgumentException("Packet  contains empty string value.");
+        }
+
+        boolean maxSizeExceeded = src.length() > 10 || dst.length() >10 || timeStmp.length() != 6 ;
+        if( maxSizeExceeded) {
             throw new IllegalArgumentException("Max size exceeded.");
         }
         source = src;
@@ -43,8 +48,8 @@ public class Packet {
     public String getPacket() {
 
         String packet = ""
-                + stuffString(source,'*',9)
-                + stuffString(destination, '*', 9)
+                + stuffString(source,'*',10)
+                + stuffString(destination, '*', 10)
                 + stuffString("" + position, '0',4)
                 + stuffString("" + nbPackets, '0', 4)
                 + timeStamp
