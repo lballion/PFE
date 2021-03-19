@@ -20,7 +20,7 @@ import android.widget.Spinner;
 
 import com.domain.evernet.R;
 
-public class ImagePickFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+public class ImagePickFragment extends Fragment {
 
     private ImagePickFragmentListener listener;
 
@@ -29,7 +29,7 @@ public class ImagePickFragment extends Fragment implements AdapterView.OnItemSel
     private ImageButton sendButton;
     private ImageButton loadButton;
 
-    private Spinner contactSpinner;
+    private Button contactButton;
 
     private static int RESULT_LOAD_IMAGE = 1;
     private static final int SELECT_PICTURE = 1;
@@ -38,6 +38,7 @@ public class ImagePickFragment extends Fragment implements AdapterView.OnItemSel
         public void onClickLoad();
         public void onClickSent();
         public void onSpinnerSelect(String destination);
+        public void launchContactList();
     }
 
     public ImagePickFragment() {
@@ -60,13 +61,11 @@ public class ImagePickFragment extends Fragment implements AdapterView.OnItemSel
 
         sendButton = view.findViewById(R.id.sendButton);
         loadButton = view.findViewById(R.id.loadButton);
+        contactButton = view.findViewById(R.id.contactLoadButton);
 
-        contactSpinner = view.findViewById(R.id.contactSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.phoneArray, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        contactSpinner.setAdapter(adapter);
 
-        contactSpinner.setOnItemSelectedListener(this);
 
 
         loadButton.setOnClickListener(new View.OnClickListener() {
@@ -80,6 +79,12 @@ public class ImagePickFragment extends Fragment implements AdapterView.OnItemSel
             @Override
             public void onClick(View v) {
                 listener.onClickSent();
+            }
+        });
+        contactButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.launchContactList();
             }
         });
 
@@ -106,6 +111,7 @@ public class ImagePickFragment extends Fragment implements AdapterView.OnItemSel
         loadImageDisplay.setImageBitmap(bitmap);
     }
 
+    /*
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         String dest = null;
@@ -133,4 +139,6 @@ public class ImagePickFragment extends Fragment implements AdapterView.OnItemSel
     public void onNothingSelected(AdapterView<?> parent) {
         contactSpinner.setSelection(0);
     }
+    */
+
 }
