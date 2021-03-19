@@ -20,6 +20,8 @@ import android.widget.Spinner;
 
 import com.domain.evernet.R;
 
+import org.json.JSONException;
+
 public class ImagePickFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private ImagePickFragmentListener listener;
@@ -36,7 +38,7 @@ public class ImagePickFragment extends Fragment implements AdapterView.OnItemSel
 
     public interface ImagePickFragmentListener {
         public void onClickLoad();
-        public void onClickSent();
+        public void onClickSent() throws JSONException;
         public void onSpinnerSelect(String destination);
     }
 
@@ -79,7 +81,11 @@ public class ImagePickFragment extends Fragment implements AdapterView.OnItemSel
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClickSent();
+                try {
+                    listener.onClickSent();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
