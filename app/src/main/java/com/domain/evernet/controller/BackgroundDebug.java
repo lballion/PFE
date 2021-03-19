@@ -7,6 +7,7 @@ public class BackgroundDebug {
     String myId;
     Timer timer;
     TimerTask timerTask;
+    ClientDebug client;
 
     public BackgroundDebug(String myId) {
         this.myId = myId;
@@ -17,7 +18,7 @@ public class BackgroundDebug {
         timerTask = new TimerTask() {
             @Override
             public void run() {
-                ClientDebug client = new ClientDebug(4, myId);
+                client = new ClientDebug(4, myId);
                 client.execute();
             }
         };
@@ -27,4 +28,9 @@ public class BackgroundDebug {
     public void stopTimerTask(){
         timer.purge();
     }
+
+    public String toSend () {
+        return client.toSend;
+    }
+
 }

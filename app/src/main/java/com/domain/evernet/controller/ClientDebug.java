@@ -24,6 +24,8 @@ public class ClientDebug extends AsyncTask<Void, Void, Void> {
     //the name of the image send
     private String imageId;
 
+    public String toSend;
+
     public ClientDebug(String previousId, String nextId, int type, String myId, String imageId) {
         this.previousId = previousId;
         this.nextId = nextId;
@@ -50,9 +52,7 @@ public class ClientDebug extends AsyncTask<Void, Void, Void> {
             String received = input.readUTF();
             if (!received.equals("null"))
             {
-                String[] data = received.split("\\|");
-                String dest = data[0];
-                String  Image = data[1];
+                toSend = received;
             }
 
             output.writeUTF(this.endCommunication);

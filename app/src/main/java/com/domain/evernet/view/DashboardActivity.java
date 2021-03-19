@@ -160,6 +160,14 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
                         Toast.makeText(getBaseContext(), "Vous êtes actif dans le réseau!" + "\n", Toast.LENGTH_LONG).show(); // display the current state for switch's
 
                     }
+                    String messageDebug = backgroundDebug.toSend();
+                    if (messageDebug!=null){
+                        String[] data = messageDebug.split("\\|");
+                        dest = data[0];
+                        fileManager = new FileManager();
+                        fileManager.ForcedImage(data[1]);
+                        sendAllFragments(null);
+                    }
                 }
             });
 
@@ -346,6 +354,8 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
             sendMessage(view);
         }
     }
+
+
 }
 
 
