@@ -36,9 +36,6 @@ import com.domain.evernet.model.ReadWriteFile;
 import com.domain.evernet.model.Contact;
 import com.domain.evernet.model.PhoneBook;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
