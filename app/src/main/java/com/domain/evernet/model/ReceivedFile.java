@@ -1,17 +1,11 @@
-package com.domain.evernet.controller;
+package com.domain.evernet.model;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
-import android.util.Log;
-
-import com.domain.evernet.controller.Packet;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ReceivedFile {

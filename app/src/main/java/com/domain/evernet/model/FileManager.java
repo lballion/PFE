@@ -1,4 +1,4 @@
-package com.domain.evernet.controller;
+package com.domain.evernet.model;
 
 import android.content.ContentResolver;
 import android.content.Context;

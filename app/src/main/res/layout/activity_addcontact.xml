@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/fragment"
-        android:name="com.domain.evernet.view.ContactManagerFragment"
+        android:name="com.domain.evernet.controller.ContactManagerFragment"
         android:layout_width="411dp"
         android:layout_height="731dp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -1,6 +1,6 @@
 package com.domain.evernet;
 
-import com.domain.evernet.controller.Client;
+import com.domain.evernet.model.Client;
 
 import org.junit.Test;
 
@@ -22,7 +22,6 @@ public class ClientTest {
         InetAddress i = InetAddress.getByName("109.215.55.162");
         Client c = new Client(i, 50000);
         c.openSocket();
-
         assertNotEquals(c.getSocket(), null);
     }
 

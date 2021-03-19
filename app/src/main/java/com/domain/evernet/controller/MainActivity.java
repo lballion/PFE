@@ -1,4 +1,4 @@
-package com.domain.evernet.view;
+package com.domain.evernet.controller;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,13 +18,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.domain.evernet.R;
-import com.domain.evernet.controller.Client;
-import com.domain.evernet.controller.ReadWriteFile;
+import com.domain.evernet.model.Client;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -144,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
                         String pseudoInput = pseudo.getText().toString().trim();
                         String passwordInput = password.getText().toString().trim();
                         c.signIn(pseudoInput, passwordInput, phoneInput, "martin");
-                        c.closeSocket();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

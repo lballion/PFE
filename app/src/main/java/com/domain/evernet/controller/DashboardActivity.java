@@ -1,4 +1,4 @@
-package com.domain.evernet.view;
+package com.domain.evernet.controller;
 
 import android.Manifest;
 import android.app.Activity;
@@ -25,18 +25,18 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.domain.evernet.R;
-import com.domain.evernet.controller.ExitDialog;
-import com.domain.evernet.controller.FileManager;
-import com.domain.evernet.controller.Packet;
-import com.domain.evernet.controller.ReadWriteFile;
+import com.domain.evernet.model.ExitDialog;
+import com.domain.evernet.model.FileManager;
+import com.domain.evernet.model.Packet;
+import com.domain.evernet.model.ReadWriteFile;
 import com.domain.evernet.model.Contact;
 import com.domain.evernet.model.PhoneBook;
 
 import java.io.File;
 import java.io.IOException;
 
-import static com.domain.evernet.view.MainActivity.PREF_PSEUDO;
-import static com.domain.evernet.view.MainActivity.getDefaults;
+import static com.domain.evernet.controller.MainActivity.PREF_PSEUDO;
+import static com.domain.evernet.controller.MainActivity.getDefaults;
 
 public class DashboardActivity extends AppCompatActivity  implements ImagePickFragment.ImagePickFragmentListener, ContactManagerFragment.ContactManagerFragmentListener {
 
