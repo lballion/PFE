@@ -37,7 +37,6 @@ public class ImagePickFragment extends Fragment {
     public interface ImagePickFragmentListener {
         public void onClickLoad();
         public void onClickSent();
-        public void onSpinnerSelect(String destination);
         public void launchContactList();
     }
 
@@ -110,35 +109,5 @@ public class ImagePickFragment extends Fragment {
     public void setImage(Bitmap bitmap){
         loadImageDisplay.setImageBitmap(bitmap);
     }
-
-    /*
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        String dest = null;
-        String selectedItem = new String(contactSpinner.getSelectedItem().toString());
-        String[] idItems = getResources().getStringArray(R.array.phoneArray);
-
-
-        if (selectedItem.equals(idItems[0])) {
-            dest = "contact 1";
-        }
-        if (selectedItem.equals(idItems[1])) {
-            dest = "contact 2";
-        }
-        if (selectedItem.equals(idItems[2])) {
-            dest = "contact 3";
-        }
-        if (selectedItem.equals(idItems[3])) {
-            dest = "contact 4";
-        }
-
-        listener.onSpinnerSelect(dest);
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-        contactSpinner.setSelection(0);
-    }
-    */
 
 }

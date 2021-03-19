@@ -288,13 +288,6 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
         sendAllFragments(findViewById(R.id.dashboard_root));
     }
 
-    @Override
-    public void onSpinnerSelect(String destination) {
-
-        dest = destination;
-        Toast.makeText(getBaseContext(), "Contact selected : " + dest, Toast.LENGTH_LONG).show();
-    }
-
     private void addContactButtonMenuClick(){
 
         fragmentManager.beginTransaction()
