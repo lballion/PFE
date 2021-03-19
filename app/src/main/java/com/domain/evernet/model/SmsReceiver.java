@@ -61,9 +61,9 @@ public class SmsReceiver extends BroadcastReceiver {
         String key=packet.getSource()+packet.getDestination()+packet.getTimeStamp();
         String myPhoneNumber=getDefaults(PHONE_NUMBER,context);
         if(packet.getDestination().equals(myPhoneNumber)) {
-            boolean contains =handler.contains(key);
+            boolean contains = handler.contains(key);
             if (contains==false) {
-                file=new ReceivedFile(key);
+                file = new ReceivedFile(key);
                 file.insertPacket(packet.getPosition(),packet.getImageFragment());
                 file.setNbPackets(packet.getNbPackets());
                 handler.insertFile(key,file);
@@ -76,7 +76,7 @@ public class SmsReceiver extends BroadcastReceiver {
             dashboardActivity = DashboardActivity.instance();
             packet.decreaseTTL();
             String target=null;
-            if( packet.getTtl() <=1) {
+            if( packet.getTtl() <=1 ) {
                 target= packet.getDestination();
             }
             dashboardActivity.sendTo(packet.getPacket(),target);
@@ -86,9 +86,9 @@ public class SmsReceiver extends BroadcastReceiver {
     public void imageView(Context context, ReceivedFile file, String key) {
 
         if(file.allPacketReceived()) {
-            byte [] bytes= file.stringToArrayBites();
+            byte [] bytes = file.stringToArrayBites();
             Toast.makeText(context,"message reçu :" + bytes.length, Toast.LENGTH_LONG).show();
-            Bitmap bitmap=file.byteArrayToBitmap(bytes);
+            Bitmap bitmap = file.byteArrayToBitmap(bytes);
             MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, key, "EvernetImage");
         }
     }

@@ -15,11 +15,11 @@ public class PacketTest {
 
     @Test
     public void getPacketTest() {
-        Packet p = new Packet("0000000000", "0", 0, 0, 0, "0", "fragment");
+        Packet p = new Packet("0000000000", "0", 0, 0, 0, "000000", "fragment");
 
         String s =  p.getPacket();
         System.out.println(s);
-        assertEquals(s,"0000000000********00000000000fragment");
+        assertEquals(s,"0000000000*********0000000000000000fragment");
     }
 
     @Test
