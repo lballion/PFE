@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
@@ -20,20 +21,29 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.domain.evernet.R;
+import com.domain.evernet.controller.Client;
 import com.domain.evernet.controller.ExitDialog;
 import com.domain.evernet.controller.FileManager;
+import com.domain.evernet.controller.NetworkCoding;
 import com.domain.evernet.controller.Packet;
 import com.domain.evernet.controller.ReadWriteFile;
 import com.domain.evernet.model.Contact;
 import com.domain.evernet.model.PhoneBook;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.HashMap;
 
 import static com.domain.evernet.view.MainActivity.PREF_PSEUDO;
 import static com.domain.evernet.view.MainActivity.getDefaults;
@@ -194,7 +204,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
             SmsManager smsMgr = SmsManager.getDefault();
             if (messageToSend != null)
                 //!!!!!! Add your phone number here !!!!!!
-                smsMgr.sendTextMessage("0605831895", "", messageToSend, sentPI, null);
+                smsMgr.sendTextMessage("", "", messageToSend, sentPI, null);
         } catch (Exception e) {
             Toast.makeText(getBaseContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
@@ -220,8 +230,38 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
     }
 
     //Listener on the sendButton of the ImagePickFragment
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
-    public void onClickSent() {
+    public void onClickSent() throws JSONException {
+
+        NetworkCoding networkCoding = new NetworkCoding();
+        JSONObject topology = networkCoding.generateTopology();
+
+        System.out.println(topology.toString());
+
+        // Envoyer la topologie pour le serveur
+
+        /*
+        InetAddress i = null;
+        try {
+            i = InetAddress.getByName("109.215.55.162");
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
+        Client c = new Client(i, 50000);
+        c.openSocket();
+
+        HashMap<String, String> phoneNumList;
+
+        try {
+            c.setTopology(topology.toString());
+            c.closeSocket();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+         */
 
         sendAllFragments(findViewById(R.id.dashboard_root));
     }
