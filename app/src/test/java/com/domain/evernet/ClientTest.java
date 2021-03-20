@@ -27,16 +27,17 @@ public class ClientTest {
 
     @Test
     public void closeSocketTest () throws IOException {
+
         InetAddress i = InetAddress.getByName("109.215.55.162");
         Client c = new Client(i, 50000);
         c.openSocket();
         c.closeSocket();
-
         assertEquals(c.getSocket().isClosed(), true);
     }
 
     @Test
     public void receiveDataFromServer () throws IOException {
+
         InetAddress i = InetAddress.getByName("109.215.55.162");
         Client c = new Client(i, 50000);
         c.openSocket();

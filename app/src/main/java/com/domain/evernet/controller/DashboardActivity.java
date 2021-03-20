@@ -28,7 +28,6 @@ import androidx.core.content.ContextCompat;
 
 import com.domain.evernet.R;
 import com.domain.evernet.model.Client;
-import com.domain.evernet.model.ExitDialog;
 import com.domain.evernet.model.FileManager;
 import com.domain.evernet.model.Packet;
 import com.domain.evernet.model.ReadWriteFile;
@@ -41,7 +40,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -361,8 +359,8 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
         fileManager.setMaxOfCharsToSendBySms(100);
         int ttl = 2;
         while (!fileManager.allFragmentsHaveBeenRecovered()) {
-            String fragment=fileManager.getnextFragment();
-            int position=fileManager.getposOfThisFragment();
+            String fragment=fileManager.getNextFragment();
+            int position=fileManager.getPosOfThisFragment();
             int nb_packets=fileManager.getNbPackets();
             Packet p=new Packet(getMyPhonenumber(),"0605831895", position,nb_packets,ttl, fileManager.getNameOfPicture(), fragment);
             messageToSend=p.getPacket();

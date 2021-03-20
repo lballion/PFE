@@ -175,9 +175,14 @@ public class Client {
 
     public void closeSocket() throws IOException {
 
-        out.flush();
-        out.close();
-        input.close();
+        if (out != null ) {
+            out.flush();
+            out.close();
+        }
+
+        if (input != null) {
+            input.close();
+        }
         serverSocket.close();
     }
 

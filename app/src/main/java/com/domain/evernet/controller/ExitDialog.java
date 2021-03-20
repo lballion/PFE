@@ -1,4 +1,4 @@
-package com.domain.evernet.model;
+package com.domain.evernet.controller;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

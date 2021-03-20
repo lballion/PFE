@@ -95,7 +95,7 @@ public class FileManager {
         this.nbPackets = (getSizeOfImageString() / max_chars) + modulo;
     }
 
-    public String getnextFragment( ) {
+    public String getNextFragment() {
         String fragment = "";
         for (int i = this.currentChar; i < this.currentChar + this.maxCharsToSendBySms; i++) {
             if (i >= getSizeOfImageString()) {
@@ -108,7 +108,7 @@ public class FileManager {
         return fragment;
     }
 
-    public int getposOfThisFragment() {
+    public int getPosOfThisFragment() {
         this.posOfThisFragment += 1 ;
         return this.posOfThisFragment;
     }
@@ -122,4 +122,8 @@ public class FileManager {
     }
 
     public String getNameOfPicture() { return this.imageName; }
+
+    public void setImageString(String s) {
+        imageString = s;
+    }
 }

@@ -3,7 +3,7 @@ import java.util.HashMap;
 
 public class Handler {
 
-    private HashMap<String, ReceivedFile> handler= new HashMap<String, ReceivedFile>();
+    private HashMap<String, ReceivedFile> handler = new HashMap<String, ReceivedFile>();
 
     public Handler() { }
 

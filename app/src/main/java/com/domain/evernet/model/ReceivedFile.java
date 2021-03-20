@@ -25,7 +25,7 @@ public class ReceivedFile {
         this.name = name;
     }
 
-    public void setNbPackets(int nb_packets){ this.nb_packets=nb_packets; }
+    public void setNbPackets(int nb_packets){ this.nb_packets = nb_packets; }
 
     public void insertPacket(int key, String fragment) {
 
@@ -36,12 +36,12 @@ public class ReceivedFile {
 
     public boolean allPacketReceived() {
 
-        if (packetLists.size()==0) { return false; }
+        if (packetLists.size() == 0) { return false; }
 
         return this.nb_packets == packetLists.size();
     }
 
-    public byte [] stringToArrayBites() {
+    public byte [] stringToArrayBytes() {
 
         String imageString=toImageString();
         byte [] imageBytes = Base64.decode(imageString, Base64.DEFAULT);
