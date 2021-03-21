@@ -137,6 +137,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
                     .commit();
 
             imageButton = findViewById(R.id.imageButton);
+            imageButton.setBackgroundColor(getResources().getColor(R.color.blue));
             imageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -201,7 +202,6 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
 
 
         Intent contactListActivity = new Intent(DashboardActivity.this, DisplayContact.class);
-        //contactListActivity.putParcelableArrayListExtra("contact",contactItemList);
 
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("contact",contactItemList);
@@ -210,6 +210,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
         startActivity(contactListActivity);
 
     }
+
 
     //Send an SMS to a phone number, after will be used to send an image to the contact chosen in the spinner
     public void sendMessage(View view) {

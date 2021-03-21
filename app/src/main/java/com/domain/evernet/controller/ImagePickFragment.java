@@ -62,11 +62,6 @@ public class ImagePickFragment extends Fragment {
         loadButton = view.findViewById(R.id.loadButton);
         contactButton = view.findViewById(R.id.contactLoadButton);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.phoneArray, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-
-
         loadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
