@@ -78,7 +78,6 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
     private FileManager fileManager = null;
     private Bitmap finalBitmap = null;
     private static DashboardActivity dashboardActivity;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 

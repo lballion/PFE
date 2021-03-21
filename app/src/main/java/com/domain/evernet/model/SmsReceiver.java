@@ -71,6 +71,7 @@ public class SmsReceiver extends BroadcastReceiver {
                 file=handler.getFileByKey(key);
                 file.insertPacket(packet.getPosition(),packet.getImageFragment());
             }
+            Toast.makeText(context,"message :" + file.getSize(), Toast.LENGTH_LONG).show();
             this.imageView(context, file, key);
         } else {
             dashboardActivity = DashboardActivity.instance();
