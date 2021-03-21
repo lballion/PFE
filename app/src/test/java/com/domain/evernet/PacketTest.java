@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 /**
- * Tests of the class PacketS
+ * Tests of the class Packet
  */
 public class PacketTest {
 
@@ -18,7 +18,6 @@ public class PacketTest {
         Packet p = new Packet("0000000000", "0", 0, 0, 0, "000000", "fragment");
 
         String s =  p.getPacket();
-        System.out.println(s);
         assertEquals(s,"0000000000*********0000000000000000fragment");
     }
 
@@ -73,7 +72,7 @@ public class PacketTest {
     }
 
     @Test
-    public void extractFragment() {
+    public void extractFragmentTest() {
         Packet p = new Packet();
         String s = p.extractFragment("06012345670601010101002600185000008fragment");
         assertEquals(s, "fragment");

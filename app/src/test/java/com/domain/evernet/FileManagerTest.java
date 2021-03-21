@@ -6,6 +6,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Tests of the class FileManager
+ */
 public class FileManagerTest {
 
     @Test

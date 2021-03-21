@@ -44,11 +44,13 @@ public class Client {
         response = truncateMarkers(response);
         String[] responses = response.split("_\\|_");
 
+        System.out.println(response);
         if (responses[0].contains("Invalid callBack") || responses[0].contains("ERROR")) {
             return null;
         } else {
             return responses[0];
         }
+
 
     }
 
@@ -64,10 +66,11 @@ public class Client {
         String[] responses = response.split("_\\|_");
 
         HashMap<String, String> map = new HashMap<>();
-
         if (responses[0].contains("Invalid callBack") || responses[0].contains("ERROR")) {
-            map.put("Authentified", responses[0]);
+            return map;
         }
+
+        map.put("Authentified", responses[0]);
 
         System.out.println("debug login : " + dataToSend);
         System.out.println("debug login : " + response);
@@ -86,8 +89,8 @@ public class Client {
         String[] responses = response.split("_\\|_");
 
         HashMap<String, String> map = new HashMap<>();
-
-        if (responses[0].contains("Invalid callBack") || responses[0].contains("ERROR")) {
+        System.out.println("rep : " + response);
+        if (responses[0].contains("Invalid callBack") || responses[0].contains("Error") || responses[0].contains("ERROR")) {
             return map;
         } else {
             map.put("number", responses[0]);
@@ -104,17 +107,18 @@ public class Client {
         dataToSend = addMarkers(dataToSend, "getPhoneNumList");
         sendDataToServer(dataToSend);
         String response = receiveDataFromServer();
+        System.out.println(response);
         response = response.replace("*", "");
         response = truncateMarkers(response);
         String[] responses = response.split("_\\|_");
-        HashMap<String,String> numbersList=new HashMap<>();
+        HashMap<String, String> numbersList = new HashMap<>();
+
+        //System.out.println(responses[0] + "\n" + responses[1]);
         if (responses[0].contains("Invalid callBack") || responses[0].contains("ERROR")) {
             return numbersList;
         } else {
-            for (int i = 0; i < responses.length; i++) {
-                if (i % 2 == 0) {
-                    numbersList.put(responses[i],responses[i+1]);
-                }
+            for (int i = 0; i < Integer.parseInt(sizeList); i++) {
+                numbersList.put(responses[i%2],responses[(i%2)+1]);
             }
         }
 
