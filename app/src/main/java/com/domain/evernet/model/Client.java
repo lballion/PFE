@@ -107,21 +107,20 @@ public class Client {
         dataToSend = addMarkers(dataToSend, "getPhoneNumList");
         sendDataToServer(dataToSend);
         String response = receiveDataFromServer();
-        System.out.println(response);
+        //System.out.println("reponse : " + response);
         response = response.replace("*", "");
         response = truncateMarkers(response);
         String[] responses = response.split("_\\|_");
         HashMap<String, String> numbersList = new HashMap<>();
 
-        //System.out.println(responses[0] + "\n" + responses[1]);
         if (responses[0].contains("Invalid callBack") || responses[0].contains("ERROR")) {
             return numbersList;
         } else {
             for (int i = 0; i < Integer.parseInt(sizeList); i++) {
-                numbersList.put(responses[i%2],responses[(i%2)+1]);
+                numbersList.put(responses[i%2],responses[(i%2) + 1]);
             }
         }
-
+        System.out.println(numbersList.toString());
         return numbersList;
     }
 

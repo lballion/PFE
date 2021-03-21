@@ -134,7 +134,7 @@ public class ClientTest {
         c.openSocket();
         c.receiveDataFromServer();
         c.logIn("tototer", "tototer");
-        HashMap<String, String> h = c.getPhoneNumList("2");
+        HashMap<String, String> h = c.getPhoneNumList("5");
         c.closeSocket();
         assertNotEquals(h.isEmpty(), true);
     }
