@@ -53,13 +53,13 @@ public class SmsReceiver extends BroadcastReceiver {
 
         if (contains==false) {
             file=new ReceivedFile(key);
-            file.insertPacket(packet.getPosition(),packet.getImageFragment());
+            file.insertPacket(packet.getPosition()[0],packet.getImageFragment());
             file.setNbPackets(packet.getNbPackets());
             handler.insertFile(key,file);
 
         } else {
             file=handler.getFileByKey(key);
-            file.insertPacket(packet.getPosition(),packet.getImageFragment());
+            file.insertPacket(packet.getPosition()[0],packet.getImageFragment());
         }
         Toast.makeText(context,"handlerSize :" + file.getSize(), Toast.LENGTH_LONG).show();
         this.imageView(context, file, key);

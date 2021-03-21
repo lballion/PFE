@@ -43,7 +43,7 @@ public class FragmentEquationSystem {
         return isFull;
     }
 
-    public int addEquation(int[] equation,int payloadvalue){
+    public int addEquation(int[] equation,long payloadvalue){
         if(equation.length == 0)
             return INVALID_EQUATION_SIZE;
 
@@ -62,7 +62,7 @@ public class FragmentEquationSystem {
         return 0;
     }
 
-    public int gaussJordanElimination(){
+    public int gaussJordanElimination(Vector outPut){
         if(!isFull)
             return INVALID_METHOD_CALL;
 
@@ -71,8 +71,7 @@ public class FragmentEquationSystem {
 
         GaussianSolver systemSolver = new GaussianSolver(linearSystem);
 
-        Vector solution = systemSolver.solve(valueVector);
-        System.out.println(solution.toString());
+        outPut = systemSolver.solve(valueVector);
 
         return 0;
     }

@@ -27,7 +27,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.domain.evernet.R;
-import com.domain.evernet.controller.Client;
+import com.domain.evernet.model.Client;
 import com.domain.evernet.model.ExitDialog;
 import com.domain.evernet.model.FileManager;
 import com.domain.evernet.controller.NetworkCoding;
@@ -343,7 +343,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
         int ttl=3;
         while (!fileManager.allFragmentsHaveBeenRecovered()){
             String fragment=fileManager.getnextFragment();
-            int position=fileManager.getposOfThisFragment();
+            int[] position={fileManager.getposOfThisFragment(),0};
             int nb_packets=fileManager.getNbPackets();
             Packet p=new Packet("0761375067","0763583423",position,nb_packets,3,fileManager.getNameOfPicture(),fragment);
             messageToSend=p.getPacket();
