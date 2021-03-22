@@ -18,7 +18,6 @@ public class ContactManagerFragment extends Fragment {
 
     private Button saveContactButton;
     private Button rstButton;
-
     private EditText idTextEntry;
     private EditText nameTextEntry;
 

@@ -21,8 +21,6 @@ import com.domain.evernet.R;
 import com.domain.evernet.model.Client;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView pseudo;
     private TextView password;
     private Button loginButton;
-    private Client client;
     private String phoneInput;
     private String pseudoInput;
     private String passwordInput;

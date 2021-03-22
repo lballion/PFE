@@ -40,11 +40,6 @@ public class ImagePickFragment extends Fragment {
         public void launchContactList();
     }
 
-    public ImagePickFragment() {
-        // Required empty public constructor
-    }
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -36,8 +36,6 @@ import com.domain.evernet.model.PhoneBook;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,34 +48,27 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
 
     private ImagePickFragment imageFragment;
     private ContactManagerFragment addContactFragment;
-
     private FragmentManager fragmentManager;
     private FrameLayout fragmentDisplay;
-
     private Button imageButton;
     private Button contactButton;
-
     private String pseudo; //Current user pseudo
-    private SharedPreferences preferences;
-
-    private String messageToSend = "Hello World !";
-
     private TextView displayPseudo; //TextView to display the user's pseudo
 
+    private Bitmap finalBitmap = null;
+    private String messageToSend = "Hello World !";
     private String dest = "0758107468";
-    private int destId;
-
     private PhoneBook phoneBook;
     private ReadWriteFile readWriteFile = new ReadWriteFile();
+    private FileManager fileManager = null;
+    private int destId;
 
     private static int RESULT_LOAD_IMAGE = 1;
-    private static final int SELECT_PICTURE = 1;
+    private static DashboardActivity dashboardActivity;
 
+    private static final int SELECT_PICTURE = 1;
     private final String PHONEBOOK_FILE_NAME = "savedPhoneBook.txt";
 
-    private FileManager fileManager = null;
-    private Bitmap finalBitmap = null;
-    private static DashboardActivity dashboardActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -115,8 +106,6 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
                 Intent dashboardActivityIntent = new Intent(DashboardActivity.this, MainActivity.class);
                 startActivity(dashboardActivityIntent);
                 finish();
-            } else {
-                // sinon on dans la DashboardActivity
             }
 
             pseudo = '@' + pseudo;
@@ -171,7 +160,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
             try {
                 selectedImageUri = data == null ? null : selectedImage;
                 fileManager=new FileManager();
-                finalBitmap= fileManager.getResizedBitmap(this.getContentResolver(),selectedImageUri);
+                finalBitmap = fileManager.getResizedBitmap(this.getContentResolver(),selectedImageUri);
                // imageFragment.setImage(finalBitmap);
                 Toast.makeText(getBaseContext(), " "+fileManager.getSizeOfBytesArray(), Toast.LENGTH_LONG).show();
             } catch (IOException e) {

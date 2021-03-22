@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.domain.evernet.R;
 import com.domain.evernet.model.Contact;
@@ -22,9 +21,9 @@ public class DisplayContact extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_contact);
-
 
         Bundle bundle = getIntent().getExtras();
 
@@ -42,7 +41,6 @@ public class DisplayContact extends AppCompatActivity {
                 contactName = selectedContact.getName();
                 contactId = selectedContact.getId();
 
-
                 Intent contactListActivity = new Intent(DisplayContact.this, DashboardActivity.class);
 
                 Bundle bundle = new Bundle();
@@ -52,12 +50,7 @@ public class DisplayContact extends AppCompatActivity {
 
                 startActivity(contactListActivity);
                 finish();
-
-
-
             }
         });
-
-
     }
 }

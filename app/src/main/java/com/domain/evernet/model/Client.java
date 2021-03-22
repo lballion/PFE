@@ -4,17 +4,14 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import androidx.annotation.RequiresApi;
 
 public class Client {
 
@@ -50,8 +47,6 @@ public class Client {
         } else {
             return responses[0];
         }
-
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
