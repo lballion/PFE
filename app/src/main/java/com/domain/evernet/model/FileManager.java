@@ -126,4 +126,15 @@ public class FileManager {
     public void setImageString(String s) {
         imageString = s;
     }
+
+    public void ForcedImage(String imageTest) {
+        imageString = imageTest;
+        Date currentTime = Calendar.getInstance().getTime();
+        int heure = currentTime.getHours();
+        int min = currentTime.getMinutes();
+        int sec = currentTime.getSeconds();
+        this.imageName = intToString(heure) + intToString(min) + intToString(sec);
+    }
+
+
 }

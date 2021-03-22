@@ -12,9 +12,11 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import com.domain.evernet.controller.ClientDebug;
 import com.domain.evernet.controller.DashboardActivity;
 
 import static com.domain.evernet.controller.MainActivity.PHONE_NUMBER;
+import static com.domain.evernet.controller.MainActivity.PREF_PSEUDO;
 import static com.domain.evernet.controller.MainActivity.getDefaults;
 
 public class SmsReceiver extends BroadcastReceiver {
@@ -22,6 +24,8 @@ public class SmsReceiver extends BroadcastReceiver {
     private String sms;
     private static Handler handler=new Handler ();
     private static DashboardActivity dashboardActivity;
+
+    private String pseudo = getDefaults(PREF_PSEUDO, dashboardActivity.getApplicationContext());
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -43,6 +47,12 @@ public class SmsReceiver extends BroadcastReceiver {
             String sender = messages[0].getOriginatingAddress();
             sms = sb.toString();
             this.updateHandler(context,sms);
+
+            Packet packet=new Packet();
+            packet.setPacket(sms);
+            ClientDebug clientDebug = new ClientDebug(packet.getSource(), packet.getDestination(), 6, pseudo , packet.getTimeStamp());
+            clientDebug.setImageFragment(sms);
+            clientDebug.execute();
         }
     }
 

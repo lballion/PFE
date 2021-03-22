@@ -17,7 +17,9 @@ import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +55,9 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
 
     private FragmentManager fragmentManager;
     private FrameLayout fragmentDisplay;
+
+    private Switch activitySwitch;
+    private BackgroundDebug backgroundDebug;
 
     private Button imageButton;
     private Button contactButton;
@@ -149,6 +154,42 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
                 @Override
                 public void onClick(View v) {
                     addContactButtonMenuClick();
+                }
+            });
+
+
+            backgroundDebug = new BackgroundDebug(pseudo);
+            backgroundDebug.startTimerTask();
+            activitySwitch = (Switch) findViewById(R.id.activitySwitch);
+            activitySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @RequiresApi(api = Build.VERSION_CODES.O)
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                    if (!isChecked) {
+                        ClientDebug clientDebug = new ClientDebug(2,pseudo);
+                        clientDebug.execute();
+
+                        //stop pinging
+                        backgroundDebug.stopTimerTask();
+                        Toast.makeText(getBaseContext(), "Vous êtes inactif dans le réseau!" + "\n", Toast.LENGTH_LONG).show(); // display the current state for switch's
+
+                    } else {
+                        ClientDebug clientDebug = new ClientDebug(1 ,pseudo);
+                        clientDebug.execute();
+
+                        //start pinging
+                        backgroundDebug.startTimerTask();
+                        Toast.makeText(getBaseContext(), "Vous êtes actif dans le réseau!" + "\n", Toast.LENGTH_LONG).show(); // display the current state for switch's
+
+                    }
+                    String messageDebug = backgroundDebug.toSend();
+                    if (messageDebug!=null){
+                        String[] data = messageDebug.split("\\|");
+                        dest = data[0];
+                        fileManager = new FileManager();
+                        fileManager.ForcedImage(data[1]);
+                        sendAllFragments(null);
+                    }
                 }
             });
 
@@ -421,6 +462,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
     public static DashboardActivity instance() {
         return dashboardActivity;
     }
+
 
 }
 
