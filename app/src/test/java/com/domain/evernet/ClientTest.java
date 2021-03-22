@@ -178,5 +178,21 @@ public class ClientTest {
         assertNotEquals(a.isEmpty(), true);
     }
 
+    @Test
+    public void truncateMarkersTest() throws UnknownHostException {
+        InetAddress i = InetAddress.getByName("109.215.55.162");
+        Client c = new Client(i, 50000);
+        String s = "_|_BEGIN_COMMUNICATION_|_Bonjour_|_salut_|_END_COMMUNICATION";
+        assertEquals(c.truncateMarkers(s), "Bonjour_|_salut");
+    }
+
+    @Test
+    public void addMarkersTest() throws UnknownHostException {
+        InetAddress i = InetAddress.getByName("109.215.55.162");
+        Client c = new Client(i, 50000);
+        String s = c.addMarkers("argument", "getSleep");
+        assertEquals(s, "_|_BEGIN_COMMUNICATION_|_getSleep_|_argument_|_END_COMMUNICATION");
+    }
+
 
 }
