@@ -1,0 +1,63 @@
+\documentclass[12pt]{report}
+\usepackage{listings}
+\usepackage{xcolor}
+
+
+            \lstset{
+            tabsize = 4, %% set tab space width
+            showstringspaces = false, %% prevent space marking in strings, string is defined as the text that is generally printed directly to the console
+            numbers = left, %% display line numbers on the left
+            commentstyle = \color{blue}, %% set comment color
+            keywordstyle = \color{orange}, %% set keyword color
+            stringstyle = \color{green}, %% set string color
+            rulecolor = \color{black}, %% set frame color to avoid being affected by text color
+            basicstyle = \small \ttfamily , %% set listing font and size
+            breaklines = true, %% enable line breaking
+            numberstyle = \tiny,
+        }
+
+
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[final]{pdfpages} 
+\usepackage{titlesec}
+\usepackage{setspace}
+\usepackage{color}
+\usepackage[nottoc, notlof, notlot]{tocbibind}
+\usepackage{hyperref}
+\usepackage{float}
+%\usepackage{slashbox}
+\usepackage{diagbox}
+\usepackage{biblatex}
+\usepackage{listings}
+\usepackage{lscape}
+\usepackage{geometry}
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+\bibliography{Bibliographie.bib}
+
+\titleformat{\chapter}{\bf\huge}{\thechapter}{0pc}{}
+\begin{document}
+
+\input{./title.tex}
+
+\tableofcontents
+\listoffigures
+
+\include{introduction}
+\include{analyse_de_lexistant}
+\include{analyse_des_besoins}
+\include{architecture}
+\include{gant}
+\include{Realisation}
+\include{implementation}
+\include{analyse_du_fonctionnement_et_test}
+\include{conclusion}
+\printbibliography
+\end{document}

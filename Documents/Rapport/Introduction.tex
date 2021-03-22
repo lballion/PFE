@@ -1,0 +1,34 @@
+\chapter{ INTRODUCTION}
+
+\section{Contexte}
+Dans le cadre de notre cursus de Master 2 en Informatique à l'Université de Bordeaux, nous allons présenter dans ce rapport notre projet de fin d'études Evernet réalisé par groupes de six étudiants. \\Nous avons travaillé avec Monsieur \textbf{Serge CHAUMETTE} qui est  notre client et monsieur \textbf{Pascal DESBARATS}, le chargé de l'encadrement de nos travaux dirigés.
+
+\section{Problématique}
+La plupart des applications disponibles actuellement et qui permettent d'envoyer des images nécessitent l'utilisation d'une connexion internet. L'idée derrière ce projet est de parvenir à partager des images entre utilisateurs en utilisant le service SMS fourni par les opérateurs de téléphonie mobile. C'est un défi technique de taille, car le service SMS fourni par les opérateurs impose plusieurs contraintes parmi lesquelles nous pouvons citer :
+
+\begin{itemize}
+    \item la taille maximale d'un message
+    \item le nombre maximum de destinataires autorisé
+    \item le nombre maximum de messages qu'on peut envoyer simultanément
+\end{itemize}
+
+\section{Objectif du projet}
+L'objectif de ce projet est de permettre, la transmission efficace d'images en toute confidentialité entre téléphones mobiles dans un environnement non sécurisé, sans connexion Internet, et ce, en utilisant le service de messagerie SMS. Il faut aussi veiller à répartir la charge sur l'ensemble des participants le coût énergétique et l'empreinte CO2. 
+
+Les téléphones des utilisateurs serviront de relais entre l'émetteur et le destinataire de l'image. Pour cela, l'image sera découpée en paquets de petite taille que l'on nommera slots, qui seront envoyés vers les mobiles d'autres participants choisis au hasard, ces derniers les retransmettront à leur tour dans des délais raisonnables.
+Les numéros de mobiles des participants doivent rester confidentiels. Afin de garantir l'anonymat, un serveur central sera donc utilisé pour gérer l'association pseudonyme-numéro de téléphone.
+
+Ce projet a été découpé en trois parties : 
+\begin{enumerate} 
+    \item le serveur central et PKI
+    \item la transmission des slots et le Network Coding
+    \item le système de visualisation et de débug
+\end{enumerate}
+
+Notre mission dans de ce projet a  été d'étudier et de mettre en place le système de transmission des slots en utilisant le Network Coding. Nous allons dans ce rapport, donner une explication détaillée de l'ensemble de nos réalisations.     
+
+%Pour ce faire, nous avons découpé l'image à envoyer en plusieurs paquets, assurer leur acheminement en toute sécurité dans le réseau, tout en veillant à l'équilibre de la charge énergétique et de l'empreinte carbone.
+%Nous présenterons ainsi dans ce cahier des charges les différentes contraintes et prévisions, ainsi que les besoins associés au projet. 
+%pour brouiller les pistes des observateurs extérieurs.
+
+

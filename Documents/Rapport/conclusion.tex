@@ -1,0 +1,33 @@
+\chapter{ CONCLUSION}
+%ce qui a été réussi, ce qui n'a pas été et les perspectives
+% les apports du projet 
+{La réalisation de ce projet  de fin d'études nous a permis :
+\begin{itemize}
+    \item de revoir les concepts principaux du génie logiciel et de les remettre en application : besoins fonctionnels et non fonctionnels, conception et spécification, tests, architecture et modularité, outils d'aide au développement, travail en équipe.
+    \item de renforcer nos connaissances en programmation : paradigmes de programmation, langages de programmation, gestion des erreurs.
+    \item d'appliquer une pratique scientifique rigoureuse en développement logiciel : recherche et analyse de l'existant, bibliographie, assimilation de nouveaux concepts, justification des choix, analyses et critiques du travail réalisé, rédaction de documents(Compte rendu hebdomadaire, cahier des besoins, rapport final et présentations).
+    \item de découvrir et d'utiliser le célèbre système d'exploitation Android pour développer une application mobile.
+    \end{itemize}{}\par}
+{Malgré des conditions difficiles de réalisation du projet liées au temps que nous disposions pour ce dernier, à la fermeture de l'université et au contraintes matérielles (pour les tests par exemple), nous avons dans un premier temps essayer d'obtenir sans le network coding un outil qui traite les besoins essentiels du client :
+    \begin{itemize}
+        \item sélectionner une image et un destinataire 
+        \item la découper en plusieurs slots 
+        \item envoyer les slots à des intermédiaires qui les enverront directement au destinataire
+        \item  Reconstituer l'image à la réception de tous les slots
+    \end{itemize}{}\par}
+
+Pour la mise en place du Network coding nous avons réussi : 
+ \begin{itemize}
+        \item l'opération d'encodage et de décodage avec un XOR : on a réussi au niveau d'un noeud à encoder deux paquets et à décoder le packet formé pour retrouver les paquets d'origine. 
+        \item le traitement des paquets par le destinataire : cette étape n'a pas été testé sur le réseau physique. 
+    \end{itemize}
+
+L'encodage et le décodage en utilisant les combinaisons linéaires n'est pas encore fonctionnel et il reste à intégrer le network coding lors du traitement des paquets au niveau des noeuds intermédiaires.
+    
+    
+    \vspace{0.2cm}
+    Des améliorations qui seraient importantes à implémenter pour un futur travail seraient d'une part de chiffrer nos SMS pour assurer la confidentialité des données transitant dans le réseau Evernet; d'autre part il serait intéressant de pouvoir faire un multicast de l'envoi d'une image.
+    
+    \vspace{0.2cm}
+    Nous ne saurons terminer ce rapport sans remercier toutes les personnes qui, de près ou de loin ont contribué à la réalisation de ce projet. Nous pensons en particulier au professeur chargé du cours de MOCPI \textbf{Monsieur Pascal DESBARATS} pour son encadrement et ses conseils et au client \textbf{Monsieur Serge CHAUMETTE} pour sa disponibilité et son implication tout au long du processus.
+

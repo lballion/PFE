@@ -1,0 +1,24 @@
+\chapter{ ANALYSE DE L'EXISTANT}
+
+Plusieurs applications pour téléphone mobile, permettant l'envoi de messages et/ou d'images, sont déjà disponibles sur le marché. Parmi celles-ci, on retrouve notamment WhatsApp, Telegram et Signal.\\
+\begin{itemize}
+    \item  WhatsApp permet l'envoi de messages et d'images en utilisant une connexion internet fixe ou par un réseau internet mobile (3G,4G). Elle offre un chiffrage de bout en bout des communications et compte plus de 2 milliards d'utilisateurs à travers le monde.\\
+    Bien que les communications soient chiffrées, WhatsApp fait face à des critiques concernant la confidentialité des données personnelles échangées sur la plateforme. \\
+    Cela notamment depuis son rachat en 2014 par Facebook et la mise en place de nouvelles conditions d'utilisations début 2021. Conditions qu'il est obligatoire d'accepter afin de continuer à utiliser le service. 
+    \\Ceci a eu pour conséquence, de provoquer une fuite d'un certain nombre d'utilisateurs vers des services concurrents.\\
+    
+    \item Telegram est une application de messagerie permettant d'échanger des messages et des documents de manière sécurisée. 
+    \\La partie cliente est libre alors que la partie serveur est propriétaire. A l'origine, l'application a été développée par deux frères russes Nikolaï et Pavel Dourov afin de pouvoir communiquer tout en évitant la censure. 
+    \\Certains experts en sécurité émettent des doutes sur le mode d'authentification de Telegram. Ils expliquent qu'il serait possible d'usurper l'identité d'un utilisateur en interceptant le code SMS de vérification. 
+    \\Actuellement l'application compte plus de 500 millions d'utilisateurs à travers le monde.\\
+    
+    \item Signal est une application conçue dans le but d'être la plus sécurisée possible. Elle réalise une collecte minime des données personnelles des utilisateurs. Sa distribution est sous licence libre. 
+    \\Elle est financée par la Signal Foundation qui est une association à but non lucratif. Son haut niveau de sécurité fait qu'elle est recommandée par des personnalités comme Edward Snowden ou Elon Musk. La commission européenne recommande à son personnel l'utilisation de Signal. 
+    \\Moins utilisée que ses concurrents, signal connaît un certain succès, notamment depuis le changement des conditions d'utilisation de WhatsApp, qui entraîna 47 millions de téléchargements en deux semaines pour Signal.\\
+    
+\end{itemize}
+\paragraph{}L'application Evernet offre un protocole d'échange d'image sécurisé. Sa principale différence vis à vis des solutions existantes est le fait qu'elle n'utilise que les SMS pour l'envoi de fichiers. L'autre particularité d'Evernet contrairement aux autres solutions disponibles, est qu'elle permet uniquement l'échange d'image et non de messages et autres types de documents.
+
+\paragraph{}Le Network Coding est un thème de recherche qui a été récurant à la fin des années 90 et au début des années 2000. Son objectif est d'améliorer le débit, l'efficacité et l'évolutivité d'un réseau de communication. 
+\\Un autre avantage du Network Coding est qu'il permet d'augmenter la résistance du réseau aux attaques. Son principe de base consiste à faire transiter sur un lien de communication plus d'un paquet à la fois. Lorsqu'un noeud du réseau reçoit deux paquets celui-ci va agréger les deux paquet de manière à ne faire circuler sur le lien qu'un seul paquet. Pour parvenir à cela, une opération binaire (par exemple un XOR) va être faite sur le payload des deux paquets pour ne constituer qu'un seul paquet. On peut donc faire transiter sur un seul lien plus de données dans la même unité de temps et on accroît donc le débit du réseau, de plus, le codage appliqué au payload va permettre de renforcer la sécurité globale du réseau. L'utilisation de ce protocole dans notre projet va permettre d'améliorer les performances globales du réseau ainsi que sa sécurité.    
+
