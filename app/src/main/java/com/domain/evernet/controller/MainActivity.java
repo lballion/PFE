@@ -125,25 +125,33 @@ public class MainActivity extends AppCompatActivity {
 
                 if (isPhonenumberTrue && isPseudoTrue) {
 
-
                     Intent dashboardActivityIntent = new Intent(MainActivity.this, DashboardActivity.class);
 
                     Client c = new Client("pdp-evernet.ddns.net", 50000);
                     c.openSocket();
+                    try {
+                        c.receiveDataFromServer();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
                     try {
                         String phoneInput = phone.getText().toString().trim();
                         String pseudoInput = pseudo.getText().toString().trim();
                         String passwordInput = password.getText().toString().trim();
-                        c.signIn(pseudoInput, passwordInput, phoneInput, "martin");
+                        String s = c.signIn(pseudoInput, passwordInput, phoneInput, "martin");
+                        if (s != null) {
+                            startActivity(dashboardActivityIntent);
+                            setDefaults(PREF_PSEUDO, pseudo.getText().toString(), getApplicationContext());
+                            setDefaults(PHONE_NUMBER, phone.getText().toString(), getApplicationContext());
+                            finish();
+                        }
+                        else{
+                            Toast.makeText(getBaseContext(), "Pseudo ou numéro de téléphone déjà utilisé !", Toast.LENGTH_LONG).show();
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
-                    startActivity(dashboardActivityIntent);
-                    setDefaults(PREF_PSEUDO, pseudo.getText().toString(), getApplicationContext());
-                    setDefaults(PHONE_NUMBER, phone.getText().toString(), getApplicationContext());
-                    finish();
                 }
             }
         });
