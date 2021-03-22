@@ -13,12 +13,12 @@
 
     <string name="saveContactName">Name :</string>
     <string name="saveContactID">ID :</string>
-    <string name="saveContactButton">Save</string>
+    <string name="saveContactButton">Sauvegarder</string>
     <string name="AddContact">Add contact</string>
     <string name="AddContactReturnButton">Return</string>
 
     <string name="Default_name">Non saisie</string>
-    <string name="resetContactBtn">Reset</string>
+    <string name="resetContactBtn">Supprimer tout</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

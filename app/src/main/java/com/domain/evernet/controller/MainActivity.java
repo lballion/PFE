@@ -89,12 +89,12 @@ public class MainActivity extends AppCompatActivity {
 
 
                 if (pseudoInput.length() > 9) {
-                    Toast.makeText(getBaseContext(), "Pseudo might be under 9 characters !", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(), "Taille max du pseudo 9 charactéres !", Toast.LENGTH_LONG).show();
                     pseudoLengthTrue = false;
 
                 }
                 if (pseudoInput.contains("*")) {
-                    Toast.makeText(getBaseContext(), "Pseudo can't contains '*' !", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(), "Le pseudo ne peut pas contenir des  '*' !", Toast.LENGTH_LONG).show();
                     pseudoContainsTrue = false;
 
                 }
@@ -107,13 +107,13 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     Integer i = Integer.parseInt(phoneInput);
                 } catch (NumberFormatException e) {
-                    Toast.makeText(getBaseContext(), "Phone number will only contains numbers (0-9) !", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(), "Le numéro de téléphone ne peut contenir que des chiffres (0-9) !", Toast.LENGTH_LONG).show();
                     numbercontains = false;
 
 
                 }
                 if (!(phoneInput.length() == 10)) {
-                    Toast.makeText(getBaseContext(), "Bad phone number forms !", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(), "Numéro de téléphone trop court ou trop long !", Toast.LENGTH_LONG).show();
                     numberLengthTrue = false;
 
                 }

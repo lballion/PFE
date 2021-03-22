@@ -104,7 +104,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
                     this.dest = bundle.getString("contact");
                 }
                 this.destId = bundle.getInt("id");
-                Toast.makeText(getBaseContext(), "Contact selected : " + this.dest, Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), "Contact selectionné : " + this.dest, Toast.LENGTH_LONG).show();
 
             }
 
