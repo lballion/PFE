@@ -161,7 +161,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
                 selectedImageUri = data == null ? null : selectedImage;
                 fileManager=new FileManager();
                 finalBitmap = fileManager.getResizedBitmap(this.getContentResolver(),selectedImageUri);
-               // imageFragment.setImage(finalBitmap);
+               imageFragment.setImage(finalBitmap);
                 Toast.makeText(getBaseContext(), " "+fileManager.getSizeOfBytesArray(), Toast.LENGTH_LONG).show();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -246,7 +246,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
         } catch (Exception e) {
             Toast.makeText(getBaseContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
-        // Toast.makeText(getBaseContext(), "Image send to : " + dest, Toast.LENGTH_LONG).show();
+
     }
 
     //Launch the exit windows when the user want to leave the app
