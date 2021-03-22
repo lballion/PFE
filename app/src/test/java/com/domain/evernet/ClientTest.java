@@ -22,8 +22,7 @@ public class ClientTest {
     @Test
     public void openSocketTest () throws UnknownHostException {
 
-        InetAddress i = InetAddress.getByName("109.215.55.162");
-        Client c = new Client(i, 50000);
+        Client c = new Client("pdp-evernet.ddns.net", 50000);
         c.openSocket();
         assertNotEquals(c.getSocket(), null);
     }
@@ -31,8 +30,7 @@ public class ClientTest {
     @Test
     public void closeSocketTest () throws IOException {
 
-        InetAddress i = InetAddress.getByName("109.215.55.162");
-        Client c = new Client(i, 50000);
+        Client c = new Client("pdp-evernet.ddns.net", 50000);
         c.openSocket();
         c.closeSocket();
         assertEquals(c.getSocket().isClosed(), true);
@@ -41,8 +39,7 @@ public class ClientTest {
     @Test
     public void receiveDataFromServer () throws IOException {
 
-        InetAddress i = InetAddress.getByName("109.215.55.162");
-        Client c = new Client(i, 50000);
+        Client c = new Client("pdp-evernet.ddns.net", 50000);
         c.openSocket();
         c.sendDataToServer("test");
         String s = c.receiveDataFromServer();
@@ -58,8 +55,8 @@ public class ClientTest {
         long randomInt = (long) (r.nextDouble() * 9000000000L + 1000000000L);
         String user = "toto" + randomChar + randomInt;
         System.out.println(user);
-        InetAddress i = InetAddress.getByName("109.215.55.162");
-        Client c = new Client(i, 50000);
+
+        Client c = new Client("pdp-evernet.ddns.net", 50000);
         c.openSocket();
         c.receiveDataFromServer();
         String s = c.signIn(user, user, "" + randomInt,"martin");
@@ -69,8 +66,7 @@ public class ClientTest {
     @Test
     public void signInWrongParamTest() throws IOException {
 
-        InetAddress i = InetAddress.getByName("109.215.55.162");
-        Client c = new Client(i, 50000);
+        Client c = new Client("pdp-evernet.ddns.net", 50000);
         c.openSocket();
         c.receiveDataFromServer();
         String s = c.signIn(" ", "toto", "0000000000"," ");
@@ -80,8 +76,7 @@ public class ClientTest {
     @Test
     public void logInTest() throws IOException {
 
-        InetAddress i = InetAddress.getByName("109.215.55.162");
-        Client c = new Client(i, 50000);
+        Client c = new Client("pdp-evernet.ddns.net", 50000);
         c.openSocket();
         c.receiveDataFromServer();
         HashMap<String, String> h = c.logIn("tototer", "tototer");
@@ -91,8 +86,7 @@ public class ClientTest {
     @Test
     public void logInWrongParamTest() throws IOException {
 
-        InetAddress i = InetAddress.getByName("109.215.55.162");
-        Client c = new Client(i, 50000);
+        Client c = new Client("pdp-evernet.ddns.net", 50000);
         c.openSocket();
         c.receiveDataFromServer();
         HashMap<String, String> h = c.logIn("uhejniojz", "poqkfa");
@@ -103,8 +97,7 @@ public class ClientTest {
     @Test
     public void getPhoneNbTest() throws IOException {
 
-        InetAddress i = InetAddress.getByName("109.215.55.162");
-        Client c = new Client(i, 50000);
+        Client c = new Client("pdp-evernet.ddns.net", 50000);
         c.openSocket();
         c.receiveDataFromServer();
         c.logIn("tototer", "tototer");
@@ -116,8 +109,7 @@ public class ClientTest {
     @Test
     public void getPhoneNbWrongParamTest() throws IOException {
 
-        InetAddress i = InetAddress.getByName("109.215.55.162");
-        Client c = new Client(i, 50000);
+        Client c = new Client("pdp-evernet.ddns.net", 50000);
         c.openSocket();
         c.receiveDataFromServer();
         c.logIn("totobis", "totobis");
@@ -129,8 +121,7 @@ public class ClientTest {
     @Test
     public void getPhoneNumListTest() throws IOException {
 
-        InetAddress i = InetAddress.getByName("109.215.55.162");
-        Client c = new Client(i, 50000);
+        Client c = new Client("pdp-evernet.ddns.net", 50000);
         c.openSocket();
         c.receiveDataFromServer();
         c.logIn("tototer", "tototer");
@@ -142,8 +133,7 @@ public class ClientTest {
     @Test
     public void getPhoneNumListWrongParamTest() throws IOException {
 
-        InetAddress i = InetAddress.getByName("109.215.55.162");
-        Client c = new Client(i, 50000);
+        Client c = new Client("pdp-evernet.ddns.net", 50000);
         c.openSocket();
         c.receiveDataFromServer();
         c.logIn("totobis", "totobis");
@@ -155,8 +145,7 @@ public class ClientTest {
     @Test
     public void getInvitationKeyTest() throws IOException {
 
-        InetAddress i = InetAddress.getByName("109.215.55.162");
-        Client c = new Client(i, 50000);
+        Client c = new Client("pdp-evernet.ddns.net", 50000);
         c.openSocket();
         c.receiveDataFromServer();
         c.logIn("totobis", "totobis");
@@ -168,8 +157,7 @@ public class ClientTest {
     @Test
     public void getAllAliasTest() throws IOException {
 
-        InetAddress i = InetAddress.getByName("109.215.55.162");
-        Client c = new Client(i, 50000);
+        Client c = new Client("pdp-evernet.ddns.net", 50000);
         c.openSocket();
         c.receiveDataFromServer();
         c.logIn("totobis", "totobis");
@@ -180,16 +168,16 @@ public class ClientTest {
 
     @Test
     public void truncateMarkersTest() throws UnknownHostException {
-        InetAddress i = InetAddress.getByName("109.215.55.162");
-        Client c = new Client(i, 50000);
+
+        Client c = new Client("pdp-evernet.ddns.net", 50000);
         String s = "_|_BEGIN_COMMUNICATION_|_Bonjour_|_salut_|_END_COMMUNICATION";
         assertEquals(c.truncateMarkers(s), "Bonjour_|_salut");
     }
 
     @Test
     public void addMarkersTest() throws UnknownHostException {
-        InetAddress i = InetAddress.getByName("109.215.55.162");
-        Client c = new Client(i, 50000);
+
+        Client c = new Client("pdp-evernet.ddns.net", 50000);
         String s = c.addMarkers("argument", "getSleep");
         assertEquals(s, "_|_BEGIN_COMMUNICATION_|_getSleep_|_argument_|_END_COMMUNICATION");
     }

@@ -19,15 +19,15 @@ import androidx.annotation.RequiresApi;
 public class Client {
 
     private Socket serverSocket;
-    private InetAddress serverAddress;
+    private String domain;
     private int port;
     private DataOutputStream out;
     private InputStream input;
     private InputStreamReader reader;
 
-    public Client(InetAddress serverAddress, int port) {
+    public Client(String domainName, int port) {
 
-        this.serverAddress = serverAddress;
+        domain = domainName;
         this.port = port;
     }
 
@@ -167,7 +167,7 @@ public class Client {
     public void openSocket() {
 
         try {
-            serverSocket = new Socket(serverAddress, port);
+            serverSocket = new Socket(domain, port);
 
         } catch (UnknownHostException e1) {
             e1.printStackTrace();

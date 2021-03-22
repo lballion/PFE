@@ -128,14 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
                     Intent dashboardActivityIntent = new Intent(MainActivity.this, DashboardActivity.class);
 
-                    InetAddress i = null;
-                    try {
-                        i = InetAddress.getByName("109.215.55.162");
-                    } catch (UnknownHostException e) {
-                        e.printStackTrace();
-                    }
-
-                    Client c = new Client(i, 50000);
+                    Client c = new Client("pdp-evernet.ddns.net", 50000);
                     c.openSocket();
 
                     try {
