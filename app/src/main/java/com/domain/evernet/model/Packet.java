@@ -4,39 +4,20 @@ public class Packet {
 
     private String source;
     private String destination;
-    private int position;
+    private int[] position;
     private int nbPackets;
     private int ttl;
     private String timeStamp;
     private String imageFragment;
 
-    public Packet(String src, String dst, int pos, int nbPackets, int ttl, String timeStmp, String imgFrag) {
+    public Packet(String src, String dst, int[] pos, int nbPackets, int ttl, String timeStmp, String imgFrag) {
 
-
-        boolean maxValues = pos <= 9999 &&  nbPackets <= 9999 && ttl <= 9;
-        boolean minValues = pos >= 0 && nbPackets >= 0 && ttl >= 0;
-
-        if( ! minValues || ! maxValues) {
-            throw new IllegalArgumentException("Args must be positive integers  and includes between 0 and 9999.");
-        }
-
-        if(src == null || dst== null || timeStmp == null || imgFrag == null) {
-            throw new IllegalArgumentException("Strings must not be null.");
-        }
-
-        boolean containsEmptyValues = src.equals("") || dst.equals("") || imgFrag.equals("");
-
-        if(containsEmptyValues  ){
-            throw new IllegalArgumentException("Packet  contains empty string value.");
-        }
-
-        boolean maxSizeExceeded = src.length() > 10 || dst.length() >10 || timeStmp.length() != 6 ;
-        if( maxSizeExceeded) {
-            throw new IllegalArgumentException("Max size exceeded.");
+        if( src.equals("") || dst.equals("") || pos.length < 0 || pos.length > 2 || nbPackets < 0 || imgFrag.equals("") || ttl < 0){
+            throw new IllegalArgumentException("One or several argumrnt are invalid.");
         }
         source = src;
         destination = dst;
-        position = pos;
+        position = pos.clone();
         this.nbPackets = nbPackets;
         this.ttl = ttl;
         timeStamp = timeStmp;
@@ -84,7 +65,7 @@ public class Packet {
 
     public String getDestination() { return destination; }
 
-    public int getPosition() {
+    public int[] getPosition() {
         return position;
     }
 
@@ -104,21 +85,28 @@ public class Packet {
 
     public String extractDst(String stringPack) { return stringPack.substring(10,20); }
 
-    public String extractPosition(String stringPack) { return stringPack.substring(20,24); }
+    public String extractPosition(String stringPack) { return stringPack.substring(20,28); }
 
-    public String extractNBpackets(String stringPack) { return stringPack.substring(24,28); }
+    public String extractNBpackets(String stringPack) { return stringPack.substring(28,32); }
 
-    public String extractNameOfIm(String stringPack) { return stringPack.substring(28,34); }
+    public String extractNameOfIm(String stringPack) { return stringPack.substring(32,38); }
 
-    public String extractTtl(String stringPack) { return stringPack.substring(34,35); }
+    public String extractTtl(String stringPack) { return stringPack.substring(38,39); }
 
-    public String extractFragment(String stringPack) { return stringPack.substring(35,stringPack.length()); }
+    public String extractFragment(String stringPack) { return stringPack.substring(39,stringPack.length()); }
 
     public void setPacket(String stringPack) {
 
         this.source = this.extractSrc(stringPack);
         this.destination = this.extractDst(stringPack);
-        this.position = Integer.parseInt(this.extractPosition(stringPack));
+        String positions = this.extractPosition(stringPack);
+
+        String[] parsePosition = positions.replaceAll("\\[","").replaceAll("\\]","").replaceAll(" ","").replaceAll("\\s","").split(",");
+        if(parsePosition.length > 2)
+            throw new IllegalArgumentException("The number of position in the packet is invalid");
+
+        for (int i=0; i< parsePosition.length ; i++){this.position [i]= Integer.parseInt(parsePosition[i]);
+        }
         this.nbPackets = Integer.parseInt(this.extractNBpackets(stringPack));
         this.ttl = Integer.parseInt(this.extractTtl(stringPack));
         this.timeStamp = this.extractNameOfIm(stringPack);

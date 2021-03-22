@@ -27,7 +27,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.domain.evernet.R;
-import com.domain.evernet.controller.Client;
 import com.domain.evernet.model.Client;
 import com.domain.evernet.model.FileManager;
 import com.domain.evernet.controller.NetworkCoding;
@@ -186,7 +185,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
     }
 
 
-    public  ArrayList<Contact> changeContactMapIntoList(Map<Integer, Contact> contactMap){
+    public ArrayList<Contact> changeContactMapIntoList(Map<Integer, Contact> contactMap){
         ArrayList<Contact> contactItemList = new ArrayList<Contact>();
 
         for (Contact i : contactMap.values()){
@@ -258,7 +257,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
             SmsManager smsMgr = SmsManager.getDefault();
             if (messageToSend != null)
                 //!!!!!! Add your phone number here !!!!!!
-                smsMgr.sendTextMessage(this.dest, "", messageToSend, sentPI, null);
+                smsMgr.sendTextMessage("", "", messageToSend, sentPI, null);
         } catch (Exception e) {
             Toast.makeText(getBaseContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
@@ -394,7 +393,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
         int ttl = 2;
         while (!fileManager.allFragmentsHaveBeenRecovered()) {
             String fragment=fileManager.getNextFragment();
-            int position=fileManager.getPosOfThisFragment();
+            int[] position={fileManager.getPosOfThisFragment(),0};
             int nb_packets=fileManager.getNbPackets();
             Packet p=new Packet(getMyPhonenumber(),"0605831895", position,nb_packets,ttl, fileManager.getNameOfPicture(), fragment);
             messageToSend=p.getPacket();

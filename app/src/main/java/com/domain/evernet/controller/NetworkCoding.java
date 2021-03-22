@@ -4,6 +4,8 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.domain.evernet.model.Packet;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -66,5 +68,38 @@ public class NetworkCoding {
         }
 
         return jsonObject;
+    }
+
+    public Packet encodeTwoPacket(Packet firstPacket, Packet secondPacket){
+        int[] firstPcktPos = firstPacket.getPosition();
+        int[] secondPcktPos = secondPacket.getPosition();
+
+        byte[] firstPacketByteValue = firstPacket.getImageFragment().getBytes();
+        byte[] secondPacketByteValue = secondPacket.getImageFragment().getBytes();
+
+        long firstPacketValue = 0;
+        long secondPacketValue = 0;
+
+        for (byte oneByte : firstPacketByteValue){
+            firstPacketValue = (firstPacketValue << 8) + (oneByte & 0xff);
+        }
+        firstPacketValue = firstPacketValue * firstPcktPos[0];
+
+        for (byte oneByte : secondPacketByteValue){
+            secondPacketValue = (secondPacketValue << 8) + (oneByte & 0xff);
+        }
+        secondPacketValue = secondPacketValue * secondPcktPos[0];
+
+        long encodedPacketValue = firstPacketValue ^ secondPacketValue;
+        int[] encodedPos = {firstPcktPos[0], secondPcktPos[0]};
+
+
+        return new Packet(firstPacket.getSource(),
+                firstPacket.getDestination(),
+                encodedPos,
+                firstPacket.getNbPackets(),
+                firstPacket.getTtl(),
+                firstPacket.getTimeStamp(),
+                String.valueOf(encodedPacketValue));
     }
 }

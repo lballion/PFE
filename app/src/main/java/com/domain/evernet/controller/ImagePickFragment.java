@@ -20,6 +20,8 @@ import android.widget.Spinner;
 
 import com.domain.evernet.R;
 
+import org.json.JSONException;
+
 public class ImagePickFragment extends Fragment {
 
     private ImagePickFragmentListener listener;
@@ -77,12 +79,6 @@ public class ImagePickFragment extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }
-        });
-        contactButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.launchContactList();
             }
         });
 
