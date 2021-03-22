@@ -81,7 +81,6 @@ public class ClientDebug extends AsyncTask<Void, Void, Void> {
      *            - Message if a message is received to inform the server
      *            - Ping to check the activity of the node
      *            - Path to send a request to receive the complete path of the message from the debugger
-     *            - Image to send the fragment that we receive
      * @return the complete message to send  to the debugger
      */
     public String messageType(int type){
@@ -95,16 +94,13 @@ public class ClientDebug extends AsyncTask<Void, Void, Void> {
                 toSend = "Inactive" + ";" + myId;
                 break;
             case 3:
-                toSend = "Message" + ";" + myId + ";" + previousId + ";" + nextId + ";" + imageId;
+                toSend = "Message" + ";" + myId + ";" + previousId + ";" + nextId + ";" + imageId + ";" + imageFragment;
                 break;
             case 4:
                 toSend = "Ping" + ";" + myId;
                 break;
             case 5:
                 toSend = "Path" + ";" + myId + ";" + imageId;
-                break;
-            case 6:
-                toSend = "Image" + ";" + myId + ";"+ imageFragment;
                 break;
             default:
                 break;

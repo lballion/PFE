@@ -25,12 +25,12 @@ public class SmsReceiver extends BroadcastReceiver {
     private static Handler handler=new Handler ();
     private static DashboardActivity dashboardActivity;
 
-    private String pseudo = getDefaults(PREF_PSEUDO, dashboardActivity.getApplicationContext());
+    private String pseudo;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onReceive(Context context, Intent intent) {
-
+        pseudo = getDefaults(PREF_PSEUDO, context);
         Bundle bundle = intent.getExtras();
         if (bundle != null) {
             Object[] pduArray = (Object[]) bundle.get("pdus");
@@ -48,9 +48,8 @@ public class SmsReceiver extends BroadcastReceiver {
             sms = sb.toString();
             this.updateHandler(context,sms);
 
-            Packet packet=new Packet();
-            packet.setPacket(sms);
-            ClientDebug clientDebug = new ClientDebug(packet.getSource(), packet.getDestination(), 6, pseudo , packet.getTimeStamp());
+
+            ClientDebug clientDebug = new ClientDebug(null, null, 5, pseudo , null);
             clientDebug.setImageFragment(sms);
             clientDebug.execute();
         }

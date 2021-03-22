@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     private String pseudoInput;
     private String passwordInput;
 
+    private Button path;
+
     public static final String PREF_PSEUDO = "PREF_PSEUDO";
     public static  String PHONE_NUMBER;
 
@@ -155,6 +157,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        path = (Button) findViewById(R.id.chemin);
+        path.setOnClickListener(new View.OnClickListener() {
+
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onClick(View v) {
+                //envoie de la requête pour afficher l'image du chemin
+                //ClientDebug clientDebug = new ClientDebug();
+            }
+        });
     }
 
     private TextWatcher loginTextWatcher = new TextWatcher() {

@@ -61,22 +61,13 @@
         android:id="@+id/activitySwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:checked="true"
         android:text="Activité"
         android:textColor="#008F36"
         android:textOff="Off"
         android:textOn="On"
-        tools:ignore="MissingConstraints,UseSwitchCompatOrMaterialXml" />
-
-    <Button
-        android:id="@+id/Chemin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Chemin"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="102dp" />
+        tools:ignore="MissingConstraints,UseSwitchCompatOrMaterialXml" />
 
     <FrameLayout
         android:id="@+id/fragmentDisplay"
@@ -84,11 +75,18 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/exitButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/contactButton"
-        app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintVertical_bias="0.003">
 
+        <Button
+            android:id="@+id/chemin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chemin"
+            tools:ignore="MissingConstraints" />
     </FrameLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
