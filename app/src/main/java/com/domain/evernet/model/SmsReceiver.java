@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.telephony.SmsMessage;
+import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -17,11 +18,17 @@ import com.domain.evernet.controller.DashboardActivity;
 import static com.domain.evernet.controller.MainActivity.PHONE_NUMBER;
 import static com.domain.evernet.controller.MainActivity.getDefaults;
 
+
+import java.util.Arrays;
+import java.util.HashMap;
+
 public class SmsReceiver extends BroadcastReceiver {
 
     private String sms;
+    private String myNumber = "0692481497";
     private static Handler handler=new Handler ();
     private static DashboardActivity dashboardActivity;
+    private HashMap<String, ReconstructionQueue> reconstructionBuffer = new HashMap<>();
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -42,6 +49,87 @@ public class SmsReceiver extends BroadcastReceiver {
             }
             String sender = messages[0].getOriginatingAddress();
             sms = sb.toString();
+
+            /**
+             * Partie NetworkCoding à tester
+             * */
+
+            Packet receivedPacket = new Packet();
+            receivedPacket.setPacket(sms);
+
+            if(receivedPacket.getDestination() == myNumber){
+                int[] receivedPos = receivedPacket.getPosition();
+
+                if (reconstructionBuffer.containsKey(receivedPacket.getTimeStamp())){
+                    ReconstructionQueue reconstruction = reconstructionBuffer.get(receivedPacket.getTimeStamp());
+                    reconstructionBuffer.remove(reconstruction.getId());
+
+                    if (!isMergedPacket(receivedPos)){
+
+                        if(!reconstruction.isInClear(receivedPacket))
+                            reconstruction.addAClearPacket(receivedPacket);
+
+                        int[] matchingMerge = reconstruction.getKeyOfWhichContainPacket(receivedPacket);
+                        int[] emptyKey = {0,0};
+
+                        if(!Arrays.equals(matchingMerge, emptyKey)){
+                            Packet mergedPacket = reconstruction.getMergedPacket(matchingMerge);
+                            Packet decodedPacket = NetworkCodingSimple.decodeMergedPacketWithOnePacket(mergedPacket, receivedPacket);
+
+                            if(!reconstruction.isInClear(decodedPacket)){
+                                reconstruction.addAClearPacket(decodedPacket);
+                            }
+
+                        }
+
+
+                    }
+
+                    else{
+                        for(int i = 0; i < reconstruction.sizeClearPacket(); i++){
+                            int[] matchingMerge = reconstruction.getKeyOfWhichContainPacket(reconstruction.getClearPacket(i));
+                            int[] emptyKey = {0,0};
+
+                            if(!Arrays.equals(matchingMerge, emptyKey)){
+                                Packet mergedPacket = reconstruction.getMergedPacket(matchingMerge);
+                                Packet decodedPacket = NetworkCodingSimple.decodeMergedPacketWithOnePacket(mergedPacket, receivedPacket);
+
+                                if(!reconstruction.isInClear(decodedPacket)){
+                                    reconstruction.addAClearPacket(decodedPacket);
+                                }
+                            }
+                            else{
+                                reconstruction.addMergedPacket(receivedPacket);
+                            }
+                        }
+                    }
+
+                    if(reconstruction.isfull()){
+                        for (int i = 0; i< reconstruction.getNumberOfPacket(); i++){
+                            this.updateHandler(context, reconstruction.getClearPacket(i).getPacket());
+                        }
+                    }else{
+                        reconstructionBuffer.put(reconstruction.getId(),reconstruction);
+                    }
+                }else{
+
+                    ReconstructionQueue reconstruct = new ReconstructionQueue(receivedPacket);
+
+                    if(isMergedPacket(receivedPos)){
+                        reconstruct.addMergedPacket(receivedPacket);
+                    }else {
+                        reconstruct.addAClearPacket(receivedPacket);
+                    }
+
+                    reconstructionBuffer.put(reconstruct.getId(), reconstruct);
+                }
+            }
+
+
+            /**
+             * Fin de la Partie à tester.
+             * */
+
             this.updateHandler(context,sms);
         }
     }
@@ -92,5 +180,13 @@ public class SmsReceiver extends BroadcastReceiver {
             Bitmap bitmap = file.byteArrayToBitmap(bytes);
             MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, key, "EvernetImage");
         }
+    }
+
+    public boolean isMergedPacket(int[] tabPos){
+        for (int pos : tabPos){
+            if (pos == 0)
+                return false;
+        }
+        return true;
     }
 }
