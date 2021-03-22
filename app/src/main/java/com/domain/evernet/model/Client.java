@@ -144,9 +144,9 @@ public class Client {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public ArrayList<String> getAllAlias(String adminPw) throws IOException {
-
         String dataToSend = String.join("_|_", adminPw);
-        dataToSend = addMarkers(dataToSend, "getInvitationKey");
+        dataToSend = addMarkers(dataToSend, "getAllAlias");
+
         sendDataToServer(dataToSend);
         String response = receiveDataFromServer();
         response = response.replace("*", "");

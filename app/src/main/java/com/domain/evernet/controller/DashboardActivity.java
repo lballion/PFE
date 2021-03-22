@@ -364,8 +364,7 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
             int nb_packets=fileManager.getNbPackets();
             Packet p=new Packet(getMyPhonenumber(),"0605831895", position,nb_packets,ttl, fileManager.getNameOfPicture(), fragment);
             messageToSend=p.getPacket();
-            sendMessage(view); // function to use without callBack server
-            //  sendTo(p.getPacket(),null); //function with callBack server
+            sendMessage(view);
 
         }
     }
@@ -401,7 +400,6 @@ public class DashboardActivity extends AppCompatActivity  implements ImagePickFr
         Client c = new Client("pdp-evernet.ddns.net", 50000);
         c.openSocket();
         HashMap<String, String> numbersList=new HashMap<>();
-
         try {
             numbersList=c.getPhoneNumList(size);
             c.closeSocket();

@@ -88,7 +88,7 @@ public class SmsReceiver extends BroadcastReceiver {
 
         if(file.allPacketReceived()) {
             byte [] bytes = file.stringToArrayBytes();
-            Toast.makeText(context,"Image reçu :" + bytes.length, Toast.LENGTH_LONG).show();
+            Toast.makeText(context,"Image reçue :" + bytes.length, Toast.LENGTH_LONG).show();
             Bitmap bitmap = file.byteArrayToBitmap(bytes);
             MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, key, "EvernetImage");
         }
